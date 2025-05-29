@@ -8,9 +8,11 @@ import Foundation
 
 enum SupabaseConfig {
     static let url: URL = {
-        guard let url = Bundle.main.infoDictionary?["SUPABSE_URL"] as? String else {
-            fatalError("Invalid SUPABASE_URL")
+        guard let domain = Bundle.main.infoDictionary?["SUPABASE_DOMAIN"] as? String else {
+            fatalError("Invalid SUPABASE_DOMAIN")
         }
+        
+        let url = "https://" + domain;
         
         return URL(string: url)!
     }()
@@ -21,5 +23,13 @@ enum SupabaseConfig {
         }
         
         return key;
+    }()
+    
+    static let captchaToken: String = {
+        guard let captchaToken = Bundle.main.infoDictionary?["SUPABASE_CAPTCHA"] as? String else {
+            fatalError("Invalid SUPABASE_CAPTCHA")
+        }
+        
+        return captchaToken
     }()
 }
