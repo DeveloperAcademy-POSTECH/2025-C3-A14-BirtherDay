@@ -106,9 +106,22 @@
 		E7C124562DE8009C007F95EB /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E7C1248C2DE80E76007F95EB /* Exceptions for "BirtherDay" folder in "BirtherDay" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2192E0302DE60D1F00E25BF7 /* BirtherDay */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2192E0332DE60D1F00E25BF7 /* BirtherDay */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E7C1248C2DE80E76007F95EB /* Exceptions for "BirtherDay" folder in "BirtherDay" target */,
+			);
 			path = BirtherDay;
 			sourceTree = "<group>";
 		};
@@ -732,6 +745,7 @@
 				DEVELOPMENT_TEAM = 3HYFT54PK2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BirtherDay/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -761,6 +775,7 @@
 				DEVELOPMENT_TEAM = 3HYFT54PK2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BirtherDay/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
