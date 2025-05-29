@@ -617,6 +617,8 @@
 /* Begin XCBuildConfiguration section */
 		2192E03D2DE60D2100E25BF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 2192E0332DE60D1F00E25BF7 /* BirtherDay */;
+			baseConfigurationReferenceRelativePath = Core/Remote/Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -680,6 +682,8 @@
 		};
 		2192E03E2DE60D2100E25BF7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 2192E0332DE60D1F00E25BF7 /* BirtherDay */;
+			baseConfigurationReferenceRelativePath = Core/Remote/Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
