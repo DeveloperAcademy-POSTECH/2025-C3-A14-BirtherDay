@@ -12,6 +12,7 @@ struct BirtherDayApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.light) // 라이트모드 고정
         }
     }
 }
