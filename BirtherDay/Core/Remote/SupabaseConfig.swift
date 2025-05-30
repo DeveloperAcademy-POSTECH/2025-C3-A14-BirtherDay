@@ -32,4 +32,12 @@ enum SupabaseConfig {
         
         return captchaToken
     }()
+    
+    static let userId: String = {
+        guard let userId = Bundle.main.infoDictionary?["SUPABASE_USER_ID"] as? String else {
+            fatalError("Invalid SUPABASE_USER_ID")
+        }
+        
+        return userId
+    }()
 }
