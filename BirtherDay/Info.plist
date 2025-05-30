@@ -8,7 +8,5 @@
 	<string>$(SUPABASE_DOMAIN)</string>
 	<key>SUPABASE_KEY</key>
 	<string>$(SUPABASE_KEY)</string>
-	<key>SUPABASE_USER_ID</key>
-	<string>$(SUPABASE_USER_ID)</string>
 </dict>
 </plist>
