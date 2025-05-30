@@ -9,10 +9,24 @@ import SwiftUI
 
 struct TestView: View {
     
+    private let authService: AuthService = AuthService()
     private let couponService: CouponService = CouponService()
     
     var body: some View {
         VStack {
+            Button("유저 생성 테스트") {
+                Task {
+                    do {
+                        print("유저 생성 전")
+                        let res = try await authService.signUp()
+                        print(res.user.id)
+                        print("유저 생성 후")
+                    } catch {
+                        print("유저 생성 에러")
+                        print(error)
+                    }
+                }
+            }
             Button("쿠폰 생성 테스트") {
                 Task {
                     do {
@@ -22,6 +36,22 @@ struct TestView: View {
                         print("쿠폰 생성 후")
                     } catch {
                         print("쿠폰 생성 에러")
+                        print(error)
+                    }
+                    
+                    print("====")
+                }
+            }
+            Button("쿠폰 조회 테스트") {
+                Task {
+                    do {
+                        print("쿠폰 조회 전")
+                        print( SupabaseManager.shared.client.auth.currentSession?.user.id)
+                        let state = try await couponService.retrieveCoupons(SupabaseConfig.userId)
+                        print(state)
+                        print("쿠폰 조회 후")
+                    } catch {
+                        print("쿠폰 조회 에러")
                         print(error)
                     }
                     
