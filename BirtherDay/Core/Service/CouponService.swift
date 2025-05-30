@@ -31,7 +31,19 @@ final class CouponService {
         return res;
     }
     
-    // 쿠폰 조회
+    // 쿠폰을 조회합니다.
+    /// - Parameter Void
+    /// - Returns: `[RetrieveCouponResponse]`
+    /// - Throws: 삽입 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
+    func retrieveCoupons(_ userId: String) async throws -> [RetrieveCouponResponse] {
+        let res: [RetrieveCouponResponse] = try await client
+            .from("coupon")
+            .select()
+            .execute()
+            .value
+        
+        return res
+    }
     
     // 쿠폰 대상자 등록
     

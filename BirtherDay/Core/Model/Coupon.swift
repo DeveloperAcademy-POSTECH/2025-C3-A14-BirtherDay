@@ -80,5 +80,35 @@ struct InsertCouponRequest: Encodable {
 }
 
 extension InsertCouponRequest {
-    static var stub01: InsertCouponRequest = .init(sender_id: SupabaseConfig.userId, sender_name: "프레이가", template: .blue, title: "프레잉", letter: "사랑하는 프레이에게", image_list: [], thumbnail: "", deadline: Date(), is_used: false)
+    static var stub01: InsertCouponRequest = {
+        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
+            fatalError("No user ID found")
+        }
+        
+        return .init(
+            sender_id: userId.uuidString,
+            sender_name: "프레이가",
+            template: .blue,
+            title: "프레잉",
+            letter: "사랑하는 프레이에게",
+            image_list: [],
+            thumbnail: "",
+            deadline: Date(),
+            is_used: false
+        )
+    }()
+}
+
+struct RetrieveCouponResponse: Decodable {
+    var id: String
+    var sender_id: String
+    var sender_name: String
+    var template: CouponTemplate
+    var title: String
+    var letter: String
+    var image_list: [String]
+    var thumbnail: String
+    var deadline: Date
+    var is_used: Bool
+    var created_at: Date
 }
