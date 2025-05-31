@@ -33,17 +33,17 @@ class BDNavigationPathManager: ObservableObject {
     @Published var appPaths: [BDAppPath] = []
     
     /// Ceate Path에서 뷰 전환
-    func addCreatePath(_ path: BDCreateCouponPath) {
+    func pushCreatePath(_ path: BDCreateCouponPath) {
         appPaths.append(.create(path))
     }
     
     /// MyCoupon Path에서 뷰 전환
-    func addMyCouponPath(_ path: BDMyCouponPath) {
+    func pushMyCouponPath(_ path: BDMyCouponPath) {
         appPaths.append(.myCoupon(path))
     }
     
     /// 홈뷰로 가기
-    func removeAllPath() {
+    func goToRoot() {
         appPaths.removeAll()
     }
     
