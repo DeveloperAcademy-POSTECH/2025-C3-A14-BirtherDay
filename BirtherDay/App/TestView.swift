@@ -46,8 +46,9 @@ struct TestView: View {
                 Task {
                     do {
                         print("쿠폰 조회 전")
-                        print( SupabaseManager.shared.client.auth.currentSession?.user.id)
-                        let state = try await couponService.retrieveCoupons(SupabaseConfig.userId)
+                        let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString ?? ""
+                        print(userId)
+                        let state = try await couponService.retrieveCoupons(userId)
                         print(state)
                         print("쿠폰 조회 후")
                     } catch {
@@ -58,6 +59,39 @@ struct TestView: View {
                     print("====")
                 }
             }
+            Button("쿠폰 대상자 등록 테스트") {
+                Task {
+                    do {
+                        print("쿠폰 대상자 등록 전")
+                        let couponId = "182689a7-e777-47e2-80b0-cef88bc31194"
+                        let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString ?? ""
+                        let state = try await couponService.registerReceiver(
+                            couponId: couponId,
+                            receiverId: userId
+                        )
+                        print(state)
+                        print("쿠폰 대상자 등록 후")
+                    } catch {
+                        print("쿠폰 대상자 등록 에러")
+                        print(error)
+                    }
+                }
+            }
+            Button("쿠폰 사용 테스트") {
+                Task {
+                    do {
+                        print("쿠폰 사용 전")
+                        let couponId = "182689a7-e777-47e2-80b0-cef88bc31194"
+                        let state = try await couponService.useCoupon(couponId: couponId)
+                        print(state)
+                        print("쿠폰 사용 후")
+                    } catch {
+                        print("쿠폰 사용 등록 에러")
+                        print(error)
+                    }
+                }
+            }
+
         }
         .padding()
     }
