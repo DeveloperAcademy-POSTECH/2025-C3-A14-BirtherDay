@@ -45,7 +45,33 @@ final class CouponService {
         return res
     }
     
-    // 쿠폰 대상자 등록
+    /// 쿠폰에 수신자(receiver)를 등록합니다.
+    /// - Parameters:
+    ///   - couponId: 등록할 쿠폰의 고유 식별자
+    ///   - receiverId: 등록할 수신자의 고유 식별자
+    /// - Returns: `PostgrestResponse<Void>` – 응답 결과 (Status Code 포함)
+    /// - Throws: 업데이트 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
+    func registerReceiver(couponId: String, receiverId: String) async throws -> PostgrestResponse<Void> {
+        let res = try await client
+                .from("coupon")
+                .update(["receiver_id": receiverId])
+                .eq("id", value: couponId)
+                .execute();
+        
+        return res;
+    }
     
-    // 쿠폰 사용
+    /// 쿠폰을 사용 처리(is_used = true)로 업데이트합니다.
+    /// - Parameter couponId: 사용 처리할 쿠폰의 고유 식별자
+    /// - Returns: `PostgrestResponse<Void>` – 응답 결과 (Status Code 포함)
+    /// - Throws: 업데이트 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
+    func useCoupon(couponId: String) async throws -> PostgrestResponse<Void> {
+        let res = try await client
+                .from("coupon")
+                .update(["is_used": true])
+                .eq("id", value: couponId)
+                .execute();
+        
+        return res;
+    }
 }
