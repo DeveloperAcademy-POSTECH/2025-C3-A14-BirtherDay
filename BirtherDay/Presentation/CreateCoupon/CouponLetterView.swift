@@ -11,7 +11,6 @@ struct CouponLetterView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     
     @State private var letterContent: String = ""
-    @State private var isKeyboardVisible: Bool = false
     
     // CouponCreationData에서 저장된 쿠폰 데이터를 가져옴
     private var couponCreationData: CouponCreationData {
@@ -98,80 +97,18 @@ struct CouponLetterView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 0.96, green: 0.95, blue: 1))
-        .contentShape(Rectangle()) // 배경 전체가 터치 가능하도록 설정
-        .onTapGesture {
-            // 배경 터치 시 키보드 내리기
-            hideKeyboard()
-        }
-        .navigationTitle("편지 작성하기")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    navPathManager.popPath()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .font(.system(size: 18, weight: .medium))
-                }
+        .keyboardAware(
+            navigationTitle: "편지 작성하기",
+            onBackButtonTapped: {
+                navPathManager.popPath()
             }
-        }
-        .overlay(
-            // 키보드가 올라왔을 때 상단에 글래스모피즘 효과
-            VStack {
-                if isKeyboardVisible {
-                    VStack(spacing: 0) {
-                        Rectangle()
-                            .fill(.ultraThinMaterial)
-                            .frame(height: 150) // status bar + navigation bar 높이
-                        
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 0.5)
-                    }
-                    .ignoresSafeArea(.all, edges: .top)
-                }
-                Spacer()
-            },
-            alignment: .top
         )
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-            withAnimation(.easeInOut(duration: 0.3)) {
-                isKeyboardVisible = true
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-            withAnimation(.easeInOut(duration: 0.3)) {
-                isKeyboardVisible = false
-            }
-        }
         .onAppear {
-            setupNavigationBarAppearance()
             // 이미 입력된 편지 내용이 있다면 불러오기
             if let existingLetterContent = couponCreationData.letterContent {
                 letterContent = existingLetterContent
             }
         }
-    }
-    
-    private func setupNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.clear
-        appearance.shadowImage = UIImage()
-        appearance.shadowColor = UIColor.clear
-        
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-    }
-    
-    // 키보드 숨기기 함수
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

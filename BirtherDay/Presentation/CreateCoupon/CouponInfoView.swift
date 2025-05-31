@@ -14,7 +14,6 @@ struct CouponInfoView: View {
     @State private var senderName: String = ""
     @State private var selectedDate: Date = Date()
     @State private var showDatePicker: Bool = false
-    @State private var isKeyboardVisible: Bool = false
     
     // CouponTemplateView에서 선택된 템플릿을 받아옴
     private var selectedTemplate: CouponTemplate {
@@ -133,59 +132,13 @@ struct CouponInfoView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 10)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 0.96, green: 0.95, blue: 1))
-        .contentShape(Rectangle()) // 배경 전체가 터치 가능하도록 설정
-        .onTapGesture {
-            // 배경 터치 시 키보드 내리기
-            hideKeyboard()
-        }
-        .navigationTitle("쿠폰 멘트 작성하기")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    navPathManager.popPath()
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .font(.system(size: 18, weight: .medium))
-                }
+        .keyboardAware(
+            navigationTitle: "쿠폰 멘트 작성하기",
+            onBackButtonTapped: {
+                navPathManager.popPath()
             }
-        }
-        .overlay(
-            // 키보드가 올라왔을 때 상단에 글래스모피즘 효과
-            VStack {
-                if isKeyboardVisible {
-                    VStack(spacing: 0) {
-                        Rectangle()
-                            .fill(.ultraThinMaterial)
-                            .frame(height: 100) // status bar + navigation bar 높이
-                        
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 0.5)
-                    }
-                    .ignoresSafeArea(.all, edges: .top)
-                }
-                Spacer()
-            },
-            alignment: .top
         )
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-            withAnimation(.easeInOut(duration: 0.3)) {
-                isKeyboardVisible = true
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-            withAnimation(.easeInOut(duration: 0.3)) {
-                isKeyboardVisible = false
-            }
-        }
         .onAppear {
-            setupNavigationBarAppearance()
-            
             // 이미 입력된 데이터가 있다면 불러오기
             let couponData = navPathManager.couponCreationData
             if let existingTitle = couponData.couponTitle {
@@ -214,27 +167,9 @@ struct CouponInfoView: View {
                         }
                     }
             }
-            .presentationDetents([.height(500)]) // 달력 크기에 맞는 높이 설정
-            .presentationDragIndicator(.visible) // 드래그 인디케이터 표시
+            .presentationDetents([.height(500)])
+            .presentationDragIndicator(.visible)
         }
-    }
-    
-    // 상단 내비게이션 바를 투명하게 만들고, 얇은 선을 아래에 만드는 처리
-    private func setupNavigationBarAppearance() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.clear
-        appearance.shadowImage = UIImage()
-        appearance.shadowColor = UIColor.clear
-        
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-    }
-    
-    // 키보드 숨기기 함수
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
@@ -251,7 +186,7 @@ struct CouponCardPreview: View {
             // 배경 이미지
             Image(template == .purple ? "Card1Back" : "Card2Back")
                 .resizable()
-                .aspectRatio(contentMode: .fill) // .fill - 세로로 꽉 채우고 좌우는 잘림
+                .aspectRatio(contentMode: .fill)
             
             // 콘텐츠 오버레이
             VStack(spacing: 0) {
