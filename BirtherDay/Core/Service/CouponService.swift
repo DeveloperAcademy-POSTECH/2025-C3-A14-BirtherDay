@@ -31,14 +31,15 @@ final class CouponService {
         return res;
     }
     
-    // 쿠폰을 조회합니다.
-    /// - Parameter Void
-    /// - Returns: `[RetrieveCouponResponse]`
-    /// - Throws: 삽입 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
+    /// 주어진 사용자 ID(sender 또는 receiver)와 관련된 쿠폰 목록을 조회합니다.
+    /// - Parameter userId: 사용자 고유 식별자 (sender_id 또는 receiver_id와 일치하는 쿠폰을 조회)
+    /// - Returns: `[RetrieveCouponResponse]` – 조회된 쿠폰 리스트
+    /// - Throws: 조회 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
     func retrieveCoupons(_ userId: String) async throws -> [RetrieveCouponResponse] {
         let res: [RetrieveCouponResponse] = try await client
             .from("coupon")
             .select()
+            .or("receiver_id.eq.\(userId),sender_id.eq.\(userId)")
             .execute()
             .value
         
