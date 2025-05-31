@@ -13,7 +13,7 @@ struct CouponTemplateView: View {
     var body: some View {
         VStack {
             Button(action: {
-                navPathManager.addCreatePath(.couponInfo)
+                navPathManager.pushCreatePath(.couponInfo)
             }) {
                 Text("Move To CouponInfo")
             }

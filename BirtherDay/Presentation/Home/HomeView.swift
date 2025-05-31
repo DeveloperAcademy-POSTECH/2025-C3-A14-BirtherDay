@@ -54,7 +54,7 @@ struct HomeFirstView: View {
     
     var body: some View {
         Button(action: {
-            navPathManager.addCreatePath(.selectTemplate)
+            navPathManager.pushCreatePath(.selectTemplate)
         }) {
             Text("Move To CreateCoupon")
         }
@@ -68,7 +68,7 @@ struct HomeSecondView: View {
     
     var body: some View {
         Button(action: {
-            navPathManager.addMyCouponPath(.couponInventory)
+            navPathManager.pushMyCouponPath(.couponInventory)
         }) {
             Text("Move To MyCoupon")
         }
