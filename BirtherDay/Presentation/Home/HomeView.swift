@@ -58,14 +58,13 @@ struct HomeFirstView: View {
         }) {
             Text("Move To CreateCoupon")
         }
-        
     }
 }
 
 ///  선물 받은 쿠폰, 내가 보낸 쿠폰에 해당
 struct HomeSecondView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-    
+
     var body: some View {
         Button(action: {
             navPathManager.pushMyCouponPath(.couponInventory)
