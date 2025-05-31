@@ -32,6 +32,12 @@ class BDNavigationPathManager: ObservableObject {
     /// Path Stack
     @Published var appPaths: [BDAppPath] = []
     
+    // 선택된 쿠폰 템플릿을 저장
+    @Published var selectedCouponTemplate: CouponTemplate?
+    
+    // 쿠폰 생성 과정에서 수집된 데이터를 저장
+    @Published var couponData: CouponData?
+    
     /// Ceate Path에서 뷰 전환
     func pushCreatePath(_ path: BDCreateCouponPath) {
         appPaths.append(.create(path))
