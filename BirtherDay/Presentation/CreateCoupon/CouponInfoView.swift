@@ -18,7 +18,7 @@ struct CouponInfoView: View {
     
     // CouponTemplateView에서 선택된 템플릿을 받아옴
     private var selectedTemplate: CouponTemplate {
-        navPathManager.selectedCouponTemplate ?? .purple
+        navPathManager.couponCreationData.template ?? .purple
     }
     
     private var dateFormatter: DateFormatter {
@@ -111,19 +111,17 @@ struct CouponInfoView: View {
                 .padding(.horizontal, 20)
                 
                 Spacer()
-                    .frame(height: 80)
             }
+            
+            Spacer()
             
             // 다음 버튼
             Button(action: {
-                // 쿠폰 데이터를 navPathManager에 저장
-                let couponData = CouponData(
-                    template: selectedTemplate,
-                    couponTitle: couponTitle,
-                    senderName: senderName,
-                    expireDate: selectedDate
-                )
-                navPathManager.couponData = couponData
+                // 쿠폰 데이터를 couponCreationData에 저장
+                navPathManager.couponCreationData.couponTitle = couponTitle
+                navPathManager.couponCreationData.senderName = senderName
+                navPathManager.couponCreationData.expireDate = selectedDate
+                
                 // 다음 화면으로 이동 (편지 작성 화면)
                 navPathManager.pushCreatePath(.couponLetter)
             }) {
@@ -133,7 +131,7 @@ struct CouponInfoView: View {
             .buttonStyle(BDButtonStyle(buttonType: isFormValid ? .activate : .deactivate))
             .disabled(!isFormValid)
             .padding(.horizontal, 20)
-            .padding(.bottom, 50)
+            .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 0.96, green: 0.95, blue: 1))
@@ -163,7 +161,7 @@ struct CouponInfoView: View {
                     VStack(spacing: 0) {
                         Rectangle()
                             .fill(.ultraThinMaterial)
-                            .frame(height: 150) // status bar + navigation bar 높이
+                            .frame(height: 100) // status bar + navigation bar 높이
                         
                         Rectangle()
                             .fill(Color.gray.opacity(0.2))
@@ -187,6 +185,18 @@ struct CouponInfoView: View {
         }
         .onAppear {
             setupNavigationBarAppearance()
+            
+            // 이미 입력된 데이터가 있다면 불러오기
+            let couponData = navPathManager.couponCreationData
+            if let existingTitle = couponData.couponTitle {
+                couponTitle = existingTitle
+            }
+            if let existingSender = couponData.senderName {
+                senderName = existingSender
+            }
+            if let existingDate = couponData.expireDate {
+                selectedDate = existingDate
+            }
         }
         .sheet(isPresented: $showDatePicker) {
             NavigationView {
@@ -209,6 +219,7 @@ struct CouponInfoView: View {
         }
     }
     
+    // 상단 내비게이션 바를 투명하게 만들고, 얇은 선을 아래에 만드는 처리
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -290,14 +301,6 @@ struct CouponCardPreview: View {
         .frame(width: 130, height: 183)
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
-}
-
-// 쿠폰 데이터를 다음 화면으로 전달하기 위한 구조체
-struct CouponData {
-    let template: CouponTemplate
-    let couponTitle: String
-    let senderName: String
-    let expireDate: Date
 }
 
 #Preview {
