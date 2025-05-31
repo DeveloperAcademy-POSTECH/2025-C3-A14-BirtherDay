@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CouponTemplateView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    @State private var selectedTemplate: CouponTemplate = .purple
     
     var body: some View {
         VStack(spacing: 0) { // 화면 전체
@@ -24,35 +25,49 @@ struct CouponTemplateView: View {
             Spacer()
                 .frame(height: 80)
             
-            // 쿠폰 이미지 영역
-            Image("cardTemplate1")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 200, maxHeight: 200)
-            
+            if selectedTemplate == .purple {
+                Image("cardTemplate1")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 200, maxHeight: 200)
+            } else {
+                Image("cardTemplate2")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 200, maxHeight: 200)
+            }
+
             Spacer()
                 .frame(height: 120)
             
             // 색상 선택 원형 버튼들
             HStack(spacing: 24) {
                 Button(action: {
-                    // 첫 번째 색상 선택 액션
+                    selectedTemplate = .purple
                 }) {
                     Circle()
                         .fill(Color(red: 1.0, green: 0.9, blue: 0.5))
                         .frame(width: 44, height: 44)
                         .overlay(
                             Circle()
-                                .stroke(Color(red: 0.7, green: 0.6, blue: 0.9), lineWidth: 3)
+                                .stroke(selectedTemplate == .purple ?
+                                       Color(red: 0.7, green: 0.6, blue: 0.9) :
+                                       Color.clear, lineWidth: 3)
                         )
                 }
                 
                 Button(action: {
-                    // 두 번째 색상 선택 액션
+                    selectedTemplate = .blue
                 }) {
                     Circle()
                         .fill(Color(red: 0.4, green: 0.6, blue: 1.0))
                         .frame(width: 44, height: 44)
+                        .overlay(
+                            Circle()
+                                .stroke(selectedTemplate == .blue ?
+                                        Color(red: 0.7, green: 0.6, blue: 0.9) :
+                                        Color.clear, lineWidth: 3)
+                        )
                 }
             }
             
@@ -60,6 +75,8 @@ struct CouponTemplateView: View {
             
             // 다음 버튼
             Button(action: {
+                // 선택된 템플릿을 CouponInfoView로 전달
+                navPathManager.selectedCouponTemplate = selectedTemplate
                 navPathManager.pushCreatePath(.couponInfo)
             }) {
                 Text("다음")
