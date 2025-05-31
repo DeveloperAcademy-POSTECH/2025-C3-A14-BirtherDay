@@ -75,18 +75,18 @@ struct CouponTemplateView: View {
             
             // 다음 버튼
             Button(action: {
-                // 선택된 템플릿을 CouponInfoView로 전달
-                navPathManager.selectedCouponTemplate = selectedTemplate
+                // 선택된 템플릿을 couponCreationData에 저장
+                navPathManager.couponCreationData.template = selectedTemplate
                 navPathManager.pushCreatePath(.couponInfo)
             }) {
                 Text("다음")
                     .font(.system(size: 18, weight: .semibold))
             }
             .buttonStyle(BDButtonStyle(buttonType: .activate))
-            .padding(.bottom, 50)
+            .padding(.horizontal, 20)
+            .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, 20)
         .background(Color(red: 0.96, green: 0.95, blue: 1))
         .navigationTitle("쿠폰 디자인 선택")
         .navigationBarTitleDisplayMode(.inline)
@@ -102,8 +102,16 @@ struct CouponTemplateView: View {
                 }
             }
         }
+        .onAppear {
+            // 이미 선택된 템플릿이 있다면 불러오기
+            if let existingTemplate = navPathManager.couponCreationData.template {
+                selectedTemplate = existingTemplate
+            }
+        }
     }
 }
+
+// 보라색 다음 버튼 - 활성 / 비활성화
 
 enum BDButtonType {
    case activate
