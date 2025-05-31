@@ -60,7 +60,7 @@ struct CouponTemplateView: View {
             
             // 다음 버튼
             Button(action: {
-                navPathManager.addCreatePath(.couponInfo)
+                navPathManager.pushCreatePath(.couponInfo)
             }) {
                 Text("다음")
                     .font(.system(size: 18, weight: .semibold))
