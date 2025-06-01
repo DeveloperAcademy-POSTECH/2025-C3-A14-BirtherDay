@@ -57,6 +57,10 @@ class Coupon: Identifiable {
     }
 }
 
+extension Coupon {
+    public static var stub01: Coupon = .init(couponId: "", sender: UUID(), receiver: UUID(), template: .blue, couponTitle: "", letter: "", imageList: [], senderName: "", expireDate: Date(), thumbnail: UIImage(), isUsed: false, createdDate: Date())
+}
+
 class User {
     var id: String
     
@@ -112,3 +116,4 @@ struct RetrieveCouponResponse: Decodable {
     var is_used: Bool
     var created_at: Date
 }
+
