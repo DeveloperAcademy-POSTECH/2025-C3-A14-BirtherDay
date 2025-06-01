@@ -10,13 +10,13 @@ import SwiftUI
 struct CouponDetailView: View {
     
     var viewModel: CouponDetailViewModel
-    var templateType: CouponTemplate = .orange    // TODO: - viewmodel로 옮기기
+    var templateType: CouponTemplate = .blue    // TODO: - viewmodel로 옮기기
     
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 mainCouponView()
-                dashedLineView(color: .orange)
+                dashedLineView(color: templateType.dashLineColor)
                 subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
                 dashedLineView(color: Color.gray200)
                 imageListView()
@@ -27,13 +27,13 @@ struct CouponDetailView: View {
             }
             .padding(.horizontal, 27)
         }
-        .background(Color(hex: "FFF4F4").ignoresSafeArea(.all)) // TODO: - 컬러칩 등록되면 수정하기
+        .background(templateType.backgroundColor.ignoresSafeArea(.all)) // TODO: - 컬러칩 등록되면 수정하기
         .scrollIndicators(.hidden)
     }
     
     // 메인 쿠폰 뷰
     func mainCouponView()-> some View {
-        BDTemplateView()    // TODO: 모델 연결
+        BDTemplateView(type: .blue)    // TODO: 모델 연결
     }
     
     // 점선 뷰

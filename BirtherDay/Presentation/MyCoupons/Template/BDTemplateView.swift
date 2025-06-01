@@ -9,7 +9,7 @@ import SwiftUI
 
 struct BDTemplateView: View {
     
-    let type: CouponTemplate = .orange
+    let type: CouponTemplate
     let sender: String = "주니"
     let date: String = "2025.06.01"
     
@@ -72,10 +72,10 @@ struct BDTemplateView: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 30))
-        .overlay(RoundedRectangle(cornerRadius: 30).stroke(LinearGradient.templateStroke1, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 30).stroke(type.strokeColor, lineWidth: 1))
     }
 }
 
 #Preview {
-    BDTemplateView()
+    BDTemplateView(type: .blue)
 }
