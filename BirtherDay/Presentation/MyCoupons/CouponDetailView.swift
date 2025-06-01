@@ -20,7 +20,7 @@ struct CouponDetailView: View {
                 dashedLineView(color: Color.gray200)
                 imageListView()
                 dashedLineView(color: Color.gray200)
-                subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
+                subtitleView(subtitle: "💌 함께 도착한 편지를 읽어보세요!")
                 dashedLineView(color: Color.gray200)
                 letterView()
             }
@@ -112,6 +112,7 @@ struct CouponDetailView: View {
     func subtitleView(subtitle: String) -> some View {
         Text(subtitle)
             .font(.sb2)
+            .foregroundStyle(Color.textTitle)
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(.vertical, 38)
             .background(Color.white)
