@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CouponInfoView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    @ObservedObject var viewModel: CreateCouponViewModel
     
     @State private var couponTitle: String = ""
     @State private var senderName: String = ""
@@ -17,7 +18,7 @@ struct CouponInfoView: View {
     
     // CouponTemplateView에서 선택된 템플릿을 받아옴
     private var selectedTemplate: CouponTemplate {
-        navPathManager.couponCreationData.template ?? .purple
+        viewModel.couponCreationData.template ?? .purple
     }
     
     private var dateFormatter: DateFormatter {
@@ -116,10 +117,12 @@ struct CouponInfoView: View {
             
             // 다음 버튼
             Button(action: {
-                // 쿠폰 데이터를 couponCreationData에 저장
-                navPathManager.couponCreationData.couponTitle = couponTitle
-                navPathManager.couponCreationData.senderName = senderName
-                navPathManager.couponCreationData.expireDate = selectedDate
+                // 쿠폰 데이터를 뷰모델에 저장
+                viewModel.updateCouponInfo(
+                    title: couponTitle,
+                    senderName: senderName,
+                    expireDate: selectedDate
+                )
                 
                 // 다음 화면으로 이동 (편지 작성 화면)
                 navPathManager.pushCreatePath(.couponLetter)
@@ -140,7 +143,7 @@ struct CouponInfoView: View {
         )
         .onAppear {
             // 이미 입력된 데이터가 있다면 불러오기
-            let couponData = navPathManager.couponCreationData
+            let couponData = viewModel.couponCreationData
             if let existingTitle = couponData.couponTitle {
                 couponTitle = existingTitle
             }
@@ -239,6 +242,6 @@ struct CouponCardPreview: View {
 }
 
 #Preview {
-    CouponInfoView()
+    CouponInfoView(viewModel: CreateCouponViewModel())
         .environmentObject(BDNavigationPathManager())
 }

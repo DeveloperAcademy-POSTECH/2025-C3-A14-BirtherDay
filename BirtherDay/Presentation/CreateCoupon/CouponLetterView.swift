@@ -9,12 +9,13 @@ import SwiftUI
 
 struct CouponLetterView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    @ObservedObject var viewModel: CreateCouponViewModel
     
     @State private var letterContent: String = ""
     
     // CouponCreationData에서 저장된 쿠폰 데이터를 가져옴
     private var couponCreationData: CouponCreationData {
-        navPathManager.couponCreationData
+        viewModel.couponCreationData
     }
     
     private var dateFormatter: DateFormatter {
@@ -83,8 +84,8 @@ struct CouponLetterView: View {
             
             // 다음 버튼
             Button(action: {
-                // 편지 내용을 couponCreationData에 저장
-                navPathManager.couponCreationData.letterContent = letterContent
+                // 편지 내용을 뷰모델에 저장
+                viewModel.updateLetterContent(letterContent)
                 
                 // 다음 화면으로 이동 (사진 선택 화면)
                 navPathManager.pushCreatePath(.couponPicture)
@@ -113,6 +114,6 @@ struct CouponLetterView: View {
 }
 
 #Preview {
-    CouponLetterView()
+    CouponLetterView(viewModel: CreateCouponViewModel())
         .environmentObject(BDNavigationPathManager())
 }
