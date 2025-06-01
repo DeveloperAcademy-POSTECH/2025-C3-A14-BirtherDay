@@ -12,6 +12,7 @@ enum CouponTemplate: String, Codable {
     case blue
     case orange
     
+    /// 배경 색상
     var pointColor: [Color] {
         switch self {
         case .blue:
@@ -30,6 +31,7 @@ enum CouponTemplate: String, Codable {
         }
     }
     
+    /// 외곽선 색상
     var strokeColor: LinearGradient {
         switch self {
         case .blue:
@@ -40,6 +42,7 @@ enum CouponTemplate: String, Codable {
         }
     }
     
+    /// 점선 색상
     var dashLineColor: Color {
         switch self {
         case .blue:
@@ -50,6 +53,7 @@ enum CouponTemplate: String, Codable {
         }
     }
     
+    /// 쿠폰 겉배경 색상
     var backgroundColor: Color {
         switch self {
             case .blue:

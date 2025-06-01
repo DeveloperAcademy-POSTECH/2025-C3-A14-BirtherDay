@@ -16,7 +16,6 @@ struct BDTemplateView: View {
     var body: some View {
         VStack(spacing: 30) {
             VStack(alignment: .leading) {
-                //                Text("From. \(viewModel.coupon.senderName)")
                 Text("From. \(sender)")
                     .font(.sb3)
                     .foregroundStyle(Color.textTitle)
@@ -27,11 +26,13 @@ struct BDTemplateView: View {
             
             Spacer(minLength: 0)
             
+            // TODO: - Image 연결
             Rectangle()
                 .frame(width: 150, height: 150)
             
             Spacer(minLength: 0)
             
+            // TODO: - content 연결
             Text("함께 만나서 사용할 쿠폰 입력해주세요!")
                 .frame(maxWidth: .infinity)
                 .font(.sb4)
@@ -45,6 +46,7 @@ struct BDTemplateView: View {
         .padding(.top, 31)
         .padding(.bottom, 35)
         .background {
+            // 배경에 사용되는 circle + blur
             VStack(spacing: 0) {
                 HStack {
                     Circle().foregroundStyle(type.pointColor[0].opacity(0.8))
@@ -77,5 +79,5 @@ struct BDTemplateView: View {
 }
 
 #Preview {
-    BDTemplateView(type: .blue)
+    BDTemplateView(type: .orange)
 }

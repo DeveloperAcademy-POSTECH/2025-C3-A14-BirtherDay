@@ -10,7 +10,7 @@ import SwiftUI
 struct CouponDetailView: View {
     
     var viewModel: CouponDetailViewModel
-    var templateType: CouponTemplate = .blue    // TODO: - viewmodel로 옮기기
+    var templateType: CouponTemplate = .orange    // TODO: - viewmodel로 옮기기
     
     var body: some View {
         ScrollView {
@@ -33,7 +33,7 @@ struct CouponDetailView: View {
     
     // 메인 쿠폰 뷰
     func mainCouponView()-> some View {
-        BDTemplateView(type: .blue)    // TODO: 모델 연결
+        BDTemplateView(type: templateType)    // TODO: 모델 연결
     }
     
     // 점선 뷰
