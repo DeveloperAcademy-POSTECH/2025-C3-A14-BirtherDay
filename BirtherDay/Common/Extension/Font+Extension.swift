@@ -11,9 +11,9 @@ import SwiftUI
 
 extension Font {
     // Regular
-    static let r1: Font = .custom("Pretendard-Bold", size: 14)      // 150%
-    static let r2: Font = .custom("Pretendard-Bold", size: 18)      // 150%
-    static let r3: Font = .custom("Pretendard-Bold", size: 20)      // 150%
+    static let r1: Font = .custom("Pretendard-Regular", size: 14)      // 150%
+    static let r2: Font = .custom("Pretendard-Regular", size: 18)      // 150%
+    static let r3: Font = .custom("Pretendard-Regular", size: 20)      // 150%
     
     // Medium
     static let m1: Font = .custom("Pretendard-Medium", size: 16)    // 150%
@@ -26,7 +26,7 @@ extension Font {
     static let sb5: Font = .custom("Pretendard-Semibold", size: 24) // 130%
     
     // Bold
-    static let b1: Font = .custom("Pretendard-bold", size: 14)      // 150%
-    static let b2: Font = .custom("Pretendard-bold", size: 18)      // 150%
-    static let b3: Font = .custom("Pretendard-bold", size: 24)      // 130%
+    static let b1: Font = .custom("Pretendard-Bold", size: 14)      // 150%
+    static let b2: Font = .custom("Pretendard-Bold", size: 18)      // 150%
+    static let b3: Font = .custom("Pretendard-Bold", size: 24)      // 130%
 }
