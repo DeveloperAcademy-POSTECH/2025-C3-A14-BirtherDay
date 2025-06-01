@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CouponTemplateView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    @ObservedObject var viewModel: CreateCouponViewModel
     @State private var selectedTemplate: CouponTemplate = .purple
     
     var body: some View {
@@ -75,8 +76,8 @@ struct CouponTemplateView: View {
             
             // 다음 버튼
             Button(action: {
-                // 선택된 템플릿을 couponCreationData에 저장
-                navPathManager.couponCreationData.template = selectedTemplate
+                // 선택된 템플릿을 뷰모델에 저장
+                viewModel.selectTemplate(selectedTemplate)
                 navPathManager.pushCreatePath(.couponInfo)
             }) {
                 Text("다음")
@@ -104,7 +105,7 @@ struct CouponTemplateView: View {
         }
         .onAppear {
             // 이미 선택된 템플릿이 있다면 불러오기
-            if let existingTemplate = navPathManager.couponCreationData.template {
+            if let existingTemplate = viewModel.couponCreationData.template {
                 selectedTemplate = existingTemplate
             }
         }
@@ -156,6 +157,6 @@ struct BDButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    CouponTemplateView()
+    CouponTemplateView(viewModel: CreateCouponViewModel())
         .environmentObject(BDNavigationPathManager())
 }
