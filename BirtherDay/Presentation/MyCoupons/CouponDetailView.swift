@@ -39,8 +39,7 @@ struct CouponDetailView: View {
                 Text("From. 주니")
                     .font(.sb3)
                     .foregroundStyle(Color.textTitle)
-//                Text("\(viewModel.coupon.expireDate)까지")
-                Text("20XX.XX.XX.까지")
+                Text("\(viewModel.expireDateString)까지")
                     .font(.r3)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -98,7 +97,7 @@ struct CouponDetailView: View {
     // 점선 뷰
     func dashedLineView(color: Color)-> some View {
         Path { path in
-            path.move(to: CGPoint(x: 27, y: 0)) // TODO: create radius & padding property
+            path.move(to: CGPoint(x: 30, y: 0)) // TODO: create radius & padding property
             path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 84, y: 0)) // 27*2 padding + 30 radius 고려
         }
         .stroke(
