@@ -38,7 +38,7 @@ struct KeyboardAwareViewModifier: ViewModifier {
                     if isKeyboardVisible {
                         VStack(spacing: 0) {
                             Rectangle()
-                                .fill(.ultraThinMaterial)
+                                .fill(Color.white.opacity(0.8))
                                 .frame(height: 100)
                             
                             Rectangle()
