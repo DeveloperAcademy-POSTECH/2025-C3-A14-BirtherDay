@@ -8,11 +8,6 @@
 import Foundation
 import UIKit
 
-enum CouponTemplate: String, Codable {
-    case purple
-    case blue
-}
-
 class Coupon: Identifiable {
     let id = UUID().uuidString
     let couponId: String
