@@ -13,7 +13,18 @@ enum CouponTemplate: String, Codable {
     case orange
     
     /// 배경 색상
-    var pointColor: [Color] {
+    var basicColor: Color {
+        switch self {
+        case .blue:
+            return Color(hex: "F8F5FF")
+            
+        case .orange:
+            return Color(hex: "FFF7FF")
+        }
+    }
+    
+    /// 배경 그라디언트 색상
+    var backgroundPointColor: [Color] {
         switch self {
         case .blue:
             return [

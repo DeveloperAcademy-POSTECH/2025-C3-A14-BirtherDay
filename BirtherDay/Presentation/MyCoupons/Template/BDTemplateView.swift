@@ -49,7 +49,7 @@ struct BDTemplateView: View {
             // 배경에 사용되는 circle + blur
             VStack(spacing: 0) {
                 HStack {
-                    Circle().foregroundStyle(type.pointColor[0].opacity(0.8))
+                    Circle().foregroundStyle(type.backgroundPointColor[0].opacity(0.8))
                         .blur(radius: 75)
                         .frame(width: 123, height: 123)
                     Spacer()
@@ -58,7 +58,7 @@ struct BDTemplateView: View {
                 Spacer()
                     .frame(height: 37)
                 HStack {
-                    Circle().foregroundStyle(type.pointColor[1].opacity(0.5))
+                    Circle().foregroundStyle(type.backgroundPointColor[1].opacity(0.5))
                         .blur(radius: 75)
                         .frame(width: 204, height: 204)
                         .padding(.leading, -18)
@@ -66,13 +66,14 @@ struct BDTemplateView: View {
                 }
                 HStack {
                     Spacer()
-                    Circle().foregroundStyle(type.pointColor[2].opacity(0.5))
+                    Circle().foregroundStyle(type.backgroundPointColor[2].opacity(0.5))
                         .blur(radius: 75)
                         .frame(width: 204, height: 204)
                         .padding(.trailing, -40)
                 }
             }
         }
+        .background(type.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 30))
         .overlay(RoundedRectangle(cornerRadius: 30).stroke(type.strokeColor, lineWidth: 1))
     }
