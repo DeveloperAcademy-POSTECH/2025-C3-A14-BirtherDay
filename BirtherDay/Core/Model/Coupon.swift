@@ -8,11 +8,6 @@
 import Foundation
 import UIKit
 
-enum CouponTemplate: String, Codable {
-    case purple
-    case blue
-}
-
 class Coupon: Identifiable {
     let id = UUID().uuidString
     let couponId: String
@@ -55,6 +50,10 @@ class Coupon: Identifiable {
         self.isUsed = isUsed
         self.createdDate = createdDate
     }
+}
+
+extension Coupon {
+    public static var stub01: Coupon = .init(couponId: "", sender: UUID(), receiver: UUID(), template: .blue, couponTitle: "", letter: "", imageList: [], senderName: "", expireDate: Date(), thumbnail: UIImage(), isUsed: false, createdDate: Date())
 }
 
 class User {
@@ -112,3 +111,4 @@ struct RetrieveCouponResponse: Decodable {
     var is_used: Bool
     var created_at: Date
 }
+

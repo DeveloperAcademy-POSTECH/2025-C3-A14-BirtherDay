@@ -8,5 +8,12 @@
 	<string>$(SUPABASE_DOMAIN)</string>
 	<key>SUPABASE_KEY</key>
 	<string>$(SUPABASE_KEY)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Pretendard-Bold.otf</string>
+		<string>Pretendard-Regular.otf</string>
+		<string>Pretendard-Medium.otf</string>
+		<string>Pretendard-SemiBold.otf</string>
+	</array>
 </dict>
 </plist>

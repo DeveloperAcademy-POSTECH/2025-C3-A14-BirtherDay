@@ -36,7 +36,7 @@ struct HomeView: View {
                     case .couponInventory:
                         MyCouponView()
                     case .couponDetail:
-                        CouponDetailView()
+                        CouponDetailView(viewModel: .init(coupon: .stub01)) // TODO: - remove stub
                     case .interaction:
                         CouponInteractionView()
                     case .interactionComplete:
