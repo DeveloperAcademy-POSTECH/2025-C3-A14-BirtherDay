@@ -8,6 +8,8 @@
 	<string>$(SUPABASE_DOMAIN)</string>
 	<key>SUPABASE_KEY</key>
 	<string>$(SUPABASE_KEY)</string>
+	<key>SUPABASE_STORAGE_PATH</key>
+	<string>$(SUPABASE_STORAGE_PATH)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Bold.otf</string>
