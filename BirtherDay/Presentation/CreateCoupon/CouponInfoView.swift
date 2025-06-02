@@ -97,7 +97,7 @@ extension CouponInfoView {
 // MARK: - Computed Properties
 extension CouponInfoView {
     private var selectedTemplate: CouponTemplate {
-        viewModel.couponCreationData.template ?? .purple
+        viewModel.couponCreationData.template ?? .orange
     }
     
     private var dateFormatter: DateFormatter {
@@ -254,7 +254,7 @@ extension CouponCardPreview {
     }
     
     private var backgroundImage: some View {
-        Image(template == .purple ? "Card1Back" : "Card2Back")
+        Image(template == .orange ? "Card1Back" : "Card2Back")
             .resizable()
             .aspectRatio(contentMode: .fill)
     }
@@ -290,7 +290,7 @@ extension CouponCardPreview {
     }
     
     private var giftBoxImage: some View {
-        Image(template == .purple ? "Card1Box" : "Card2Box")
+        Image(template == .orange ? "Card1Box" : "Card2Box")
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 64, height: 64)

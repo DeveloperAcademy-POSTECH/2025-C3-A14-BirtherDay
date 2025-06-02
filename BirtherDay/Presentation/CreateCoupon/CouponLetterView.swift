@@ -53,7 +53,7 @@ extension CouponLetterView: View {
 extension CouponLetterView {
     private var cardPreviewSection: some View {
         CouponCardPreview(
-            template: couponCreationData.template ?? .purple,
+            template: couponCreationData.template ?? .blue,
             senderName: couponCreationData.senderName ?? "보내는 사람",
             expireDate: couponCreationData.expireDate ?? Date(),
             couponTitle: couponCreationData.couponTitle ?? "쿠폰명을 입력해주세요",
