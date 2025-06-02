@@ -11,6 +11,7 @@ import SwiftUI
 enum BDAppPath: Hashable {
     case create(BDCreateCouponPath)
     case myCoupon(BDMyCouponPath)
+    case test(BDTestPath)
 }
 
 enum BDCreateCouponPath: Hashable, Equatable {
@@ -28,6 +29,10 @@ enum BDMyCouponPath: Hashable, Equatable {
     case interactionComplete
 }
 
+enum BDTestPath: Hashable, Equatable {
+    case test
+}
+
 class BDNavigationPathManager: ObservableObject {
     /// Path Stack
     @Published var appPaths: [BDAppPath] = []
@@ -40,6 +45,10 @@ class BDNavigationPathManager: ObservableObject {
     /// MyCoupon Path에서 뷰 전환
     func pushMyCouponPath(_ path: BDMyCouponPath) {
         appPaths.append(.myCoupon(path))
+    }
+    
+    func pushTestPath(_ path: BDTestPath) {
+        appPaths.append(.test(path))
     }
     
     /// 홈뷰로 가기

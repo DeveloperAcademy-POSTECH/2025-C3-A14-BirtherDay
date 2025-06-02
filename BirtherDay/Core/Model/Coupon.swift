@@ -8,7 +8,12 @@
 import Foundation
 import UIKit
 
-class Coupon: Identifiable {
+enum CouponTemplate: String, Codable {
+    case purple
+    case blue
+}
+
+struct Coupon: Identifiable {
     let id = UUID().uuidString
     let couponId: String
     var sender: UUID
@@ -22,60 +27,26 @@ class Coupon: Identifiable {
     var thumbnail: UIImage
     var isUsed: Bool
     var createdDate: Date
-    
-    init(
-        couponId: String,
-        sender: UUID,
-        receiver: UUID,
-        template: CouponTemplate,
-        couponTitle: String,
-        letter: String,
-        imageList: [String],
-        senderName: String,
-        expireDate: Date,
-        thumbnail: UIImage,
-        isUsed: Bool,
-        createdDate: Date
-    ) {
-        self.couponId = couponId
-        self.sender = sender
-        self.receiver = receiver
-        self.template = template
-        self.couponTitle = couponTitle
-        self.letter = letter
-        self.imageList = imageList
-        self.senderName = senderName
-        self.expireDate = expireDate
-        self.thumbnail = thumbnail
-        self.isUsed = isUsed
-        self.createdDate = createdDate
-    }
 }
 
-extension Coupon {
-    public static var stub01: Coupon = .init(couponId: "", sender: UUID(), receiver: UUID(), template: .blue, couponTitle: "", letter: "", imageList: [], senderName: "", expireDate: Date(), thumbnail: UIImage(), isUsed: false, createdDate: Date())
-}
-
-class User {
-    var id: String
-    
-    init(id: String) {
-        self.id = id
-        
-    }
-}
-
-struct InsertCouponRequest: Encodable {
-    var sender_id: String
-    var sender_name: String
+struct InsertCouponRequest: Codable {
+    var senderId: String
+    var senderName: String
     var template: CouponTemplate
     var title: String
     var letter: String
-    var image_list: [String]
+    var imageList: [String]
     var thumbnail: String
     var deadline: Date
-    var is_used: Bool
+    var isUsed: Bool
     
+    enum CodingKeys: String, CodingKey {
+        case senderId = "sender_id"
+        case senderName = "sender_name"
+        case imageList = "image_list"
+        case isUsed = "is_used"
+        case thumbnail, deadline, letter, title, template
+    }
 }
 
 extension InsertCouponRequest {
@@ -85,30 +56,38 @@ extension InsertCouponRequest {
         }
         
         return .init(
-            sender_id: userId.uuidString,
-            sender_name: "프레이가",
+            senderId: userId.uuidString,
+            senderName: "프레이가",
             template: .blue,
             title: "프레잉",
             letter: "사랑하는 프레이에게",
-            image_list: [],
+            imageList: [],
             thumbnail: "",
             deadline: Date(),
-            is_used: false
+            isUsed: false
         )
     }()
 }
 
-struct RetrieveCouponResponse: Decodable {
+struct RetrieveCouponResponse: Codable {
     var id: String
-    var sender_id: String
-    var sender_name: String
+    var senderId: String
+    var senderName: String
     var template: CouponTemplate
     var title: String
     var letter: String
-    var image_list: [String]
+    var imageList: [String]
     var thumbnail: String
     var deadline: Date
-    var is_used: Bool
-    var created_at: Date
+    var isUsed: Bool
+    var createdAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case senderId = "sender_id"
+        case senderName = "sender_name"
+        case imageList = "image_list"
+        case isUsed = "is_used"
+        case createdAt = "created_at"
+        case template, id, title, letter, thumbnail, deadline
+    }
 }
-
