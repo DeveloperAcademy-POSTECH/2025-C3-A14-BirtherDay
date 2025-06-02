@@ -15,6 +15,7 @@ struct HomeView: View {
             VStack {
                 HomeFirstView()
                 HomeSecondView()
+                HomeThirdView()
             }
             .navigationDestination(for: BDAppPath.self) { path in
                 switch path {
@@ -41,6 +42,11 @@ struct HomeView: View {
                         CouponInteractionView()
                     case .interactionComplete:
                         InteractionCompleteView()
+                    }
+                case .test(let testPath):
+                    switch testPath {
+                    case .test:
+                        TestView()
                     }
                 }
             }
@@ -71,6 +77,19 @@ struct HomeSecondView: View {
             navPathManager.pushMyCouponPath(.couponInventory)
         }) {
             Text("Move To MyCoupon")
+        }
+    }
+}
+
+///  테스트 뷰
+struct HomeThirdView: View {
+    @EnvironmentObject var navPathManager: BDNavigationPathManager
+    
+    var body: some View {
+        Button(action: {
+            navPathManager.pushTestPath(.test)
+        }) {
+            Text("Move To TestView")
         }
     }
 }
