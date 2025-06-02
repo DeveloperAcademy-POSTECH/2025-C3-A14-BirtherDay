@@ -81,5 +81,5 @@ struct CouponDetailView: View {
 }
 
 #Preview {
-    CouponDetailView(viewModel: CouponDetailViewModel(coupon: .stub01))
+//    CouponDetailView(viewModel: CouponDetailViewModel(coupon: .stub01))
 }
