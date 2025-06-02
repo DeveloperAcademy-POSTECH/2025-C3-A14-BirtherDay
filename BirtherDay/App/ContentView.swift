@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("isOnboarded") private var isOnboarded: Bool = true
+    @StateObject private var bdNavigationManager = BDNavigationPathManager()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if !isOnboarded {
+                OnboardingView()
+            } else {
+                HomeView()
+                    .environmentObject(bdNavigationManager)
+            }
         }
-        .padding()
     }
-}
-
-#Preview {
-    ContentView()
 }
