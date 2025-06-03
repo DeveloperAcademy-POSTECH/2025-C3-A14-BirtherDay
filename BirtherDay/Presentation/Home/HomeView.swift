@@ -29,7 +29,7 @@ struct HomeView: View {
                     case .couponLetter:
                         CouponLetterView(viewModel: couponViewModel)
                     case .couponPicture:
-                        CouponPhotoView()
+                        CouponPhotoView(viewModel: couponViewModel)
                     case .couponComplete:
                         CouponCompleteView()
                     }
