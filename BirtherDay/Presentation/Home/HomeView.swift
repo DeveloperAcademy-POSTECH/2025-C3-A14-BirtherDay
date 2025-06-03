@@ -12,17 +12,18 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @StateObject private var couponViewModel = CreateCouponViewModel()
+    var homeViewModel = HomeViewModel()
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
             ScrollView {
                 VStack(spacing: 16) {
-                    HomeHeaderView(text: "자~ 로고들어갑니다")
-                    CreateCouponCTAView()
-                    CouponShortcutView()
-                    HomeDivider()
-                    HomeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
-                    UnusedCouponListView()
+                    homeHeaderView(text: "자~ 로고들어갑니다")
+                    createCouponCTAView()
+                    couponShortcutView()
+                    homeDivider()
+                    homeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
+                    unusedCouponListView()
                 }
                 .navigationDestination(for: BDAppPath.self) { path in
                     switch path {
@@ -63,9 +64,8 @@ struct HomeView: View {
     }
     
     // MARK: - Functions
-    
     ///  쿠폰 만들러 가기
-    func CreateCouponCTAView() -> some View {
+    func createCouponCTAView() -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color.mainViolet100)
@@ -95,8 +95,8 @@ struct HomeView: View {
         .padding(.horizontal, 16)
     }
     
-    /// 보관함가기 형제
-    func CouponShortcutView() -> some View {
+    /// 보관함 가기 형제
+    func couponShortcutView() -> some View {
         VStack(spacing: 0) {
             HStack {
                 Text("주고 받은 쿠폰을 확인해보세요!")
@@ -107,15 +107,15 @@ struct HomeView: View {
             .padding(.top, 8)
             
             HStack(spacing: 0) {
-                CouponShortcutCardView("선물 받은")
-                CouponShortcutCardView("내가 보낸")
-                    
+                couponShortcutCardView("선물 받은")
+                couponShortcutCardView("내가 보낸")
+                
             }
         }
     }
     
     /// 개별 보관함 가기
-    func CouponShortcutCardView(_ tab: String) -> some View {
+    func couponShortcutCardView(_ tab: String) -> some View {
         Button(action: {
             navPathManager.pushCreatePath(.selectTemplate)
         }) {
@@ -147,12 +147,12 @@ struct HomeView: View {
     }
     
     /// 구분선
-    func HomeDivider() -> some View {
+    func homeDivider() -> some View {
         Divider().frame(height: 8).overlay(Color.gray100)
     }
     
     /// 헤더
-    func HomeHeaderView(text: String) -> some View {
+    func homeHeaderView(text: String) -> some View {
         VStack(spacing: 16) {
             HStack {
                 Text(text)
@@ -166,12 +166,16 @@ struct HomeView: View {
     }
     
     /// 미사용 쿠폰 리스트
-    func UnusedCouponListView() -> some View {
-        // TODO: - Hstack 리스트 구현
-        Rectangle()
-            .foregroundStyle(Color.mainViolet100)
+    func unusedCouponListView() -> some View {
+        
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .center, spacing: 8) {
+                ForEach(0..<5) {_ in
+                    BDMiniCoupon()
+                }
+            }
             .padding(.horizontal, 16)
-            .frame(minHeight: 270)
+        }
     }
 }
 
