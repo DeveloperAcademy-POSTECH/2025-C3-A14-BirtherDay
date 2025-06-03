@@ -16,13 +16,13 @@ struct CouponDetailView: View {
         ScrollView {
             VStack(spacing: 0) {
                 mainCouponView()
-                dashedLineView(color: templateType.dashLineColor)
+                dashedLineView(color: templateType.dashLineColor, color2: templateType.basicColor)
                 subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
-                dashedLineView(color: Color.gray200)
+                dashedLineView(color: Color.gray200, color2: Color.white)
                 imageListView()
-                dashedLineView(color: Color.gray200)
+                dashedLineView(color: Color.gray200, color2: Color.white)
                 subtitleView(subtitle: "💌 함께 도착한 편지를 읽어보세요!")
-                dashedLineView(color: Color.gray200)
+                dashedLineView(color: Color.gray200, color2: Color.white)
                 letterView()
             }
             .padding(.horizontal, 27)
@@ -33,20 +33,31 @@ struct CouponDetailView: View {
     
     // 메인 쿠폰 뷰
     func mainCouponView()-> some View {
-        BDTemplateView(type: templateType)    // TODO: 모델 연결
+        BDTemplateView(type: templateType, isShownSubtitleView: false)    // TODO: 모델 연결
     }
     
     // 점선 뷰
-    func dashedLineView(color: Color)-> some View {
-        Path { path in
-            path.move(to: CGPoint(x: 30, y: 0)) // TODO: create radius & padding property
-            path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 84, y: 0)) // 27*2 padding + 30 radius 고려
+    func dashedLineView(color: Color, color2: Color)-> some View {
+        ZStack {
+            // 쿠폰 경계에 있는 외곽선 지우는 선
+            Path { path in
+                path.move(to: CGPoint(x: 30, y: 0)) // TODO: create radius & padding property
+                path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 84, y: 0)) // 27*2 padding + 30 radius 고려
+            }
+            .stroke(color2)
+            .frame(height: 1)
+            
+            // 점선
+            Path { path in
+                path.move(to: CGPoint(x: 30, y: 0)) // TODO: create radius & padding property
+                path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 84, y: 0)) // 27*2 padding + 30 radius 고려
+            }
+            .stroke(
+                color,
+                style: StrokeStyle(lineWidth: 2, dash: [10])
+            )
+            .frame(height: 1)
         }
-        .stroke(
-            color,
-            style: StrokeStyle(lineWidth: 2, dash: [10])
-        )
-        .frame(height: 1)
     }
     
     // 서브 타이틀 뷰
@@ -81,5 +92,5 @@ struct CouponDetailView: View {
 }
 
 #Preview {
-//    CouponDetailView(viewModel: CouponDetailViewModel(coupon: .stub01))
+    CouponDetailView(viewModel: CouponDetailViewModel())
 }
