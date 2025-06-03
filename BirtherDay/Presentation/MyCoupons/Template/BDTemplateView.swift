@@ -12,7 +12,8 @@ struct BDTemplateView: View {
     let type: CouponTemplate
     let sender: String = "주니"
     let date: String = "2025.06.01"
-    var isShownSubtitleView = true      // 하단 쿠폰을 보여줄지 정하는 프로퍼티
+    
+    var isShownSubtitleView = true           /// 하단 쿠폰을 보여줄지 정하는 프로퍼티
     var title = "나랑 저녁에 애슐리 먹으러 가자!"                      // 쿠폰 제목
     var subtitle = "쿠폰을 사용 중이에요👏"
     
@@ -20,7 +21,7 @@ struct BDTemplateView: View {
         VStack(spacing: 0) {
             mainCouponView()
             if isShownSubtitleView {
-                dashedLineView(color: type.dashLineColor, color2: type.basicColor)
+                dashedLineView(basicColor: type.basicColor, dashLineColor: type.dashLineColor)
                 subtitleView(subtitle: subtitle)
             }
         }
@@ -106,15 +107,15 @@ struct BDTemplateView: View {
             .frame(maxWidth: .infinity, alignment: .center)
     }
     
-    /// 점선 뷰
-    func dashedLineView(color: Color, color2: Color)-> some View {
+    /// 점선 뷰 - basicColor: 쿠폰 배경색, dashLineColor: 점선색
+    func dashedLineView(basicColor: Color, dashLineColor: Color)-> some View {
         ZStack {
             // 쿠폰 경계에 있는 외곽선 지우는 선
             Path { path in
                 path.move(to: CGPoint(x: 30, y: 0)) // TODO: create radius & padding property
                 path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 30, y: 0)) // 27*2 padding + 30 radius 고려
             }
-            .stroke(color2)
+            .stroke(basicColor)
             .frame(height: 1)
             
             // 점선
@@ -123,7 +124,7 @@ struct BDTemplateView: View {
                 path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 30, y: 0)) // 27*2 padding + 30 radius 고려
             }
             .stroke(
-                color,
+                dashLineColor,
                 style: StrokeStyle(lineWidth: 2, dash: [10])
             )
             .frame(height: 1)
