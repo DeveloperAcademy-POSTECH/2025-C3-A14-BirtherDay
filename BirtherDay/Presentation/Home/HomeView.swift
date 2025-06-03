@@ -16,9 +16,9 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 16) {
-                    homeHeaderView(text: "자~ 로고들어갑니다")
+                    homeHeaderView(text: "자~ 로고들어갑니다 ^^")
                     createCouponCTAView()
                     couponShortcutView()
                     homeDivider()
@@ -167,18 +167,18 @@ struct HomeView: View {
     
     /// 미사용 쿠폰 리스트
     func unusedCouponListView() -> some View {
-        
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .center, spacing: 8) {
-                ForEach(0..<5) {_ in
-                    BDMiniCoupon()
+                
+                // TODO: - 일정 갯수 이상 나오면, 더보기 카드(보관함)
+                ForEach(homeViewModel.mockCoupons) { coupon in
+                    BDMiniCoupon(coupon: coupon)
                 }
             }
             .padding(.horizontal, 16)
         }
     }
 }
-
 
 #Preview {
     HomeView()

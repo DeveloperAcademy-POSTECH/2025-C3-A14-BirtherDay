@@ -8,29 +8,31 @@
 import SwiftUI
 
 struct BDMiniCoupon: View {
+    let coupon: Coupon
+    
     var body: some View {
         VStack(spacing: 0) {
             couponMainView()
             couponInfoView()
         }
+        .foregroundStyle(coupon.template.miniCouponBackgroundColor)
     }
     
     // MARK: - Functions
     /// 메인 쿠폰
     func couponMainView()-> some View {
-        let expireDay: String = "999"
-        
         return ZStack {
             RoundedRectangle(cornerRadius: 15)
-                .fill(Color.mainViolet100)
             
             VStack(alignment: .center, spacing: 0) {
                 HStack {
+                    
                     Spacer()
                     
-                    Text("D - \(expireDay)")
-                    // TODO: - .r3로 수줭
-                        .font(.r1)
+                    let daysLeft = Calendar.current.dateComponents([.day], from: Date(), to: coupon.expireDate).day ?? 0
+                    
+                    Text("D - \(max(0, daysLeft))")
+                        .font(.r4)
                         .foregroundStyle(Color.mainPrimary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -46,14 +48,11 @@ struct BDMiniCoupon: View {
                 
                 dashedLineView(color: Color.mainViolet300)
             }
-            
-            Image("Card1Box")
+            coupon.template.miniCouponImage
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 90, height: 90)
                 .clipped()
-                //.padding(.horizontal, 35)
-
         }
         .frame(width: 165, height: 157)
     }
@@ -80,25 +79,20 @@ struct BDMiniCoupon: View {
                 style: StrokeStyle(lineWidth: 2, dash: [8, 6])
             )
             .frame(height: 1)
-            
-            
         }
     }
     
     /// 쿠폰 정보
     func couponInfoView()-> some View {
-        let couponTitle: String = "애슐리 디너\n1회 이용권"
-        let sender: String = "주니"
         
         return ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 15)
-                .fill(Color.mainViolet100)
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(couponTitle)")
+                Text("\(coupon.couponTitle)")
                     .font(.sb1)
                     .foregroundStyle(Color.textTitle)
                 
-                Text("From. \(sender)")
+                Text("From. \(coupon.senderName)")
                     .font(.r1)
                     .foregroundStyle(Color.mainPrimary)
             }
@@ -110,5 +104,18 @@ struct BDMiniCoupon: View {
 
 // (traits: .sizeThatFitsLayout)
 #Preview {
-    BDMiniCoupon()
+    BDMiniCoupon(coupon: Coupon(
+        couponId: "sample-id",
+        sender: UUID(),
+        receiver: nil,
+        template: .blue,
+        couponTitle: "애슐리 디너\n1회 이용권",
+        letter: "축하해!",
+        imageList: [],
+        senderName: "주니",
+        expireDate: Date().addingTimeInterval(86400 * 60),
+        thumbnail: UIImage(),
+        isUsed: false,
+        createdDate: Date()
+    ))
 }
