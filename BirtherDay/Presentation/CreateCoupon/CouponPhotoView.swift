@@ -18,7 +18,11 @@ struct CouponPhotoView: View {
             Spacer()
                 .frame(height: 88)
             
-            photoPickerView()
+            if viewModel.selectedImages.isEmpty {
+                photoPickerView()
+            } else {
+                photoCarouselView()
+            }
             
             Spacer()
             
@@ -65,8 +69,39 @@ struct CouponPhotoView: View {
             }
         }
     }
-}
+    
+    func photoCarouselView() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 10) {
+                ForEach(Array(viewModel.selectedImages.enumerated()), id: \.element) { index, image in
+                    selectedImageView(index: index, image: image)
+                }
+            }
+            .padding(.horizontal)
+        }
+    }
+    
+    func selectedImageView(index: Int, image: UIImage) -> some View {
+        ZStack(alignment: .topTrailing) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 100, height: 100)
+                .clipped()
+                .cornerRadius(10)
 
+            Button(action: {
+                viewModel.deletePhoto(index: index)
+            }) {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundColor(.white)
+                    .background(Color.black.opacity(0.5))
+                    .clipShape(Circle())
+            }
+            .offset(x: -5, y: 5)
+        }
+    }
+}
 #Preview {
     CouponPhotoView(viewModel: CreateCouponViewModel())
 }

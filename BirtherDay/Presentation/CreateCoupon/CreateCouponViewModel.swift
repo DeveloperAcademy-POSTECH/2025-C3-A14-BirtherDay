@@ -90,6 +90,10 @@ class CreateCouponViewModel: ObservableObject {
         }
     }
     
+    func deletePhoto(index: Int) {
+        selectedImages.remove(at: index)
+    }
+    
     /// 쿠폰 생성 데이터 초기화
     func resetCouponCreation() {
         couponCreationData = CouponCreationData()
