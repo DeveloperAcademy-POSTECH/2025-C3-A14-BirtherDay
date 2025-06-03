@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CouponInteractionView: View {
     
-    @State var distance: Float = 0.58    // TODO: - distance 0.00m 연결
+    @State var distance: Float = 1.2    // TODO: - distance 0.00m 연결
     var minimuDetectedDistance: Float = 2.0
     var screenHeight: CGFloat = UIScreen.main.bounds.height
     
@@ -57,7 +57,7 @@ struct CouponInteractionView: View {
     // methods
     /// 측정된 distance를 기반으로 배경색의 높이를 구하는 함수
     func calDistanceToScreenHeight() -> CGFloat {
-        CGFloat(distance / minimuDetectedDistance) * screenHeight
+        screenHeight - CGFloat(distance / minimuDetectedDistance) * screenHeight
     }
 }
 
