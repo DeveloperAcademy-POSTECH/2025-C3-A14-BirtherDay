@@ -37,8 +37,8 @@ struct KeyboardAwareViewModifier: ViewModifier {
                 VStack {
                     if isKeyboardVisible {
                         VStack(spacing: 0) {
-                            Rectangle()
-                                .fill(Color.white.opacity(0.8))
+                            Rectangle() // 툴바 설정
+                                .fill(Color(red: 0.96, green: 0.95, blue: 1)) // 배경색과 동일하게 설정
                                 .frame(height: 100)
                             
                             Rectangle()

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CouponTemplateView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-//    var body: some View {}
     @ObservedObject var viewModel: CreateCouponViewModel
     @State private var selectedTemplate: CouponTemplate = .orange
         
@@ -17,23 +16,24 @@ struct CouponTemplateView: View {
         var body: some View {
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: 60)
+                    .frame(height: 12)
                 
                 titleSection // 원하는 쿠폰 디자인을 선택해 주세요 뷰
                 
                 Spacer()
-                    .frame(height: 80)
+                    .frame(height: 32)
                 
                 templateImageSection // 템플릿 이미지 뷰
                 
                 Spacer()
-                    .frame(height: 120)
+                    .frame(height: 34)
                 
                 TemplateSelectionButtons( // 템플릿 선택 버튼: 노랑 or 파랑 뷰
                     selectedTemplate: $selectedTemplate
                 )
                 
                 Spacer()
+//                    .frame(height: 41)
                 
                 nextButton // 다음 버튼
             }
@@ -52,9 +52,6 @@ struct CouponTemplateView: View {
                             .font(.system(size: 18, weight: .medium))
                     }
                 }
-//                .buttonStyle(BDButtonStyle(buttonType: .activate))
-//                .padding(.horizontal, 20)
-//                .padding(.bottom, 10)
             }
             .onAppear {
                 loadExistingTemplate()
@@ -67,10 +64,9 @@ struct CouponTemplateView: View {
 extension CouponTemplateView {
     private var titleSection: some View {
         Text("원하는 쿠폰 디자인을\n선택해주세요")
-            .font(.system(size: 20, weight: .bold))
+            .font(.sb4)
             .multilineTextAlignment(.center)
-            .foregroundColor(.black)
-            .lineSpacing(4)
+            .lineSpacing(8)
     }
     
     private var templateImageSection: some View {
@@ -79,12 +75,12 @@ extension CouponTemplateView {
                 Image("cardTemplate1")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 200, maxHeight: 200)
+                    .frame(maxHeight: 387)
             } else {
                 Image("cardTemplate2")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 200, maxHeight: 200)
+                    .frame(maxHeight: 387)
             }
         }
     }
@@ -117,7 +113,7 @@ struct TemplateSelectionButtons: View {
     @Binding var selectedTemplate: CouponTemplate
     
     var body: some View {
-        HStack(spacing: 24) {
+        HStack(spacing: 30) {
             TemplateButton(
                 color: Color(red: 1.0, green: 0.9, blue: 0.5),
                 isSelected: selectedTemplate == .orange,
@@ -148,9 +144,9 @@ struct TemplateButton: View {
                     Circle()
                         .stroke(
                             isSelected ?
-                            Color(red: 0.7, green: 0.6, blue: 0.9) :
+                            Color.mainPrimary :
                             Color.clear,
-                            lineWidth: 3
+                            lineWidth: 2
                         )
                 )
         }
