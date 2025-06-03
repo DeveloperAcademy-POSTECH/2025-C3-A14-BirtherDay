@@ -9,13 +9,16 @@ import SwiftUI
 
 struct CouponInteractionView: View {
     
-    @State var distance: Float = 0.88    // TODO: - distance 0.00m 연결
+    @State var distance: Float = 0.58    // TODO: - distance 0.00m 연결
+    var minimuDetectedDistance: Float = 2.0
+    var screenHeight: CGFloat = UIScreen.main.bounds.height
     
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
                 Color.bgDark.ignoresSafeArea()
                 Color.mainPrimary.ignoresSafeArea()
+                    .frame(height: calDistanceToScreenHeight()) // distance에 따른 높이 조절
             }
             VStack(spacing: 30) {   // TODO: - 쿠폰 영역에 따른 dashed line 크기 수정하기
                 VStack {
@@ -45,9 +48,16 @@ struct CouponInteractionView: View {
                 
             
             Text("\(distance, specifier: "%.2f")m")
-                .foregroundStyle(distance == 0.0 ? Color.mainPrimary : Color.bgLight)
+                .foregroundStyle(distance == 2.0 ? Color.mainPrimary : Color.bgLight)
         }
         .font(.sb5)
+    }
+    
+    
+    // methods
+    /// 측정된 distance를 기반으로 배경색의 높이를 구하는 함수
+    func calDistanceToScreenHeight() -> CGFloat {
+        CGFloat(distance / minimuDetectedDistance) * screenHeight
     }
 }
 
