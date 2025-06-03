@@ -11,6 +11,7 @@ struct TestView: View {
     
     private let authService: AuthService = AuthService()
     private let couponService: CouponService = CouponService()
+    private let fileService: FileService = FileService()
     
     var body: some View {
         VStack {
@@ -87,6 +88,27 @@ struct TestView: View {
                         print("쿠폰 사용 후")
                     } catch {
                         print("쿠폰 사용 등록 에러")
+                        print(error)
+                    }
+                }
+            }
+            Button("이미지 업로드 테스트") {
+                Task {
+                    do {
+                        print("이미지 업로드 전")
+                        
+                        guard let image = UIImage(systemName: "star"),
+                              let imageData = image.jpegData(compressionQuality: 0.8) else {
+                            print("이미지 변환 실패")
+                            return
+                        }
+                        
+                        let filePath = try await fileService.uploadImage(imageData,to: .couponThumbnail)
+                        print("이미지 업로드 성공: \(filePath)")
+                        
+                        print("이미지 업로드 후")
+                    } catch {
+                        print("이미지 업로드 실패")
                         print(error)
                     }
                 }
