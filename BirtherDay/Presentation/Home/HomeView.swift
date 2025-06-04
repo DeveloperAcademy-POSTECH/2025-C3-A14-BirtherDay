@@ -26,7 +26,7 @@ struct HomeView: View {
                     unusedCouponListView()
                 }
                 .navigationDestination(for: BDAppPath.self) { path in
-                    NavigationRoutingView(
+                    BDNavigationRoutingView(
                         destination: path,
                         createCouponViewModel: couponViewModel,
                         couponDetailViewModel: CouponDetailViewModel()

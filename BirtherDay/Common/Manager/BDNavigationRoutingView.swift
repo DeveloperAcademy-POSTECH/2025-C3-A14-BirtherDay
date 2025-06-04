@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NavigationRoutingView: View {
+struct BDNavigationRoutingView: View {
     @State var destination: BDAppPath
     
     // 뷰모델 주입
