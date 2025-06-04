@@ -6,6 +6,8 @@
 	<array>
 		<string>_birtherday._tcp</string>
 	</array>
+	<key>KAKAO_NATIVE_APP_KEY</key>
+	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>SUPABASE_CAPTCHA</key>
 	<string>$(SUPABASE_CAPTCHA)</string>
 	<key>SUPABASE_DOMAIN</key>
