@@ -46,7 +46,7 @@ struct HomeView: View {
                             MyCouponView(couponType: $couponType)
                         case .couponDetail:
                             Text("CouponDetailView")
-                            CouponDetailView(viewModel: CouponDetailViewModel())
+                            CouponDetailView()
                         case .interaction:
                             CouponInteractionView()
                         case .interactionComplete:

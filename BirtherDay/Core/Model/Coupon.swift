@@ -11,7 +11,7 @@ import UIKit
 struct Coupon: Identifiable {
     let id = UUID().uuidString
     let couponId: String
-    var sender: UUID
+    var sender: UUID?
     var receiver: UUID?
     var template: CouponTemplate
     var couponTitle: String
@@ -19,7 +19,7 @@ struct Coupon: Identifiable {
     var imageList: [String]
     var senderName: String
     var expireDate: Date
-    var thumbnail: UIImage
+    var thumbnail: UIImage?
     var isUsed: Bool
     var createdDate: Date
 }

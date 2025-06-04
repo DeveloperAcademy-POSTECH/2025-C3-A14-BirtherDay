@@ -71,7 +71,7 @@ extension CouponTemplateView {
     
     private var templateImageSection: some View {
         Group {
-            if selectedTemplate == .blue {
+            if selectedTemplate == .orange {
                 Image("cardTemplate1")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

@@ -9,30 +9,30 @@ import SwiftUI
 import Kingfisher
 
 struct CouponCompleteView: View {
+    @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     
+    var completedCouponData: Coupon? {
+        viewModel.buildCoupon()
+    }
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                ForEach(viewModel.couponData.uploadedImagePaths, id: \.self) { path in
-                    if let url = URL(string: path) {
-                        KFImage.url(url)
-                            .placeholder {
-                                Image("placeholderImage")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 150)
-                            }
-                            .fade(duration: 0.25)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-                }
+        VStack {
+            if let completedCouponData = completedCouponData {
+                DetailedCoupon(couponData: completedCouponData)
+                    .padding(.top, 16)
+            } else {
+                Text("쿠폰 정보가 불완전합니다.")
+                    .foregroundColor(.red)
+                    .padding()
             }
-            .padding()
         }
+        .keyboardAware(
+            navigationTitle: "쿠폰 생성 완료",
+            onBackButtonTapped: {
+                navPathManager.popPath()
+            }
+        )
     }
 }
 

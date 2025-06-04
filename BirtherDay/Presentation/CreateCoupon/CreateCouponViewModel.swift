@@ -42,7 +42,7 @@ struct CouponData {
 
 class CreateCouponViewModel: ObservableObject {
     @Published var couponData = CouponData()
-
+    
     private let fileService: FileService
     
     init(fileService: FileService = FileService()) {
@@ -96,7 +96,7 @@ class CreateCouponViewModel: ObservableObject {
     }
     
     /// 최종 쿠폰 객체 생성
-    func buildCoupon(senderId: UUID) -> Coupon? {
+    func buildCoupon() -> Coupon? {
         guard let template = couponData.template,
               let couponTitle = couponData.couponTitle,
               let senderName = couponData.senderName,
@@ -108,7 +108,7 @@ class CreateCouponViewModel: ObservableObject {
 
         return Coupon(
             couponId: UUID().uuidString,
-            sender: senderId,
+            sender: nil,
             receiver: nil,
             template: template,
             couponTitle: couponTitle,
@@ -116,10 +116,9 @@ class CreateCouponViewModel: ObservableObject {
             imageList: couponData.uploadedImagePaths,
             senderName: senderName,
             expireDate: expireDate,
-            thumbnail: UIImage(),
+            thumbnail: nil,
             isUsed: false,
             createdDate: Date()
         )
     }
-
 }
