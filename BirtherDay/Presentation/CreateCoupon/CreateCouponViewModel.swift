@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import PhotosUI
 
 // 쿠폰 생성 과정의 모든 데이터를 관리하는 통합 구조체
 struct CouponCreationData {
@@ -23,7 +24,10 @@ struct CouponCreationData {
     var letterContent: String?
     
     // 4단계: 사진 선택
-    var selectedPhoto: UIImage?
+    var couponTemplate: CouponTemplate?
+    var selectedItems: [PhotosPickerItem] = []
+    var selectedImages: [UIImage] = []
+    var uploadedImagePaths: [String] = []
     
     init() {
         // 기본값들 설정
@@ -34,6 +38,12 @@ struct CouponCreationData {
 class CreateCouponViewModel: ObservableObject {
     // 쿠폰 생성 과정의 모든 데이터를 하나로 관리
     @Published var couponCreationData = CouponCreationData()
+    
+    private let fileService: FileService
+    
+    init(fileService: FileService = FileService()) {
+        self.fileService = fileService
+    }
     
     // MARK: - 데이터 업데이트 메서드
     
@@ -55,8 +65,34 @@ class CreateCouponViewModel: ObservableObject {
     }
     
     /// 사진 선택
-    func selectPhoto(_ image: UIImage) {
-        couponCreationData.selectedPhoto = image
+    @MainActor
+    func convertItems(oldItems: [PhotosPickerItem], newItems: [PhotosPickerItem]) {
+        Task {
+            couponCreationData.selectedItems = []
+            var validItems = [Data]()
+            
+            for item in newItems {
+                do {
+                    if let data = try await item.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: data) {
+                        couponCreationData.selectedImages.append(uiImage)
+                        validItems.append(data)
+                    }
+                } catch {
+                    print("이미지 변환 실패: \(error.localizedDescription)")
+                }
+            }
+            
+            for item in validItems {
+                let fullPath = try await fileService.uploadImage(item, to: .couponDetail)
+                couponCreationData.uploadedImagePaths.append(fullPath)
+                print("업로드된 이미지 경로: \(fullPath)")
+            }
+        }
+    }
+    
+    func deletePhoto(index: Int) {
+        couponCreationData.selectedImages.remove(at: index)
     }
     
     /// 쿠폰 생성 데이터 초기화
