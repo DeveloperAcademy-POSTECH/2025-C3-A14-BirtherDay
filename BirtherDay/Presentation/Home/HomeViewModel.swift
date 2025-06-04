@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+//@Observable
 class HomeViewModel: ObservableObject {
     @Published var mockCoupons: [Coupon] = [
         Coupon(

@@ -18,7 +18,7 @@ struct BDMiniCoupon: View {
         .foregroundStyle(coupon.template.miniCouponBackgroundColor)
     }
     
-    // MARK: - Functions
+    // MARK: - Views
     /// 메인 쿠폰
     func couponMainView()-> some View {
         return ZStack {
@@ -36,7 +36,9 @@ struct BDMiniCoupon: View {
                         .foregroundStyle(Color.mainPrimary)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .cornerRadius(100)
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 100)
+                        )
                         .overlay(
                             RoundedRectangle(cornerRadius: 100)
                                 .stroke(Color.mainPrimary, lineWidth: 0.5)

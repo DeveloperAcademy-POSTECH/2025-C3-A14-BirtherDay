@@ -5,22 +5,21 @@
 //  Created by Rama on 5/28/25.
 //
 
-/// CouponTemplateView -> CouponInfoView -> CouponLetterView
-
 import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @StateObject private var couponViewModel = CreateCouponViewModel()
-    var homeViewModel = HomeViewModel()
+    private var homeViewModel = HomeViewModel()
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 VStack(spacing: 16) {
                     homeHeaderView(text: "자~ 로고들어갑니다 ^^")
-                    createCouponCTAView()
-                    couponShortcutView()
+                    createCouponCTACardView()
+                    homeHeaderView(text: "주고 받은 쿠폰을 확인해보세요!")
+                    couponBoxSelectorView()
                     homeDivider()
                     homeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
                     unusedCouponListView()
@@ -59,13 +58,13 @@ struct HomeView: View {
                         }
                     }
                 }
-            }
+            }.scrollIndicators(.hidden)
         }
     }
     
-    // MARK: - Functions
+    // MARK: - Views
     ///  쿠폰 만들러 가기
-    func createCouponCTAView() -> some View {
+    func createCouponCTACardView() -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color.mainViolet100)
@@ -96,54 +95,34 @@ struct HomeView: View {
     }
     
     /// 보관함 가기 형제
-    func couponShortcutView() -> some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text("주고 받은 쿠폰을 확인해보세요!")
-                    .font(.sb2)
-                Spacer()
-            }
-            .padding(.leading, 16)
-            .padding(.top, 8)
-            
-            HStack(spacing: 0) {
-                couponShortcutCardView("선물 받은")
-                couponShortcutCardView("내가 보낸")
-                
-            }
+    func couponBoxSelectorView() -> some View {
+        HStack(spacing: 16) {
+            couponBoxCardView("선물 받은")
+            couponBoxCardView("내가 보낸")
         }
     }
     
     /// 개별 보관함 가기
-    func couponShortcutCardView(_ tab: String) -> some View {
+    func couponBoxCardView(_ tab: String) -> some View {
         Button(action: {
             navPathManager.pushCreatePath(.selectTemplate)
         }) {
             HStack(alignment: .center, spacing: 8) {
-                if tab == "선물 받은" {
-                    Rectangle()
-                        .frame(width: 38, height: 38)
-                    Text("선물 받은\n쿠폰")
-                        .multilineTextAlignment(.leading)
-                        .font(.sb1)
-                        .foregroundStyle(Color.textTitle)
-                } else {
-                    Rectangle()
-                        .frame(width: 38, height: 38)
-                    Text("내가 보낸\n쿠폰")
-                        .multilineTextAlignment(.leading)
-                        .font(.sb1)
-                        .foregroundStyle(Color.textTitle)
-                }
+                Rectangle()
+                    .frame(width: 38, height: 38)
+                Text(tab == "선물 받은" ? "선물 받은\n쿠폰" : "내가 보낸\n쿠폰")
+                    .multilineTextAlignment(.leading)
+                    .font(.sb1)
+                    .foregroundStyle(Color.textTitle)
             }
             .padding(.trailing, 8)
             .padding(20)
         }
         .background(Color.gray100)
-        .cornerRadius(20)
-        .padding(8)
-        .padding(.top, 8)
-        .padding(.bottom, -2)
+        .clipShape(
+            RoundedRectangle(cornerRadius: 20)
+        )
+        .padding(.bottom, 6)
     }
     
     /// 구분선
@@ -167,7 +146,7 @@ struct HomeView: View {
     
     /// 미사용 쿠폰 리스트
     func unusedCouponListView() -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        ScrollView(.horizontal) {
             HStack(alignment: .center, spacing: 8) {
                 
                 // TODO: - 일정 갯수 이상 나오면, 더보기 카드(보관함)
@@ -176,7 +155,7 @@ struct HomeView: View {
                 }
             }
             .padding(.horizontal, 16)
-        }
+        }.scrollIndicators(.hidden)
     }
 }
 
