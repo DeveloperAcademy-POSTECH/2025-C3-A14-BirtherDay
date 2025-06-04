@@ -9,16 +9,17 @@ import PhotosUI
 import SwiftUI
 
 struct CouponPhotoView: View {
+    @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     
     var body: some View {
         VStack(spacing: 0) {
             photoTitleView()
+                .padding(.top, 12)
             
             Spacer()
-                .frame(height: 88)
             
-            if viewModel.selectedImages.isEmpty {
+            if viewModel.couponCreationData.selectedImages.isEmpty {
                 photoPickerView()
             } else {
                 photoCarouselView()
@@ -26,21 +27,26 @@ struct CouponPhotoView: View {
             
             Spacer()
             
-            Text("확인") //TODO: 컴포넌트 분리되면 버튼 추가
+            nextButtonView()
+                .padding(.bottom, 20)
         }
-        .padding(.top, 12)
-        .padding(.bottom, 20)
+        .keyboardAware(
+            navigationTitle: "쿠폰 멘트 작성하기",
+            onBackButtonTapped: {
+                navPathManager.popPath()
+            }
+        )
     }
     
-    func photoTitleView() -> some View{
+    func photoTitleView() -> some View {
         Text("함께 추억할 사진이 있다면\n첨부해주세요")
             .font(.sb4)
             .foregroundStyle(Color.textTitle)
             .multilineTextAlignment(.center)
-    }
+        }
     
     func photoPickerView() -> some View {
-        PhotosPicker(selection: $viewModel.selectedItems,
+        PhotosPicker(selection: $viewModel.couponCreationData.selectedItems,
                      maxSelectionCount: 5,
                      matching: .images) {
             ZStack {
@@ -64,7 +70,7 @@ struct CouponPhotoView: View {
                         .multilineTextAlignment(.center)
                 }
             }
-            .onChange(of: viewModel.selectedItems) { oldValue, newValue in
+            .onChange(of: viewModel.couponCreationData.selectedItems) { oldValue, newValue in
                 viewModel.convertItems(oldItems: oldValue, newItems: newValue)
             }
         }
@@ -73,7 +79,7 @@ struct CouponPhotoView: View {
     func photoCarouselView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
-                ForEach(Array(viewModel.selectedImages.enumerated()), id: \.element) { index, image in
+                ForEach(Array(viewModel.couponCreationData.selectedImages.enumerated()), id: \.element) { index, image in
                     selectedImageView(index: index, image: image)
                 }
             }
@@ -86,7 +92,7 @@ struct CouponPhotoView: View {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFill()
-                .frame(width: 100, height: 100)
+                .frame(width: 300, height: 300)
                 .clipped()
                 .cornerRadius(10)
 
@@ -100,6 +106,18 @@ struct CouponPhotoView: View {
             }
             .offset(x: -5, y: 5)
         }
+    }
+    
+    func nextButtonView() -> some View {
+        Button(action: {
+            navPathManager.pushCreatePath(.couponComplete)
+        }) {
+            Text("다음")
+                .font(.system(size: 18, weight: .semibold))
+        }
+        .buttonStyle(BDButtonStyle(buttonType: .activate))
+        .padding(.horizontal, 20)
+        .padding(.bottom, 10)
     }
 }
 #Preview {

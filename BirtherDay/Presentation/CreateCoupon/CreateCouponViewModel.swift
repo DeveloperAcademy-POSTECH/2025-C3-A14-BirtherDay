@@ -24,6 +24,9 @@ struct CouponCreationData {
     var letterContent: String?
     
     // 4단계: 사진 선택
+    var couponTemplate: CouponTemplate?
+    var selectedItems: [PhotosPickerItem] = []
+    var selectedImages: [UIImage] = []
     
     init() {
         // 기본값들 설정
@@ -36,9 +39,6 @@ class CreateCouponViewModel: ObservableObject {
     @Published var couponCreationData = CouponCreationData()
     
     private let fileService: FileService
-    
-    @Published var selectedItems: [PhotosPickerItem] = []
-    @Published var selectedImages: [UIImage] = []
     
     init(fileService: FileService = FileService()) {
         self.fileService = fileService
@@ -67,7 +67,7 @@ class CreateCouponViewModel: ObservableObject {
     @MainActor
     func convertItems(oldItems: [PhotosPickerItem], newItems: [PhotosPickerItem]) {
         Task {
-            selectedItems = []
+            couponCreationData.selectedItems = []
             var validItems = [Data]()
             var uploadedImagePaths: [String] = []
             
@@ -75,7 +75,7 @@ class CreateCouponViewModel: ObservableObject {
                 do {
                     if let data = try await item.loadTransferable(type: Data.self),
                        let uiImage = UIImage(data: data) {
-                        selectedImages.append(uiImage)
+                        couponCreationData.selectedImages.append(uiImage)
                         validItems.append(data)
                     }
                 } catch {
@@ -91,7 +91,7 @@ class CreateCouponViewModel: ObservableObject {
     }
     
     func deletePhoto(index: Int) {
-        selectedImages.remove(at: index)
+        couponCreationData.selectedImages.remove(at: index)
     }
     
     /// 쿠폰 생성 데이터 초기화
