@@ -27,6 +27,7 @@ struct CouponCreationData {
     var couponTemplate: CouponTemplate?
     var selectedItems: [PhotosPickerItem] = []
     var selectedImages: [UIImage] = []
+    var uploadedImagePaths: [String] = []
     
     init() {
         // 기본값들 설정
@@ -69,7 +70,6 @@ class CreateCouponViewModel: ObservableObject {
         Task {
             couponCreationData.selectedItems = []
             var validItems = [Data]()
-            var uploadedImagePaths: [String] = []
             
             for item in newItems {
                 do {
@@ -85,7 +85,8 @@ class CreateCouponViewModel: ObservableObject {
             
             for item in validItems {
                 let fullPath = try await fileService.uploadImage(item, to: .couponDetail)
-                uploadedImagePaths.append(fullPath)
+                couponCreationData.uploadedImagePaths.append(fullPath)
+                print("업로드된 이미지 경로: \(fullPath)")
             }
         }
     }

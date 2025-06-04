@@ -100,11 +100,13 @@ struct CouponPhotoView: View {
                 viewModel.deletePhoto(index: index)
             }) {
                 Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 25, height: 25)
                     .foregroundColor(.white)
                     .background(Color.black.opacity(0.5))
                     .clipShape(Circle())
             }
-            .offset(x: -5, y: 5)
+            .offset(x: -10, y: 10)
         }
     }
     
