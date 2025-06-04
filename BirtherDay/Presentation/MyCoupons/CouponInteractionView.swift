@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct CouponInteractionView: View {
+    var viewModel: CouponDetailViewModel
     
-    @State var distance: Float = 1.2    // TODO: - distance 0.00m 연결
+    @State var distance: Float = 0.8   // TODO: - distance 0.00m 연결
     var minimuDetectedDistance: Float = 2.0
     var screenHeight: CGFloat = UIScreen.main.bounds.height
     
@@ -62,5 +63,5 @@ struct CouponInteractionView: View {
 }
 
 #Preview {
-    CouponInteractionView()
+    CouponInteractionView(viewModel: CouponDetailViewModel())
 }
