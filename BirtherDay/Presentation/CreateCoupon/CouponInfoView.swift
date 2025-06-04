@@ -97,7 +97,7 @@ extension CouponInfoView {
 // MARK: - Computed Properties
 extension CouponInfoView {
     private var selectedTemplate: CouponTemplate {
-        viewModel.couponCreationData.template ?? .orange
+        viewModel.couponData.template ?? .orange
     }
     
     private var dateFormatter: DateFormatter {
@@ -115,7 +115,7 @@ extension CouponInfoView {
 // MARK: - Methods
 extension CouponInfoView {
     private func loadExistingData() {
-        let couponData = viewModel.couponCreationData
+        let couponData = viewModel.couponData
         if let existingTitle = couponData.couponTitle {
             couponTitle = existingTitle
         }
@@ -128,11 +128,11 @@ extension CouponInfoView {
     }
     
     private func saveDataAndNavigate() {
-        viewModel.updateCouponInfo(
+        viewModel.update(.info(
             title: couponTitle,
             senderName: senderName,
             expireDate: selectedDate
-        )
+        ))
         navPathManager.pushCreatePath(.couponLetter)
     }
 }

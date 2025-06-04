@@ -10,93 +10,116 @@ import UIKit
 import SwiftUI
 import PhotosUI
 
+enum CouponField {
+    case template(CouponTemplate)
+    case info(
+        title: String,
+        senderName: String,
+        expireDate: Date
+    )
+    case letter(String)
+    case photos(
+        images: [UIImage],
+        paths: [String]
+    )
+}
+
 // 쿠폰 생성 과정의 모든 데이터를 관리하는 통합 구조체
-struct CouponCreationData {
-    // 1단계: 템플릿 선택
+struct CouponData {
     var template: CouponTemplate?
-    
-    // 2단계: 쿠폰 정보 입력
     var couponTitle: String?
     var senderName: String?
     var expireDate: Date?
-    
-    // 3단계: 편지 작성
     var letterContent: String?
-    
-    // 4단계: 사진 선택
-    var couponTemplate: CouponTemplate?
     var selectedItems: [PhotosPickerItem] = []
     var selectedImages: [UIImage] = []
     var uploadedImagePaths: [String] = []
     
     init() {
-        // 기본값들 설정
         self.expireDate = Date()
     }
 }
 
 class CreateCouponViewModel: ObservableObject {
-    // 쿠폰 생성 과정의 모든 데이터를 하나로 관리
-    @Published var couponCreationData = CouponCreationData()
-    
+    @Published var couponData = CouponData()
+
     private let fileService: FileService
     
     init(fileService: FileService = FileService()) {
         self.fileService = fileService
     }
     
-    // MARK: - 데이터 업데이트 메서드
-    
-    /// 템플릿 선택
-    func selectTemplate(_ template: CouponTemplate) {
-        couponCreationData.template = template
-    }
-    
-    /// 쿠폰 정보 업데이트
-    func updateCouponInfo(title: String, senderName: String, expireDate: Date) {
-        couponCreationData.couponTitle = title
-        couponCreationData.senderName = senderName
-        couponCreationData.expireDate = expireDate
-    }
-    
-    /// 편지 내용 업데이트
-    func updateLetterContent(_ content: String) {
-        couponCreationData.letterContent = content
-    }
-    
-    /// 사진 선택
-    @MainActor
-    func convertItems(oldItems: [PhotosPickerItem], newItems: [PhotosPickerItem]) {
-        Task {
-            couponCreationData.selectedItems = []
-            var validItems = [Data]()
-            
-            for item in newItems {
-                do {
-                    if let data = try await item.loadTransferable(type: Data.self),
-                       let uiImage = UIImage(data: data) {
-                        couponCreationData.selectedImages.append(uiImage)
-                        validItems.append(data)
-                    }
-                } catch {
-                    print("이미지 변환 실패: \(error.localizedDescription)")
-                }
-            }
-            
-            for item in validItems {
-                let fullPath = try await fileService.uploadImage(item, to: .couponDetail)
-                couponCreationData.uploadedImagePaths.append(fullPath)
-                print("업로드된 이미지 경로: \(fullPath)")
-            }
+    func update(_ field: CouponField) {
+        switch field {
+        case .template(let template):
+            couponData.template = template
+        case .info(
+            let title,
+            let senderName,
+            let expireDate
+        ):
+            couponData.couponTitle = title
+            couponData.senderName = senderName
+            couponData.expireDate = expireDate
+        case .letter(let letter):
+            couponData.letterContent = letter
+        case .photos(
+            let images,
+            let paths
+        ):
+            couponData.selectedImages = images
+            couponData.uploadedImagePaths = paths
         }
     }
     
-    func deletePhoto(index: Int) {
-        couponCreationData.selectedImages.remove(at: index)
+    /// 사진 업로드
+    @MainActor
+    func uploadImages(_ images: [UIImage]) async -> [String] {
+        var uploadedPaths: [String] = []
+        
+        for image in images {
+            if let data = image.jpegData(compressionQuality: 0.8) {
+                do {
+                    let fullPath = try await fileService.uploadImage(data, to: .couponDetail)
+                    uploadedPaths.append(fullPath)
+                    print("업로드된 이미지 경로: \(fullPath)")
+                } catch {
+                    print("이미지 업로드 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+        return uploadedPaths
     }
     
-    /// 쿠폰 생성 데이터 초기화
-    func resetCouponCreation() {
-        couponCreationData = CouponCreationData()
+    func deletePhoto(index: Int) {
+        couponData.selectedImages.remove(at: index)
     }
+    
+    /// 최종 쿠폰 객체 생성
+    func buildCoupon(senderId: UUID) -> Coupon? {
+        guard let template = couponData.template,
+              let couponTitle = couponData.couponTitle,
+              let senderName = couponData.senderName,
+              let expireDate = couponData.expireDate,
+              let letter = couponData.letterContent else {
+            print("Incomplete data, cannot build Coupon")
+            return nil
+        }
+
+        return Coupon(
+            couponId: UUID().uuidString,
+            sender: senderId,
+            receiver: nil,
+            template: template,
+            couponTitle: couponTitle,
+            letter: letter,
+            imageList: couponData.uploadedImagePaths,
+            senderName: senderName,
+            expireDate: expireDate,
+            thumbnail: UIImage(),
+            isUsed: false,
+            createdDate: Date()
+        )
+    }
+
 }

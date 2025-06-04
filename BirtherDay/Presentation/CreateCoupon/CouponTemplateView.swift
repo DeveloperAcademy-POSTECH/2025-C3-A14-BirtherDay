@@ -87,7 +87,7 @@ extension CouponTemplateView {
     
     private var nextButton: some View {
         Button(action: {
-            viewModel.selectTemplate(selectedTemplate)
+            viewModel.update(.template(selectedTemplate))
             navPathManager.pushCreatePath(.couponInfo)
         }) {
             Text("다음")
@@ -102,7 +102,7 @@ extension CouponTemplateView {
 // MARK: - Methods
 extension CouponTemplateView {
     private func loadExistingTemplate() {
-        if let existingTemplate = viewModel.couponCreationData.template {
+        if let existingTemplate = viewModel.couponData.template {
             selectedTemplate = existingTemplate
         }
     }

@@ -53,10 +53,10 @@ extension CouponLetterView: View {
 extension CouponLetterView {
     private var cardPreviewSection: some View {
         CouponCardPreview(
-            template: couponCreationData.template ?? .blue,
-            senderName: couponCreationData.senderName ?? "보내는 사람",
-            expireDate: couponCreationData.expireDate ?? Date(),
-            couponTitle: couponCreationData.couponTitle ?? "쿠폰명을 입력해주세요",
+            template: viewModel.couponData.template ?? .blue,
+            senderName: viewModel.couponData.senderName ?? "보내는 사람",
+            expireDate: viewModel.couponData.expireDate ?? Date(),
+            couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요",
             dateFormatter: dateFormatter
         )
         .frame(maxWidth: 200, maxHeight: 280)
@@ -83,8 +83,8 @@ extension CouponLetterView {
 
 // MARK: - Computed Properties
 extension CouponLetterView {
-    private var couponCreationData: CouponCreationData {
-        viewModel.couponCreationData
+    private var couponData: CouponData {
+        viewModel.couponData
     }
     
     private var dateFormatter: DateFormatter {
@@ -102,13 +102,13 @@ extension CouponLetterView {
 // MARK: - Methods
 extension CouponLetterView {
     private func loadExistingLetter() {
-        if let existingLetterContent = couponCreationData.letterContent {
+        if let existingLetterContent = viewModel.couponData.letterContent {
             letterContent = existingLetterContent
         }
     }
     
     private func saveLetterAndNavigate() {
-        viewModel.updateLetterContent(letterContent)
+        viewModel.update(.letter(letterContent))
         navPathManager.pushCreatePath(.couponPicture)
     }
 }
