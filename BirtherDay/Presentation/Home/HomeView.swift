@@ -26,38 +26,11 @@ struct HomeView: View {
                     unusedCouponListView()
                 }
                 .navigationDestination(for: BDAppPath.self) { path in
-                    switch path {
-                    case .create(let createPath):
-                        switch createPath {
-                        case .selectTemplate:
-                            CouponTemplateView(viewModel: couponViewModel)
-                        case .couponInfo:
-                            CouponInfoView(viewModel: couponViewModel)
-                        case .couponLetter:
-                            CouponLetterView(viewModel: couponViewModel)
-                        case .couponPicture:
-                            CouponPhotoView(viewModel: couponViewModel)
-                        case .couponComplete:
-                            CouponCompleteView(viewModel: couponViewModel)
-                        }
-                    case .myCoupon(let myPath):
-                        switch myPath {
-                        case .couponInventory:
-                            MyCouponView(couponType: $couponType)
-                        case .couponDetail:
-                            Text("CouponDetailView")
-                            CouponDetailView()
-                        case .interaction:
-                            CouponInteractionView()
-                        case .interactionComplete:
-                            InteractionCompleteView()
-                        }
-                    case .test(let testPath):
-                        switch testPath {
-                        case .test:
-                            TestView()
-                        }
-                    }
+                    NavigationRoutingView(
+                        destination: path,
+                        createCouponViewModel: couponViewModel,
+                        couponDetailViewModel: CouponDetailViewModel()
+                    )
                 }
             }.scrollIndicators(.hidden)
         }
