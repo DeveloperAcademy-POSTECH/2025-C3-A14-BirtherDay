@@ -12,6 +12,7 @@ enum CouponTemplate: String, Codable {
     case blue
     case orange
     
+    // BDCoupon
     /// 배경 색상
     var basicColor: Color {
         switch self {
@@ -71,6 +72,38 @@ enum CouponTemplate: String, Codable {
             return Color(hex: "F6F2FF")
         case .orange:
             return Color(hex: "FFF4F4")
+        }
+    }
+    
+    // BDMiniCoupon
+    var miniCouponBackgroundColor: Color {
+        switch self {
+        
+        case .blue:
+            return Color(hex: "E5ECFF")
+        case .orange:
+            return Color.mainViolet100
+        }
+    }
+    
+    var miniCouponImage: SwiftUI.Image {
+        switch self {
+        case .blue:
+            return Image("Card2Box")
+        case .orange:
+            return Image("Card1Box")
+        }
+    }
+    
+    // TODO: - 대응 가능성 있음.
+    /// mini 점선 색상
+    var miniDashLineColor: Color {
+        switch self {
+        case .blue:
+            return Color(hex: "B6D6FF")
+            
+        case .orange:
+            return Color(hex: "FFC68F")
         }
     }
 }
