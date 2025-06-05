@@ -29,7 +29,8 @@ struct HomeView: View {
                     BDNavigationRoutingView(
                         destination: path,
                         createCouponViewModel: couponViewModel,
-                        couponDetailViewModel: CouponDetailViewModel()
+                        couponDetailViewModel: CouponDetailViewModel(),
+                        myCouponViewModel: MyCouponViewModel()
                     )
                 }
             }.scrollIndicators(.hidden)

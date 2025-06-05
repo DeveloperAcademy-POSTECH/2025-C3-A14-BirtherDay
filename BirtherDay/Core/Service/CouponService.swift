@@ -35,14 +35,31 @@ final class CouponService {
     /// - Parameter userId: 사용자 고유 식별자 (sender_id 또는 receiver_id와 일치하는 쿠폰을 조회)
     /// - Returns: `PostgrestResponse<[RetrieveCouponResponse]>` – 조회된 쿠폰 응답 (status 포함)
     /// - Throws: 조회 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
-    func retrieveCoupons(_ userId: String) async throws -> [RetrieveCouponResponse] {
+    func retrieveSentCoupons(_ userId: String) async throws -> PostgrestResponse<[RetrieveCouponResponse]> {
         do {
-            let res: [RetrieveCouponResponse] = try await client
+            let res: PostgrestResponse<[RetrieveCouponResponse]> = try await client
                 .from("coupon")
                 .select()
-                .or("receiver_id.eq.\(userId),sender_id.eq.\(userId)")
+                .eq("sender_id", value: userId)
                 .execute()
-                .value
+            
+            return res
+        } catch {
+            /// 실제 에러
+            dump(error)
+            
+            /// 우리 앱에서의 처리를 위해 throw
+            throw CouponError.serverFetchFailed
+        }
+    }
+    
+    func retrieveReceivedCoupons(_ userId: String) async throws -> PostgrestResponse<[RetrieveCouponResponse]> {
+        do {
+            let res: PostgrestResponse<[RetrieveCouponResponse]> = try await client
+                .from("coupon")
+                .select()
+                .eq("receiver_id", value: userId)
+                .execute()
             
             return res
         } catch {

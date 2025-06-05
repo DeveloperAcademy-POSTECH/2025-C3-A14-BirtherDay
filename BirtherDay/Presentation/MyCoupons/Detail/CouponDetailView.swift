@@ -26,7 +26,7 @@ struct CouponDetailView: View {
         }
         .onAppear {
             print("viewModel.startupMPC()")
-            viewModel.startupMPC()
+//            viewModel.startupMPC()
         }
     }
     

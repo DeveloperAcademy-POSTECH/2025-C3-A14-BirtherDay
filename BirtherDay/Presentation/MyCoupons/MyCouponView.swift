@@ -11,6 +11,7 @@ struct MyCouponView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @State private var selectedTab: CouponUsageTab = .unused
     @ObservedObject var myCouponViewModel: MyCouponViewModel
+    @State private var coupons: [RetrieveCouponResponse] = []
     
     var couponType: CouponType
     
@@ -19,10 +20,11 @@ struct MyCouponView: View {
             MyCouponBannerView()
             couponSegmentedView()
                 .padding(.top, 32)
+            //Spacer()
             
-            Spacer()
             couponInventoryView()
-            Spacer()
+                .padding(.top, 24)
+            
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)
@@ -30,9 +32,19 @@ struct MyCouponView: View {
         .navigationTitle(couponType.couponNavigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .modifier(NavigationToolbar {
-            navPathManager.popPath()
-        })
+        .toolbar {
+            leadingBackButton
+        }
+        /// 최초 실행 fetch
+        .task {
+            coupons = await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
+        }
+        /// 미사용/사용완료 탭 할 때마다
+        .onChange(of: selectedTab) {
+            Task {
+                coupons = await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
+            }
+        }
     }
     // MARK: - Views
     /// 상단 배너
@@ -68,7 +80,7 @@ struct MyCouponView: View {
             selectedTab = tab
         } label: {
             VStack(spacing: 4) {
-                Text(tab.rawValue)
+                Text(tab.segmentTitle)
                     .foregroundStyle(selectedTab == tab ? Color.textTitle : .gray300)
                     .font(.sb1)
                 if selectedTab == tab {
@@ -77,29 +89,43 @@ struct MyCouponView: View {
                         .frame(width: 44, height: 2)
                 }
             }
+            //.padding(.bottom, -8)
         }
         .buttonStyle(.plain)
     }
     
     // TODO: - 쿠폰 인벤토리 뷰
-    /// 1. fetching
-    ///     1.1. 에러핸들링
-    /// 2. isEmpty 여부 검사
-    /// 3. LazyVStack으로 카드리스트뷰
     func couponInventoryView() -> some View {
         VStack {
-            switch selectedTab {
-            case .unused:
-                Text(couponType.emptyUnusedText)
-            case .used:
-                Text(couponType.emptyUsedText)
+            if coupons.isEmpty {
+                VStack {
+                    Spacer()
+                    Text(selectedTab == .used ? couponType.emptyUsedText : couponType.emptyUnusedText)
+                    Spacer()
+                }
+                .multilineTextAlignment(.center)
+                .lineSpacing(8)
+                .frame(maxWidth: .infinity)
+                .font(.sb3)
+                .foregroundStyle(Color.textCaption1)
+                
+                Spacer()
+                
+            } else {
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                        ForEach(myCouponViewModel.coupons) { coupon in
+                            Button {
+                                navPathManager.pushMyCouponPath(.couponDetail(coupon.couponId))
+                            } label: {
+                                BDMiniCoupon(coupon: coupon)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }.scrollIndicators(.hidden)
             }
         }
-        .multilineTextAlignment(.center)
-        .lineSpacing(8)
-        .frame(maxWidth: .infinity)
-        .font(.sb3)
-        .foregroundStyle(Color.textCaption1)
     }
 }
 

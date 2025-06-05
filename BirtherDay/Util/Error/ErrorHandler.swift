@@ -11,8 +11,6 @@ import SwiftUI
 
 struct ErrorHandler {
     static func handle(_ error: Error) {
-        print("🧨 Error: \(error.localizedDescription)")
-    
         switch error {
         case let error as CouponError:
             handleCouponError(error)
@@ -25,9 +23,7 @@ struct ErrorHandler {
 
         case let error as DeepLinkError:
             handleDeepLinkError(error)
-
-        default:
-            print("❓ Unhandled Error: \(error.localizedDescription)")
+        default: break
         }
     }
 }
