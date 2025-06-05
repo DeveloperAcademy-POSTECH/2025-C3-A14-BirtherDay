@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CouponDetailView: View {
     
+    @EnvironmentObject var navPathManager: BDNavigationPathManager
     var viewModel: CouponDetailViewModel
     
     var body: some View {
@@ -43,7 +44,7 @@ struct CouponDetailView: View {
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
                 
                 Button {
-                    
+                    navPathManager.pushMyCouponPath(.interaction)
                 } label: {
                     Text("사용하기")
                 }
@@ -59,4 +60,5 @@ struct CouponDetailView: View {
 
 #Preview {
     CouponDetailView(viewModel: CouponDetailViewModel())
+        .environmentObject(BDNavigationPathManager())
 }

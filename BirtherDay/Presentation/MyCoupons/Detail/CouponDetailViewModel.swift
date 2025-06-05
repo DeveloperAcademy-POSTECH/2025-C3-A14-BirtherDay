@@ -13,11 +13,9 @@ import NearbyInteraction
 enum DistanceDirectionState {
     case closeUpInFOV, notCloseUpInFOV, outOfFOV, unknown
 }
-//@MainActor
+
 @Observable
 class CouponDetailViewModel: NSObject {
-    
-//    var selectedCoupon: RetrieveCouponResponse
 
     var selectedCoupon: RetrieveCouponResponse = .stub01                 // 사용자가 고른 coupon
     var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
@@ -32,7 +30,6 @@ class CouponDetailViewModel: NSObject {
     var currentDistanceDirectionState: DistanceDirectionState = .unknown
     
     var distance: Float?
-    
     
     func startupMPC() {
         print("CouponViewModel - startupMPC()")
