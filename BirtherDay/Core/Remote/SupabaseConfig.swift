@@ -32,4 +32,12 @@ enum SupabaseConfig {
         
         return captchaToken
     }()
+    
+    static let storagePath: String = {
+        guard let path = Bundle.main.infoDictionary?["SUPABASE_STORAGE_PATH"] as? String else {
+            fatalError("Invalid SUPABASE_STORAGE_PATH")
+        }
+        
+        return path
+    }()
 }

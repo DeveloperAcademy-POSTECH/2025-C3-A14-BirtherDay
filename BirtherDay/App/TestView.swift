@@ -6,11 +6,20 @@
 //
 
 import SwiftUI
+import Foundation
+
+// iOS SDK
+import KakaoSDKShare
+import KakaoSDKTemplate    // 기본 템플릿 사용 시
 
 struct TestView: View {
     
     private let authService: AuthService = AuthService()
     private let couponService: CouponService = CouponService()
+    private let fileService: FileService = FileService()
+    private let shareManager: ShareManager = ShareManager(
+        message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.", params: ["test1": "value"], shareType: .coupon
+    )
     
     var body: some View {
         VStack {
@@ -91,7 +100,30 @@ struct TestView: View {
                     }
                 }
             }
-
+            Button("이미지 업로드 테스트") {
+                Task {
+                    do {
+                        print("이미지 업로드 전")
+                        
+                        guard let image = UIImage(systemName: "star"),
+                              let imageData = image.jpegData(compressionQuality: 0.8) else {
+                            print("이미지 변환 실패")
+                            return
+                        }
+                        
+                        let filePath = try await fileService.uploadImage(imageData,to: .couponThumbnail)
+                        print("이미지 업로드 성공: \(filePath)")
+                        
+                        print("이미지 업로드 후")
+                    } catch {
+                        print("이미지 업로드 실패")
+                        print(error)
+                    }
+                }
+            }
+            Button("카카오 공유 테스트") {
+                shareManager.shareToKakao()
+            }
         }
         .padding()
     }

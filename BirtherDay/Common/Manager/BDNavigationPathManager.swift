@@ -23,8 +23,10 @@ enum BDCreateCouponPath: Hashable, Equatable {
 }
 
 enum BDMyCouponPath: Hashable, Equatable {
-    case couponInventory
-    case couponDetail
+    case couponInventory(CouponType)
+    
+    /// couponDetailView로 넘어갈 때, couponId 넘겨주기 -> 넘긴 couponId로 쿠폰 상세내역 조회
+    case couponDetail(String)
     case interaction
     case interactionComplete
 }
