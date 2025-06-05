@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MyCouponView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-    
     @State private var selectedTab: CouponUsageTab = .unused
+    @ObservedObject var myCouponViewModel: MyCouponViewModel
     
     var couponType: CouponType
     
@@ -117,6 +117,6 @@ private extension MyCouponView {
 }
 
 #Preview {
-    MyCouponView(couponType: .sent)
+    MyCouponView(myCouponViewModel: MyCouponViewModel(), couponType: .sent)
         .environmentObject(BDNavigationPathManager())
 }

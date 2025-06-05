@@ -13,6 +13,7 @@ struct BDNavigationRoutingView: View {
     // 뷰모델 주입
     @ObservedObject var createCouponViewModel: CreateCouponViewModel
     var couponDetailViewModel: CouponDetailViewModel
+    var myCouponViewModel: MyCouponViewModel
     
     var body: some View {
         switch destination {
@@ -36,7 +37,7 @@ struct BDNavigationRoutingView: View {
         case .myCoupon(let bdMyCouponPath):
             switch bdMyCouponPath {
             case .couponInventory(let type):
-                MyCouponView(couponType: type)
+                MyCouponView(myCouponViewModel: myCouponViewModel, couponType: type)
                 
             case .couponDetail:
                 CouponDetailView(viewModel: couponDetailViewModel)

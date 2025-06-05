@@ -26,7 +26,8 @@ class MyCouponViewModel: ObservableObject {
         /// coupons 조회
         do {
             // TODO: - userId로 교체 필요! 현재는 임시 아이디값~!
-            let response = try await couponService.retrieveCoupons(userId)
+            // let response = try await couponService.retrieveCoupons(userId)
+            let response = try await couponService.retrieveCoupons("154dea32-8607-4418-a619-d80692456678")
             return response
         } catch {
             if let couponError = error as? CouponError {
