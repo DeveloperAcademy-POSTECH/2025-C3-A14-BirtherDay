@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-enum CouponTemplate: String, Codable {
+enum CouponTemplate: String, Codable, Equatable {
     case blue
     case orange
     

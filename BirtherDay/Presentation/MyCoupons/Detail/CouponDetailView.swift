@@ -57,6 +57,6 @@ struct CouponDetailView: View {
 }
 
 #Preview {
-    CouponDetailView(viewModel: CouponDetailViewModel())
+    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
         .environmentObject(BDNavigationPathManager())
 }

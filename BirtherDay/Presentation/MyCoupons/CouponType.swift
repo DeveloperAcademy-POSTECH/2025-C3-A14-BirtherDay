@@ -8,7 +8,7 @@
 import Foundation
 
 /// 쿠폰 타입
-enum CouponType: String {
+enum CouponType: String, Equatable {
     case sent
     case received
     

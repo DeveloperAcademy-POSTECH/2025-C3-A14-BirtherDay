@@ -29,7 +29,7 @@ struct HomeView: View {
                     BDNavigationRoutingView(
                         destination: path,
                         createCouponViewModel: couponViewModel,
-                        couponDetailViewModel: CouponDetailViewModel(),
+//                        couponDetailViewModel: CouponDetailViewModel(),
                         myCouponViewModel: MyCouponViewModel()
                     )
                 }
@@ -143,7 +143,7 @@ struct HomeView: View {
                 // TODO: - 일정 갯수 이상 나오면, 더보기 카드(보관함)
                 ForEach(homeViewModel.mockCoupons) { coupon in
                     Button {
-                        navPathManager.pushMyCouponPath(.couponDetail(coupon.couponId))
+                        navPathManager.pushMyCouponPath(.couponDetail(coupon))
                     } label: {
                         BDMiniCoupon(coupon: coupon)
                     }

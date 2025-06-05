@@ -114,9 +114,9 @@ struct MyCouponView: View {
             } else {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                        ForEach(myCouponViewModel.coupons) { coupon in
+                        ForEach(coupons) { coupon in
                             Button {
-                                navPathManager.pushMyCouponPath(.couponDetail(coupon.couponId))
+                                navPathManager.pushMyCouponPath(.couponDetail(coupon))
                             } label: {
                                 BDMiniCoupon(coupon: coupon)
                             }
