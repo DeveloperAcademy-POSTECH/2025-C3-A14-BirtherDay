@@ -9,10 +9,10 @@ import SwiftUI
 
 struct BDTemplate: View {
 
-    var data: Coupon
+    var data: RetrieveCouponResponse
     var isShownSubtitleView = true
     
-    init(data: Coupon) {
+    init(data: RetrieveCouponResponse) {
         self.data = data
     }
     
@@ -24,7 +24,7 @@ struct BDTemplate: View {
                     basicColor: data.template.basicColor,
                     dashLineColor: data.template.dashLineColor
                 )
-                subtitleView(subtitle: data.couponTitle)
+                subtitleView(subtitle: data.title)
             }
         }
         .aspectRatio(isShownSubtitleView ? 32/53 : 32/43, contentMode: .fit)        // 하단 subtitle뷰 여부에 따른 쿠폰 가로세로 비율 고정
@@ -64,7 +64,7 @@ struct BDTemplate: View {
             Text("From. \(data.senderName)")
                 .font(.sb3)
                 .foregroundStyle(Color.textTitle)
-            Text("\(data.expireDate)까지")
+            Text("\(data.deadline)까지")
                 .font(.r3)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -100,7 +100,7 @@ struct BDTemplate: View {
     }
     
     func titleView()-> some View {
-        Text(data.couponTitle)
+        Text(data.title)
             .frame(maxWidth: .infinity)
             .font(.sb4)
             .foregroundStyle(Color.textTitle)

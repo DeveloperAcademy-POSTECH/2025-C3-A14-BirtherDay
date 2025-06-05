@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+/// Coupon 삭제 예정.
+/// InsertCouponRequest, RetrieveCouponResponse 사용하기
 struct Coupon: Identifiable {
     let id = UUID().uuidString
     let couponId: String
@@ -22,6 +24,23 @@ struct Coupon: Identifiable {
     var thumbnail: UIImage?
     var isUsed: Bool
     var createdDate: Date
+}
+
+extension Coupon {
+    public static var stub01: Coupon = Coupon(
+        couponId: "sample-id",
+        sender: UUID(),
+        receiver: nil,
+        template: .blue,
+        couponTitle: "애슐리 디너\n1회 이용권",
+        letter: "축하해!",
+        imageList: [],
+        senderName: "주니",
+        expireDate: Date().addingTimeInterval(86400 * 60),
+        thumbnail: UIImage(),
+        isUsed: false,
+        createdDate: Date()
+    )
 }
 
 struct InsertCouponRequest: Codable {
@@ -85,4 +104,15 @@ struct RetrieveCouponResponse: Codable {
         case createdAt = "created_at"
         case template, id, title, letter, thumbnail, deadline
     }
+}
+
+extension RetrieveCouponResponse {
+    static var stub01: RetrieveCouponResponse = {
+        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
+            fatalError("No user ID found")
+        }
+        
+        return .init(id: userId.uuidString, senderId: "", senderName: "프레이", template: CouponTemplate.blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
+        )
+    }()
 }

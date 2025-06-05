@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct DetailedCoupon: View {
-    var couponData: Coupon
+    var couponData: RetrieveCouponResponse
     
-    init(couponData: Coupon) {
+    init(couponData: RetrieveCouponResponse) {
         self.couponData = couponData
     }
     
