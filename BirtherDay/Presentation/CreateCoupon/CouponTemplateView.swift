@@ -42,17 +42,9 @@ struct CouponTemplateView: View {
             .navigationTitle("쿠폰 디자인 선택")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        navPathManager.popPath()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.black)
-                            .font(.system(size: 18, weight: .medium))
-                    }
-                }
-            }
+            .modifier(NavigationToolbar {
+                navPathManager.popPath()
+            })
             .onAppear {
                 loadExistingTemplate()
             }

@@ -30,9 +30,9 @@ struct MyCouponView: View {
         .navigationTitle(couponType.couponNavigationTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            leadingBackButton
-        }
+        .modifier(NavigationToolbar {
+            navPathManager.popPath()
+        })
     }
     // MARK: - Views
     /// 상단 배너
