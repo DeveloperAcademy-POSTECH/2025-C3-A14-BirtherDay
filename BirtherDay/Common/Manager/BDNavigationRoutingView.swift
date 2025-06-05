@@ -31,7 +31,7 @@ struct BDNavigationRoutingView: View {
                 CouponPhotoView(viewModel: createCouponViewModel)
                 
             case .couponComplete:
-                CouponCompleteView()
+                CouponCompleteView(viewModel: createCouponViewModel)
             }
         case .myCoupon(let bdMyCouponPath):
             switch bdMyCouponPath {
@@ -39,7 +39,7 @@ struct BDNavigationRoutingView: View {
                 MyCouponView(couponType: type)
                 
             case .couponDetail:
-                CouponDetailView(viewModel: couponDetailViewModel)
+                CouponDetailView()
                 
             case .interaction:
                 CouponInteractionView(viewModel: couponDetailViewModel)
