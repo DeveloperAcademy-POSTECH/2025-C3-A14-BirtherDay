@@ -23,7 +23,7 @@ enum BDCreateCouponPath: Hashable, Equatable {
 }
 
 enum BDMyCouponPath: Hashable, Equatable {
-    case couponInventory
+    case couponInventory(CouponType)
     case couponDetail
     case interaction
     case interactionComplete

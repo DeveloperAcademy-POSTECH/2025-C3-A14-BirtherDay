@@ -5,10 +5,10 @@
 //  Created by Soop on 5/30/25.
 //
 
-//import Foundation
+import Foundation
 //
-//@Observable
-//class CouponDetailViewModel {
+@Observable
+class CouponDetailViewModel {
 //    var coupon: Coupon = .init(couponId: "", sender: .init(), template: .blue, couponTitle: "", letter: "", imageList: [], senderName: "", expireDate: Date(), thumbnail: .card1Back, isUsed: false, createdDate: Date())
 //    
 //    var expireDateString: String {
@@ -20,7 +20,7 @@
 ////    init(coupon: Coupon) {
 ////        self.coupon = coupon
 ////    }
-//}
+}
 //
 //extension CouponDetailViewModel {
 //    
