@@ -13,13 +13,13 @@
 		4C3A7B1B2DE96386005DAEA2 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B1A2DE96386005DAEA2 /* PostgREST */; };
 		4C3A7B1D2DE96386005DAEA2 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B1C2DE96386005DAEA2 /* Storage */; };
 		4C3A7B4B2DE9831E005DAEA2 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B4A2DE9831E005DAEA2 /* Supabase */; };
+		6CA3A8BD2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6CA3A8BC2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle */; };
 		E7F753F32DF03CCD003A41F8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E7F753F22DF03CCD003A41F8 /* KakaoSDK */; };
-		E7F753F82DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7F753F72DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2192E0312DE60D1F00E25BF7 /* BirtherDay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BirtherDay.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7F753F72DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = KakaoSDKFriendResources.bundle; path = "../../../Library/Developer/Xcode/DerivedData/BirtherDay-hdkrzbqqenpopddzfsqgaptunypp/SourcePackages/checkouts/kakao-ios-sdk/Sources/KakaoSDKFriendCore/KakaoSDKFriendResources.bundle"; sourceTree = "<group>"; };
+		6CA3A8BC2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = KakaoSDKFriendResources.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,7 +64,7 @@
 		2192E0282DE60D1F00E25BF7 = {
 			isa = PBXGroup;
 			children = (
-				E7F753F72DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle */,
+				6CA3A8BC2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle */,
 				4C3A7BB62DE98875005DAEA2 /* BirtherDay */,
 				4C3A7B492DE9831E005DAEA2 /* Frameworks */,
 				2192E0322DE60D1F00E25BF7 /* Products */,
@@ -162,7 +162,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7F753F82DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle in Resources */,
+				6CA3A8BD2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
