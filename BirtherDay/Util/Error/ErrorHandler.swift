@@ -33,6 +33,13 @@ struct ErrorHandler {
 }
 
 private extension ErrorHandler {
+    static func handleUserError(_ error: UserError) {
+        switch error {
+        case .userNotFound:
+            print("Error: \(error) - 사용자를 찾을 수 없습니다.")
+        }
+    }
+    
     static func handleCouponError(_ error: CouponError) {
         switch error {
         case .alreadyUsed:
