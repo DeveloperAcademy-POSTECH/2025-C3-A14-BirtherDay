@@ -111,7 +111,7 @@ class CreateCouponViewModel: ObservableObject {
         }
 
         return RetrieveCouponResponse(
-            senderId: "", senderName: senderName, template: template, title: couponTitle, letter: letter, imageList: couponData.uploadedImagePaths, thumbnail: "", deadline: expireDate, isUsed: false, createdAt: Date())
+            couponId: "", senderId: "", senderName: senderName, template: template, title: couponTitle, letter: letter, imageList: couponData.uploadedImagePaths, thumbnail: "", deadline: expireDate, isUsed: false, createdAt: Date())
         
     }
 }

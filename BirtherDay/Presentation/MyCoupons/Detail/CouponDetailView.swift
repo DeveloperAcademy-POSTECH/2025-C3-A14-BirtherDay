@@ -14,10 +14,10 @@ struct CouponDetailView: View {
     var body: some View {
         ZStack {
             ScrollView(.vertical) {
-                DetailedCoupon(couponData:viewModel.coupon ?? .stub01)
+                DetailedCoupon(couponData: viewModel.selectedCoupon)
                 
             }
-            .background(viewModel.coupon?.template.backgroundColor.ignoresSafeArea())
+            .background(viewModel.selectedCoupon.template.backgroundColor.ignoresSafeArea())
             .scrollIndicators(.hidden)
             
             buttonsView()
@@ -25,7 +25,7 @@ struct CouponDetailView: View {
                 
         }
         .onAppear {
-            viewModel.loadCouponDetail()
+//            viewModel.()
         }
     }
     
@@ -49,7 +49,7 @@ struct CouponDetailView: View {
             }
             .padding(.top, 37)
             .padding(.horizontal, 16)
-            .background(viewModel.coupon?.template.buttonBackgroundColor.ignoresSafeArea())
+            .background(viewModel.selectedCoupon.template.buttonBackgroundColor.ignoresSafeArea())
         }
     }
 }

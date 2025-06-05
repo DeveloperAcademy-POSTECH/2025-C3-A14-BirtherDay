@@ -83,8 +83,9 @@ extension InsertCouponRequest {
     }()
 }
 
-struct RetrieveCouponResponse: Codable {
+struct RetrieveCouponResponse: Codable, Identifiable {
     var id = UUID().uuidString
+    var couponId: String
     var senderId: String
     var senderName: String
     var template: CouponTemplate
@@ -97,12 +98,13 @@ struct RetrieveCouponResponse: Codable {
     var createdAt: Date
     
     enum CodingKeys: String, CodingKey {
+        case couponId = "id"
         case senderId = "sender_id"
         case senderName = "sender_name"
         case imageList = "image_list"
         case isUsed = "is_used"
         case createdAt = "created_at"
-        case template, id, title, letter, thumbnail, deadline
+        case template, title, letter, thumbnail, deadline
     }
 }
 
@@ -112,7 +114,7 @@ extension RetrieveCouponResponse {
 //            fatalError("No user ID found")
 //        }
         
-        return .init(id: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
+        return .init(couponId: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
         )
     }()
 }
