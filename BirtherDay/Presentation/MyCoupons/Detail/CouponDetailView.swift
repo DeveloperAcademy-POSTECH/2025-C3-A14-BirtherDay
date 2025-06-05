@@ -13,13 +13,16 @@ struct CouponDetailView: View {
     
     var body: some View {
         ZStack {
-            viewModel.coupon?.template.backgroundColor
             ScrollView(.vertical) {
-                VStack {
-                    DetailedCoupon(couponData: viewModel.coupon ?? .stub01)
-                }
+                DetailedCoupon(couponData:viewModel.coupon ?? .stub01)
+                
             }
+            .background(viewModel.coupon?.template.backgroundColor.ignoresSafeArea())
             .scrollIndicators(.hidden)
+            
+            buttonsView()
+                
+                
         }
         .onAppear {
             viewModel.loadCouponDetail()
