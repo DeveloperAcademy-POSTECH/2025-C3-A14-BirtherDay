@@ -14,7 +14,6 @@
 		4C3A7B1D2DE96386005DAEA2 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B1C2DE96386005DAEA2 /* Storage */; };
 		4C3A7B4B2DE9831E005DAEA2 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B4A2DE9831E005DAEA2 /* Supabase */; };
 		E7F753F32DF03CCD003A41F8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E7F753F22DF03CCD003A41F8 /* KakaoSDK */; };
-		E7F753F62DF03D35003A41F8 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E7F753F52DF03D35003A41F8 /* RxKakaoSDK */; };
 		E7F753F82DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E7F753F72DF03DAB003A41F8 /* KakaoSDKFriendResources.bundle */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +53,6 @@
 				4C3A7B1D2DE96386005DAEA2 /* Storage in Frameworks */,
 				4C3A7B1B2DE96386005DAEA2 /* PostgREST in Frameworks */,
 				4C3A7B192DE96386005DAEA2 /* Functions in Frameworks */,
-				E7F753F62DF03D35003A41F8 /* RxKakaoSDK in Frameworks */,
 				4C3A7B172DE96386005DAEA2 /* Auth in Frameworks */,
 				E7F753F32DF03CCD003A41F8 /* KakaoSDK in Frameworks */,
 			);
@@ -115,7 +113,6 @@
 				4C3A7B4A2DE9831E005DAEA2 /* Supabase */,
 				210199F52DEFEA2000C5425F /* Kingfisher */,
 				E7F753F22DF03CCD003A41F8 /* KakaoSDK */,
-				E7F753F52DF03D35003A41F8 /* RxKakaoSDK */,
 			);
 			productName = BirtherDay;
 			productReference = 2192E0312DE60D1F00E25BF7 /* BirtherDay.app */;
@@ -149,7 +146,6 @@
 				4C3A7B152DE96386005DAEA2 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				210199F42DEFEA2000C5425F /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E7F753F12DF03CCD003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				E7F753F42DF03D35003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2192E0322DE60D1F00E25BF7 /* Products */;
@@ -316,7 +312,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BirtherDay/App/Preview Content\"";
-				DEVELOPMENT_TEAM = 2YBZ5GS4MN;
+				DEVELOPMENT_TEAM = 7WT5JSS7B6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BirtherDay/Info.plist;
@@ -420,14 +416,6 @@
 				kind = branch;
 			};
 		};
-		E7F753F42DF03D35003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -465,11 +453,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E7F753F12DF03CCD003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDK;
-		};
-		E7F753F52DF03D35003A41F8 /* RxKakaoSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E7F753F42DF03D35003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
-			productName = RxKakaoSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
