@@ -31,9 +31,9 @@ struct CouponInteractionView: View {
                         .font(.m1)
                         .foregroundStyle(Color.gray100)
                 }
-                BDTemplateView(type: .blue, isShownSubtitleView: true)
-                    .scaleEffect(204/320)
-                    .rotationEffect(.degrees(7.86))
+//                BDTemplate(data: <#Coupon#>)
+//                    .scaleEffect(204/320)
+//                    .rotationEffect(.degrees(7.86))
                     
                 distanceView()
             }

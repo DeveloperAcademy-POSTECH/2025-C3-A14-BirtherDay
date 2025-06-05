@@ -7,22 +7,24 @@
 
 import SwiftUI
 
-struct BDTemplateView: View {
+struct BDTemplate: View {
+
+    var data: Coupon
+    var isShownSubtitleView = true
     
-    let type: CouponTemplate
-    let sender: String = "주니"
-    let date: String = "2025.06.01"
-    
-    var isShownSubtitleView = true           /// 하단 쿠폰을 보여줄지 정하는 프로퍼티
-    var title = "나랑 저녁에 애슐리 먹으러 가자!"                      // 쿠폰 제목
-    var subtitle = "쿠폰을 사용 중이에요👏"
+    init(data: Coupon) {
+        self.data = data
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             mainCouponView()
             if isShownSubtitleView {
-                dashedLineView(basicColor: type.basicColor, dashLineColor: type.dashLineColor)
-                subtitleView(subtitle: subtitle)
+                dashedLineView(
+                    basicColor: data.template.basicColor,
+                    dashLineColor: data.template.dashLineColor
+                )
+                subtitleView(subtitle: data.couponTitle)
             }
         }
         .aspectRatio(isShownSubtitleView ? 32/53 : 32/43, contentMode: .fit)        // 하단 subtitle뷰 여부에 따른 쿠폰 가로세로 비율 고정
@@ -51,18 +53,18 @@ struct BDTemplateView: View {
             // 배경에 사용되는 circle + blur
             bluredCircleView()
         }
-        .background(type.backgroundColor)
+        .background(data.template.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 30))
-        .overlay(RoundedRectangle(cornerRadius: 30).stroke(type.strokeColor, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 30).stroke(data.template.strokeColor, lineWidth: 1))
     }
     
     /// 전송자 및 만료날짜
     func senderDateView()-> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("From. \(sender)")
+            Text("From. \(data.senderName)")
                 .font(.sb3)
                 .foregroundStyle(Color.textTitle)
-            Text("\(date)까지")
+            Text("\(data.expireDate)까지")
                 .font(.r3)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,7 +74,7 @@ struct BDTemplateView: View {
     func bluredCircleView()-> some View {
         VStack(spacing: 0) {
             HStack {
-                Circle().foregroundStyle(type.backgroundPointColor[0].opacity(0.8))
+                Circle().foregroundStyle(data.template.backgroundPointColor[0].opacity(0.8))
                     .blur(radius: 75)
                     .frame(width: 123, height: 123)
                 Spacer()
@@ -81,7 +83,7 @@ struct BDTemplateView: View {
             Spacer()
                 .frame(height: 37)
             HStack {
-                Circle().foregroundStyle(type.backgroundPointColor[1].opacity(0.5))
+                Circle().foregroundStyle(data.template.backgroundPointColor[1].opacity(0.5))
                     .blur(radius: 75)
                     .frame(width: 204, height: 204)
                     .padding(.leading, -18)
@@ -89,7 +91,7 @@ struct BDTemplateView: View {
             }
             HStack {
                 Spacer()
-                Circle().foregroundStyle(type.backgroundPointColor[2].opacity(0.5))
+                Circle().foregroundStyle(data.template.backgroundPointColor[2].opacity(0.5))
                     .blur(radius: 75)
                     .frame(width: 204, height: 204)
                     .padding(.trailing, -40)
@@ -98,7 +100,7 @@ struct BDTemplateView: View {
     }
     
     func titleView()-> some View {
-        Text(title)
+        Text(data.couponTitle)
             .frame(maxWidth: .infinity)
             .font(.sb4)
             .foregroundStyle(Color.textTitle)
@@ -142,8 +144,4 @@ struct BDTemplateView: View {
             .clipShape(RoundedRectangle(cornerRadius: 30))
     
     }
-}
-
-#Preview {
-    BDTemplateView(type: .orange)
 }

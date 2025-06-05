@@ -38,7 +38,7 @@ struct HomeView: View {
                         case .couponPicture:
                             CouponPhotoView(viewModel: couponViewModel)
                         case .couponComplete:
-                            CouponCompleteView()
+                            CouponCompleteView(viewModel: couponViewModel)
                         }
                     case .myCoupon(let myPath):
                         switch myPath {
@@ -46,7 +46,7 @@ struct HomeView: View {
                             MyCouponView(couponType: $couponType)
                         case .couponDetail:
                             Text("CouponDetailView")
-                            CouponDetailView(viewModel: CouponDetailViewModel())
+                            CouponDetailView()
                         case .interaction:
                             CouponInteractionView()
                         case .interactionComplete:

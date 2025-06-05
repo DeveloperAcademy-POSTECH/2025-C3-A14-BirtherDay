@@ -12,6 +12,10 @@ struct CouponPhotoView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     
+    @State private var selectedItems: [PhotosPickerItem] = []
+    @State private var selectedImages: [UIImage] = []
+    @State private var uploadedImagePaths: [String] = []
+    
     var body: some View {
         VStack(spacing: 0) {
             photoTitleView()
@@ -19,7 +23,7 @@ struct CouponPhotoView: View {
             
             Spacer()
             
-            if viewModel.couponCreationData.selectedImages.isEmpty {
+            if $viewModel.couponData.selectedImages.isEmpty {
                 photoPickerView()
             } else {
                 photoCarouselView()
@@ -46,7 +50,7 @@ struct CouponPhotoView: View {
         }
     
     func photoPickerView() -> some View {
-        PhotosPicker(selection: $viewModel.couponCreationData.selectedItems,
+        PhotosPicker(selection: $selectedItems,
                      maxSelectionCount: 5,
                      matching: .images) {
             ZStack {
@@ -70,8 +74,23 @@ struct CouponPhotoView: View {
                         .multilineTextAlignment(.center)
                 }
             }
-            .onChange(of: viewModel.couponCreationData.selectedItems) { oldValue, newValue in
-                viewModel.convertItems(oldItems: oldValue, newItems: newValue)
+            .onChange(of: selectedItems) { oldValue, newValue in
+                Task {
+                    selectedImages = []
+                    var decodedImages: [UIImage] = []
+                    for item in newValue {
+                        do {
+                            if let data = try await item.loadTransferable(type: Data.self),
+                               let uiImage = UIImage(data: data) {
+                                decodedImages.append(uiImage)
+                            }
+                        } catch {
+                            print("이미지 디코딩 실패: \(error.localizedDescription)")
+                        }
+                    }
+                    selectedImages = decodedImages
+                    uploadedImagePaths = await viewModel.uploadImages(decodedImages)
+                }
             }
         }
     }
@@ -79,7 +98,7 @@ struct CouponPhotoView: View {
     func photoCarouselView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
-                ForEach(Array(viewModel.couponCreationData.selectedImages.enumerated()), id: \.element) { index, image in
+                ForEach(Array(viewModel.couponData.selectedImages.enumerated()), id: \.element) { index, image in
                     selectedImageView(index: index, image: image)
                 }
             }
@@ -111,8 +130,15 @@ struct CouponPhotoView: View {
     }
     
     func nextButtonView() -> some View {
-        Button(action: {
-            navPathManager.pushCreatePath(.couponComplete)
+        Button(
+            action: {
+                viewModel.update(
+                    .photos(
+                        images: selectedImages,
+                        paths: uploadedImagePaths
+                    )
+                )
+                navPathManager.pushCreatePath(.couponComplete)
         }) {
             Text("다음")
                 .font(.system(size: 18, weight: .semibold))
@@ -122,6 +148,7 @@ struct CouponPhotoView: View {
         .padding(.bottom, 10)
     }
 }
+
 #Preview {
     CouponPhotoView(viewModel: CreateCouponViewModel())
 }
