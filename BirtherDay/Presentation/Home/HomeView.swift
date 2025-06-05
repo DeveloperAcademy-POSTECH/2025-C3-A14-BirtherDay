@@ -98,24 +98,25 @@ struct HomeView: View {
     /// 보관함 가기 형제
     func couponBoxSelectorView() -> some View {
         HStack(spacing: 16) {
-            couponBoxCardView("선물 받은", .received)
-            couponBoxCardView("내가 보낸", .sent)
+            couponBoxCardView(.received)
+            couponBoxCardView(.sent)
         }
         .padding(.horizontal, 16)
     }
     
     /// 개별 보관함 가기
-    func couponBoxCardView(_ tab: String, _ type: CouponType) -> some View {
-        Button(action: {
+    func couponBoxCardView(_ type: CouponType) -> some View {
+        
+        Button {
             couponType = type
             navPathManager.pushMyCouponPath(.couponInventory)
-        }) {
+        } label: {
             HStack(alignment: .center, spacing: 8) {
         
                 Rectangle()
                     .frame(width: 38, height: 38)
                 
-                Text(tab == "선물 받은" ? "선물 받은\n쿠폰" : "내가 보낸\n쿠폰")
+                Text(type.couponBoxTitle)
                     .font(.sb1)
                     .foregroundStyle(Color.textTitle)
                     .lineSpacing(6)

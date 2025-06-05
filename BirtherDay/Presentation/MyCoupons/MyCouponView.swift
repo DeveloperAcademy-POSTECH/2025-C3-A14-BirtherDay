@@ -10,7 +10,7 @@ import SwiftUI
 struct MyCouponView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     
-    @State private var selectedTab: CouponTab = .unused
+    @State private var selectedTab: CouponUsageTab = .unused
     
     @Binding var couponType: CouponType
     
@@ -52,28 +52,33 @@ struct MyCouponView: View {
         }
     }
     
-    /// 사용, 미사용 탭
+    /// 사용/미사용 쿠폰 탭 세그먼트 전체 뷰
     func couponSegmentedView() -> some View {
         HStack(spacing: 20) {
-            ForEach(CouponTab.allCases, id: \.self) { tab in
-                Button {
-                    selectedTab = tab
-                } label: {
-                    VStack(spacing: 4) {
-                        Text(tab.rawValue)
-                            .foregroundStyle(selectedTab == tab ? Color.textTitle : .gray300)
-                            .font(.sb1)
-                        if selectedTab == tab {
-                            Capsule()
-                                .fill(Color.textTitle)
-                                .frame(width: 44, height: 2)
-                        }
-                    }
-                }
-                .buttonStyle(.plain)
+            ForEach(CouponUsageTab.allCases, id: \.self) { tab in
+                segmentedTabButton(tab: tab)
             }
             Spacer()
         }
+    }
+    
+    /// 탭 하나를 나타내는 버튼 (사용 / 미사용)
+    func segmentedTabButton(tab: CouponUsageTab) -> some View {
+        Button {
+            selectedTab = tab
+        } label: {
+            VStack(spacing: 4) {
+                Text(tab.rawValue)
+                    .foregroundStyle(selectedTab == tab ? Color.textTitle : .gray300)
+                    .font(.sb1)
+                if selectedTab == tab {
+                    Capsule()
+                        .fill(Color.textTitle)
+                        .frame(width: 44, height: 2)
+                }
+            }
+        }
+        .buttonStyle(.plain)
     }
     
     /// 쿠폰 인벤토리 뷰

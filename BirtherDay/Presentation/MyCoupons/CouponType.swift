@@ -12,6 +12,7 @@ enum CouponType: String {
     case sent
     case received
     
+    /// 네비게이션 타이틀
     var couponNavigationTitle: String {
         switch self {
         case .sent:
@@ -22,6 +23,7 @@ enum CouponType: String {
         }
     }
     
+    /// 배너 텍스트
     var bannerText: String {
         switch self {
         case .sent:
@@ -32,6 +34,29 @@ enum CouponType: String {
         }
     }
     
+    /// 배너 우측 아이콘
+    var bannerImage: String {
+        switch self {
+        case .sent:
+            return "sentImage"
+            
+        case .received:
+            return "receivedImage"
+        }
+    }
+    
+    /// 홈 -> 쿠폰박스 타이틀
+    var couponBoxTitle: String {
+        switch self {
+        case .sent:
+            return "내가 보낸\n쿠폰"
+            
+        case .received:
+            return "선물 받은\n쿠폰"
+        }
+    }
+    
+    /// 미사용 쿠폰이 없을 때, 표시할 텍스트
     var emptyUnusedText: String {
         switch self {
         case .sent:
@@ -42,6 +67,7 @@ enum CouponType: String {
         }
     }
     
+    /// 사용완료 쿠폰이 없을 때, 표시할 텍스트
     var emptyUsedText: String {
         switch self {
         case .sent:
@@ -51,20 +77,10 @@ enum CouponType: String {
             return "아직 받은 쿠폰이\n없어요!"
         }
     }
-    
-    var bannerImage: String {
-        switch self {
-        case .sent:
-            return "sentImage"
-            
-        case .received:
-            return "receivedImage"
-        }
-    }
 }
 
 /// 미사용 - 사용완료
-enum CouponTab: String, CaseIterable {
+enum CouponUsageTab: String, CaseIterable {
     case unused = "미사용"
     case used = "사용 완료"
 }
