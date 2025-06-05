@@ -84,13 +84,13 @@ extension InsertCouponRequest {
 }
 
 struct RetrieveCouponResponse: Codable {
-    var id: String
+    var id = UUID().uuidString
     var senderId: String
     var senderName: String
     var template: CouponTemplate
     var title: String
     var letter: String
-    var imageList: [String]
+    var imageList: [String?]
     var thumbnail: String
     var deadline: Date
     var isUsed: Bool
@@ -108,11 +108,11 @@ struct RetrieveCouponResponse: Codable {
 
 extension RetrieveCouponResponse {
     static var stub01: RetrieveCouponResponse = {
-        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
-            fatalError("No user ID found")
-        }
+//        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
+//            fatalError("No user ID found")
+//        }
         
-        return .init(id: userId.uuidString, senderId: "", senderName: "프레이", template: CouponTemplate.blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
+        return .init(id: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
         )
     }()
 }

@@ -11,8 +11,9 @@ import SwiftUI
 //
 @Observable
 class CouponDetailViewModel {
-    var coupon: RetrieveCouponResponse?
+    var coupon: RetrieveCouponResponse? = .stub01
     
+
 }
 
 extension CouponDetailViewModel {
