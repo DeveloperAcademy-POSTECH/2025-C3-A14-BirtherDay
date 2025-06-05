@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @StateObject private var couponViewModel = CreateCouponViewModel()
+    @State private var couponType: CouponType = .received
     private var homeViewModel = HomeViewModel()
     
     var body: some View {
@@ -42,7 +43,7 @@ struct HomeView: View {
                     case .myCoupon(let myPath):
                         switch myPath {
                         case .couponInventory:
-                            MyCouponView()
+                            MyCouponView(couponType: $couponType)
                         case .couponDetail:
                             Text("CouponDetailView")
                             CouponDetailView(viewModel: CouponDetailViewModel())
@@ -97,23 +98,33 @@ struct HomeView: View {
     /// 보관함 가기 형제
     func couponBoxSelectorView() -> some View {
         HStack(spacing: 16) {
-            couponBoxCardView("선물 받은")
-            couponBoxCardView("내가 보낸")
+            couponBoxCardView(.received)
+            couponBoxCardView(.sent)
         }
+        .padding(.horizontal, 16)
     }
     
     /// 개별 보관함 가기
-    func couponBoxCardView(_ tab: String) -> some View {
-        Button(action: {
-            navPathManager.pushCreatePath(.selectTemplate)
-        }) {
+    func couponBoxCardView(_ type: CouponType) -> some View {
+        
+        Button {
+            couponType = type
+            navPathManager.pushMyCouponPath(.couponInventory)
+        } label: {
             HStack(alignment: .center, spacing: 8) {
+        
                 Rectangle()
                     .frame(width: 38, height: 38)
-                Text(tab == "선물 받은" ? "선물 받은\n쿠폰" : "내가 보낸\n쿠폰")
-                    .multilineTextAlignment(.leading)
+                
+                Text(type.couponBoxTitle)
                     .font(.sb1)
                     .foregroundStyle(Color.textTitle)
+                    .lineSpacing(6)
+                    .lineLimit(2)
+                    .frame(alignment: .leading)
+                    .multilineTextAlignment(.leading)
+                
+                //Spacer()
             }
             .padding(.trailing, 8)
             .padding(20)
