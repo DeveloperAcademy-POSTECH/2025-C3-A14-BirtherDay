@@ -26,6 +26,8 @@ struct CouponDetailView: View {
         }
         .onAppear {
 //            viewModel.()
+            print("viewModel.startupMPC()")
+            viewModel.startupMPC()
         }
     }
     
@@ -46,6 +48,7 @@ struct CouponDetailView: View {
                     Text("사용하기")
                 }
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
+                .disabled(!viewModel.isConnectWithPeer)
             }
             .padding(.top, 37)
             .padding(.horizontal, 16)

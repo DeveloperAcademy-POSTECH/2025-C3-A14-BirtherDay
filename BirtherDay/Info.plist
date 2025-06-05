@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_birtherday._tcp</string>
+	</array>
 	<key>SUPABASE_CAPTCHA</key>
 	<string>$(SUPABASE_CAPTCHA)</string>
 	<key>SUPABASE_DOMAIN</key>
@@ -10,6 +14,10 @@
 	<string>$(SUPABASE_KEY)</string>
 	<key>SUPABASE_STORAGE_PATH</key>
 	<string>$(SUPABASE_STORAGE_PATH)</string>
+	<key>NSNearbyInteractionUsageDescription</key>
+	<string>이 앱은 근처의 기기와 상호작용하여 쿠폰 사용 기능을 제공합니다.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>이 앱은 근처 기기와 통신하기 위해 로컬 네트워크 접근 권한이 필요합니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Bold.otf</string>
