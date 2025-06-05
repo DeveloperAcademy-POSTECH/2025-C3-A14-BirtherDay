@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
     
     @Published var mockCoupons: [RetrieveCouponResponse] = [
         RetrieveCouponResponse(
-            couponId: "sample-id",
+            couponId: "1",
             senderId: UUID().uuidString,
             senderName: "주니",
             template: .blue,
@@ -26,7 +26,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "2",
             senderId: UUID().uuidString,
             senderName: "길지훈",
             template: .orange,
@@ -39,7 +39,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "3",
             senderId: UUID().uuidString,
             senderName: "지민",
             template: .blue,
@@ -52,7 +52,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "4",
             senderId: UUID().uuidString,
             senderName: "은지",
             template: .blue,
@@ -65,7 +65,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "5",
             senderId: UUID().uuidString,
             senderName: "찬우",
             template: .blue,
@@ -78,7 +78,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "6",
             senderId: UUID().uuidString,
             senderName: "태형",
             template: .orange,
@@ -91,7 +91,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "7",
             senderId: UUID().uuidString,
             senderName: "소영",
             template: .blue,
@@ -104,7 +104,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "8",
             senderId: UUID().uuidString,
             senderName: "현우",
             template: .blue,
@@ -117,7 +117,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "9",
             senderId: UUID().uuidString,
             senderName: "다현",
             template: .blue,
@@ -130,7 +130,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "10",
             senderId: UUID().uuidString,
             senderName: "민재",
             template: .orange,
@@ -143,7 +143,7 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         ),
         RetrieveCouponResponse(
-            couponId: UUID().uuidString,
+            couponId: "11",
             senderId: UUID().uuidString,
             senderName: "윤서",
             template: .blue,
