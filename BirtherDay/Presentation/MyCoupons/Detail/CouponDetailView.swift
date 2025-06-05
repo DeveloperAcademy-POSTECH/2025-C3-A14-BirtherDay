@@ -28,6 +28,30 @@ struct CouponDetailView: View {
             viewModel.loadCouponDetail()
         }
     }
+    
+    func buttonsView()-> some View {
+        VStack {
+            Spacer()
+            HStack {
+                Button {
+                    
+                } label: {
+                    Text("공유")
+                }
+                .buttonStyle(BDButtonStyle(buttonType: .activate))
+                
+                Button {
+                    
+                } label: {
+                    Text("사용하기")
+                }
+                .buttonStyle(BDButtonStyle(buttonType: .activate))
+            }
+            .padding(.top, 37)
+            .padding(.horizontal, 16)
+            .background(viewModel.coupon?.template.buttonBackgroundColor.ignoresSafeArea())
+        }
+    }
 }
 
 #Preview {
