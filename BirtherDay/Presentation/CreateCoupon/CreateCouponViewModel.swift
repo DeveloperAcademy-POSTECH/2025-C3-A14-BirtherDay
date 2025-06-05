@@ -10,21 +10,6 @@ import UIKit
 import SwiftUI
 import PhotosUI
 
-enum CouponField {
-    case template(CouponTemplate)
-    case info(
-        title: String,
-        senderName: String,
-        expireDate: Date
-    )
-    case letter(String)
-    case photos(
-        images: [UIImage],
-        paths: [String]
-    )
-}
-
-// 쿠폰 생성 과정의 모든 데이터를 관리하는 통합 구조체
 struct CouponData {
     var template: CouponTemplate?
     var couponTitle: String?
@@ -72,7 +57,6 @@ class CreateCouponViewModel: ObservableObject {
         }
     }
     
-    /// 사진 업로드
     @MainActor
     func uploadImages(_ images: [UIImage]) async -> [String] {
         var uploadedPaths: [String] = []
@@ -95,12 +79,7 @@ class CreateCouponViewModel: ObservableObject {
         couponData.selectedImages.remove(at: index)
     }
     
-    /// 최종 쿠폰 객체 생성
-    func buildCoupon() -> RetrieveCouponResponse? {
-//        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
-//            fatalError("No user ID found")
-//        }
-        
+    func buildCoupon() -> Coupon? {
         guard let template = couponData.template,
               let couponTitle = couponData.couponTitle,
               let senderName = couponData.senderName,

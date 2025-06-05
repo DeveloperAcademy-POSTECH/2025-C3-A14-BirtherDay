@@ -16,7 +16,7 @@ enum BDButtonType {
    var backgroundColor: Color {
        switch self {
        case .activate:
-           return Color.primary
+           return Color.mainPrimary
        case .deactivate:
            return Color.gray200
        case .share:
@@ -31,7 +31,7 @@ enum BDButtonType {
        case .deactivate:
            return Color.textCaption1
        case .share:
-           return Color.primary
+           return Color.mainPrimary
        }
    }
 }

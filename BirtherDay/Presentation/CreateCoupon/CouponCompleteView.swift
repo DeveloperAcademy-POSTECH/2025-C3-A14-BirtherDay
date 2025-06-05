@@ -5,6 +5,7 @@
 //  Created by Rama on 5/29/25.
 //
 
+import UIKit
 import SwiftUI
 import Kingfisher
 
@@ -17,26 +18,62 @@ struct CouponCompleteView: View {
     }
     
     var body: some View {
-        VStack {
-            if let completedCouponData = completedCouponData {
-                DetailedCoupon(couponData: completedCouponData)
-                    .padding(.top, 16)
-            } else {
-                Text("쿠폰 정보가 불완전합니다.")
-                    .foregroundColor(.red)
-                    .padding()
-            }
+        ZStack {
+            completedCouponView()
+                .padding(.top, 16)
+            
+            bottomActionView()
+                .padding(.horizontal, 15)
+                .padding(.bottom, 20)
         }
         .keyboardAware(
-            navigationTitle: "쿠폰 생성 완료",
+            navigationTitle: "사진 첨부",
             onBackButtonTapped: {
                 navPathManager.popPath()
             }
         )
+        .background(viewModel.couponData.template?.backgroundColor.ignoresSafeArea(.all))
+        .onAppear {
+            UINavigationBar.setAppearance(backgroundColor: viewModel.couponData.template?.backgroundColor)
+        }
+    }
+    
+    func completedCouponView() -> some View {
+        Group {
+            if let completedCouponData = completedCouponData {
+                DetailedCoupon(couponData: completedCouponData)
+            } else {
+                Text("쿠폰 정보 없음")
+            }
+        }
+    }
+    
+    func bottomActionView() -> some View {
+        VStack {
+            Spacer()
+            
+            HStack(spacing: 15) {
+                shareButtonView()
+                navigateHomeButtonView()
+            }
+        }
+    }
+    
+    func shareButtonView() -> some View {
+        Button {} label: {
+            Label("공유", systemImage: "square.and.arrow.up")
+        }
+        .buttonStyle(BDButtonStyle(buttonType: .share))
+    }
+    
+    func navigateHomeButtonView() -> some View {
+        Button {} label: {
+            Text("홈으로")
+        }
+        .buttonStyle(BDButtonStyle(buttonType: .activate))
     }
 }
 
 #Preview {
     CouponCompleteView(viewModel: CreateCouponViewModel())
 }
- 
