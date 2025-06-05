@@ -81,7 +81,11 @@ struct MyCouponView: View {
         .buttonStyle(.plain)
     }
     
-    /// 쿠폰 인벤토리 뷰
+    // TODO: - 쿠폰 인벤토리 뷰
+    /// 1. fetching
+    ///     1.1. 에러핸들링
+    /// 2. isEmpty 여부 검사
+    /// 3. LazyVStack으로 카드리스트뷰
     func couponInventoryView() -> some View {
         VStack {
             switch selectedTab {
