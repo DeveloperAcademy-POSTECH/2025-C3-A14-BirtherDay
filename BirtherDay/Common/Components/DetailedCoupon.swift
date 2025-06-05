@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct DetailedCoupon: View {
-    var couponData: Coupon
+    var couponData: RetrieveCouponResponse
     
-    init(couponData: Coupon) {
+    init(couponData: RetrieveCouponResponse) {
         self.couponData = couponData
     }
     
     var body: some View {
-        ScrollView {
+//        ScrollView {
             VStack(spacing: 0) {
                 mainCouponView()
                 dashedLineView(color: couponData.template.dashLineColor, color2: couponData.template.basicColor)
@@ -28,9 +28,9 @@ struct DetailedCoupon: View {
                 letterView()
             }
             .padding(.horizontal, 27)
-        }
-        .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
-        .scrollIndicators(.hidden)
+//            .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
+//        }
+//        .scrollIndicators(.hidden)
     }
     
     // 메인 쿠폰 뷰

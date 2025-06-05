@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BDMiniCoupon: View {
-    let coupon: Coupon
+    let coupon: RetrieveCouponResponse
     
     var body: some View {
         VStack(spacing: 0) {
@@ -29,7 +29,7 @@ struct BDMiniCoupon: View {
                     
                     Spacer()
                     
-                    let daysLeft = Calendar.current.dateComponents([.day], from: Date(), to: coupon.expireDate).day ?? 0
+                    let daysLeft = Calendar.current.dateComponents([.day], from: Date(), to: coupon.deadline).day ?? 0
                     
                     Text("D - \(max(0, daysLeft))")
                         .font(.r4)
@@ -90,7 +90,7 @@ struct BDMiniCoupon: View {
         return ZStack(alignment: .leading) {
             RoundedRectangle(cornerRadius: 15)
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(coupon.couponTitle)")
+                Text("\(coupon.title)")
                     .font(.sb1)
                     .foregroundStyle(Color.textTitle)
                 
@@ -106,18 +106,5 @@ struct BDMiniCoupon: View {
 
 // (traits: .sizeThatFitsLayout)
 #Preview {
-    BDMiniCoupon(coupon: Coupon(
-        couponId: "sample-id",
-        sender: UUID(),
-        receiver: nil,
-        template: .blue,
-        couponTitle: "애슐리 디너\n1회 이용권",
-        letter: "축하해!",
-        imageList: [],
-        senderName: "주니",
-        expireDate: Date().addingTimeInterval(86400 * 60),
-        thumbnail: UIImage(),
-        isUsed: false,
-        createdDate: Date()
-    ))
+    BDMiniCoupon(coupon: .stub01)
 }

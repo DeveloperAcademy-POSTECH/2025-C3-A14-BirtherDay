@@ -75,6 +75,16 @@ enum CouponTemplate: String, Codable {
         }
     }
     
+    /// 하단 버튼 배경에 적용되는 그라디언트
+    var buttonBackgroundColor: LinearGradient {
+        switch self {
+        case .blue:
+            LinearGradient.blueButtonBackground
+        case .orange:
+            LinearGradient.orangeButtonBackground
+        }
+    }
+    
     // BDMiniCoupon
     var miniCouponBackgroundColor: Color {
         switch self {

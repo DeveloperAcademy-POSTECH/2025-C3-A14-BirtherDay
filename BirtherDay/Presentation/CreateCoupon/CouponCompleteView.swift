@@ -12,7 +12,7 @@ struct CouponCompleteView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     
-    var completedCouponData: Coupon? {
+    var completedCouponData: RetrieveCouponResponse? {
         viewModel.buildCoupon()
     }
     

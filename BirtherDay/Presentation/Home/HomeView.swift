@@ -135,7 +135,12 @@ struct HomeView: View {
                 
                 // TODO: - 일정 갯수 이상 나오면, 더보기 카드(보관함)
                 ForEach(homeViewModel.mockCoupons) { coupon in
-                    BDMiniCoupon(coupon: coupon)
+                    Button {
+                        navPathManager.pushMyCouponPath(.couponDetail(coupon.couponId))
+                    } label: {
+                        BDMiniCoupon(coupon: coupon)
+                    }
+                    
                 }
             }
             .padding(.horizontal, 16)

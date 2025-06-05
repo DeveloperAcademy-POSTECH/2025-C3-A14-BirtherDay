@@ -25,9 +25,27 @@ extension LinearGradient {
             .init(color: Color(hex: "FF7BF0"), location: 0.0),
             .init(color: Color(hex: "D0B7FF"), location: 0.34),
             .init(color: .mainViolet100, location: 0.67),
-            .init(color: Color(hex: "70D9FF"), location: 0.67)
+            .init(color: Color(hex: "70D9FF"), location: 1.0)
         ]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing
+    )
+    
+    static let orangeButtonBackground = LinearGradient(
+        gradient: Gradient(stops: [
+            .init(color: Color.clear, location: 0.0),
+            .init(color: Color(hex: "FFF4F4"), location: 0.2)
+        ]),
+        startPoint: .top,
+        endPoint: .bottom
+    )
+    
+    static let blueButtonBackground = LinearGradient(
+        gradient: Gradient(stops: [
+            .init(color: Color.clear, location: 0.0),
+            .init(color: Color(hex: "F6F2FF"), location: 0.2)
+        ]),
+        startPoint: .top,
+        endPoint: .bottom
     )
 }

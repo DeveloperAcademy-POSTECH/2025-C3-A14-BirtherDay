@@ -40,6 +40,9 @@ struct CouponInteractionView: View {
             }
                 
         }
+        .onAppear {
+//            viewModel.startNI()
+        }
     }
     
     func distanceView()-> some View {
@@ -58,7 +61,12 @@ struct CouponInteractionView: View {
     // methods
     /// 측정된 distance를 기반으로 배경색의 높이를 구하는 함수
     func calDistanceToScreenHeight() -> CGFloat {
-        screenHeight - CGFloat(distance / minimuDetectedDistance) * screenHeight
+        
+        if let distance = viewModel.distance {
+            return screenHeight - CGFloat(distance / minimuDetectedDistance) * screenHeight
+        } else {
+            return 100.0
+        }
     }
 }
 

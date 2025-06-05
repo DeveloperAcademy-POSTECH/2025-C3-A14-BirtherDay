@@ -96,7 +96,11 @@ class CreateCouponViewModel: ObservableObject {
     }
     
     /// 최종 쿠폰 객체 생성
-    func buildCoupon() -> Coupon? {
+    func buildCoupon() -> RetrieveCouponResponse? {
+//        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
+//            fatalError("No user ID found")
+//        }
+        
         guard let template = couponData.template,
               let couponTitle = couponData.couponTitle,
               let senderName = couponData.senderName,
@@ -106,19 +110,8 @@ class CreateCouponViewModel: ObservableObject {
             return nil
         }
 
-        return Coupon(
-            couponId: UUID().uuidString,
-            sender: nil,
-            receiver: nil,
-            template: template,
-            couponTitle: couponTitle,
-            letter: letter,
-            imageList: couponData.uploadedImagePaths,
-            senderName: senderName,
-            expireDate: expireDate,
-            thumbnail: nil,
-            isUsed: false,
-            createdDate: Date()
-        )
+        return RetrieveCouponResponse(
+            couponId: "", senderId: "", senderName: senderName, template: template, title: couponTitle, letter: letter, imageList: couponData.uploadedImagePaths, thumbnail: "", deadline: expireDate, isUsed: false, createdAt: Date())
+        
     }
 }
