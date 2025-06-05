@@ -2,12 +2,27 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakao7b5a33c93fdbddae39f5d7a4f98bb0d7</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_birtherday._tcp</string>
 	</array>
 	<key>KAKAO_NATIVE_APP_KEY</key>
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaolink</string>
+	</array>
 	<key>SUPABASE_CAPTCHA</key>
 	<string>$(SUPABASE_CAPTCHA)</string>
 	<key>SUPABASE_DOMAIN</key>
