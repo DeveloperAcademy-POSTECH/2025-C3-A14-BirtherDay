@@ -10,7 +10,7 @@ import SwiftUI
 struct BDTemplate: View {
 
     var data: RetrieveCouponResponse
-    var isShownSubtitleView = true
+    var isShownSubtitleView = false
     
     init(data: RetrieveCouponResponse) {
         self.data = data
