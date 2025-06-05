@@ -82,7 +82,7 @@ struct HomeView: View {
         
         Button {
             couponType = type
-            navPathManager.pushMyCouponPath(.couponInventory)
+            navPathManager.pushMyCouponPath(.couponInventory(couponType))
         } label: {
             HStack(alignment: .center, spacing: 8) {
         

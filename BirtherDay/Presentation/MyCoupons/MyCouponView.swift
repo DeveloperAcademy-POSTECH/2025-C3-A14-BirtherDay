@@ -12,7 +12,7 @@ struct MyCouponView: View {
     
     @State private var selectedTab: CouponUsageTab = .unused
     
-    @Binding var couponType: CouponType
+    var couponType: CouponType
     
     var body: some View {
         VStack(spacing: 0) {
@@ -113,6 +113,6 @@ private extension MyCouponView {
 }
 
 #Preview {
-    MyCouponView(couponType: .constant(.sent))
+    MyCouponView(couponType: .sent)
         .environmentObject(BDNavigationPathManager())
 }

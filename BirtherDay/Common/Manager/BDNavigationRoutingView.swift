@@ -35,8 +35,8 @@ struct BDNavigationRoutingView: View {
             }
         case .myCoupon(let bdMyCouponPath):
             switch bdMyCouponPath {
-            case .couponInventory:
-                MyCouponView()
+            case .couponInventory(let type):
+                MyCouponView(couponType: type)
                 
             case .couponDetail:
                 CouponDetailView(viewModel: couponDetailViewModel)
