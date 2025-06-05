@@ -11,7 +11,6 @@ struct MyCouponView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @State private var selectedTab: CouponUsageTab = .unused
     @ObservedObject var myCouponViewModel: MyCouponViewModel
-    @State private var coupons: [RetrieveCouponResponse] = []
     
     var couponType: CouponType
     
@@ -37,12 +36,13 @@ struct MyCouponView: View {
         }
         /// 최초 실행 fetch
         .task {
-            coupons = await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
+            await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
         }
+        
         /// 미사용/사용완료 탭 할 때마다
         .onChange(of: selectedTab) {
             Task {
-                coupons = await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
+                await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
             }
         }
     }
@@ -97,7 +97,7 @@ struct MyCouponView: View {
     // TODO: - 쿠폰 인벤토리 뷰
     func couponInventoryView() -> some View {
         VStack {
-            if coupons.isEmpty {
+            if myCouponViewModel.coupons.isEmpty {
                 VStack {
                     Spacer()
                     Text(selectedTab == .used ? couponType.emptyUsedText : couponType.emptyUnusedText)
@@ -114,7 +114,7 @@ struct MyCouponView: View {
             } else {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                        ForEach(coupons) { coupon in
+                        ForEach(myCouponViewModel.coupons) { coupon in
                             Button {
                                 navPathManager.pushMyCouponPath(.couponDetail(coupon))
                             } label: {

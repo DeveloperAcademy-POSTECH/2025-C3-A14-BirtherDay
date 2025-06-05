@@ -10,6 +10,54 @@ import Foundation
 @MainActor
 class MyCouponViewModel: ObservableObject {
     
+//    @Published var coupons: [RetrieveCouponResponse]?
+
+    
+    
+    @Published var coupons: [RetrieveCouponResponse] = []
+    @Published var isLoading: Bool = false
+    @Published var userError: UserError?
+    @Published var couponError: CouponError?
+    
+    let couponService = CouponService()
+    
+    func fetchCoupons(for type: CouponType, isUsed: Bool) async {
+        coupons = await fetchCouponsFromService(ofType: type, isUsed: isUsed)
+    }
+    
+    private func fetchCouponsFromService(ofType type: CouponType, isUsed: Bool) async -> [RetrieveCouponResponse] {
+        // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
+        //     self.userError = .userNotFound
+        //     ErrorHandler.handle(userError!)
+        //     return []
+        // }
+
+        do {
+            // TODO: Replace with real userId
+            let userId = "154dea32-8607-4418-a619-d80692456678"
+            let response: [RetrieveCouponResponse]
+
+            switch type {
+            case .sent:
+                response = try await couponService.retrieveSentCoupons(userId).value
+            case .received:
+                response = try await couponService.retrieveReceivedCoupons(userId).value
+            }
+
+            let filtered = response.filter { $0.isUsed == isUsed }
+            self.coupons = filtered
+            return filtered
+        } catch {
+            if let couponError = error as? CouponError {
+                ErrorHandler.handle(couponError)
+                self.couponError = couponError
+            } else {
+                print("🙈 이건 예외처리 안된곤댕~!: \(error)")
+            }
+            return []
+        }
+    }
+    
     @Published var mockCoupons: [RetrieveCouponResponse] = [
         RetrieveCouponResponse(
             couponId: "1",
@@ -155,47 +203,4 @@ class MyCouponViewModel: ObservableObject {
             createdAt: Date()
         )
     ]
-    @Published var coupons: [RetrieveCouponResponse] = []
-    @Published var isLoading: Bool = false
-    @Published var userError: UserError?
-    @Published var couponError: CouponError?
-    
-    let couponService = CouponService()
-    
-    func fetchCoupons(for type: CouponType, isUsed: Bool) async -> [RetrieveCouponResponse] {
-        return await fetchCouponsFromService(ofType: type, isUsed: isUsed)
-    }
-    
-    private func fetchCouponsFromService(ofType type: CouponType, isUsed: Bool) async -> [RetrieveCouponResponse] {
-        // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
-        //     self.userError = .userNotFound
-        //     ErrorHandler.handle(userError!)
-        //     return []
-        // }
-
-        do {
-            // TODO: Replace with real userId
-            let userId = "154dea32-8607-4418-a619-d80692456678"
-            let response: [RetrieveCouponResponse]
-
-            switch type {
-            case .sent:
-                response = try await couponService.retrieveSentCoupons(userId).value
-            case .received:
-                response = try await couponService.retrieveReceivedCoupons(userId).value
-            }
-
-            let filtered = response.filter { $0.isUsed == isUsed }
-            self.coupons = filtered
-            return filtered
-        } catch {
-            if let couponError = error as? CouponError {
-                ErrorHandler.handle(couponError)
-                self.couponError = couponError
-            } else {
-                print("🙈 이건 예외처리 안된곤댕~!: \(error)")
-            }
-            return []
-        }
-    }
 }

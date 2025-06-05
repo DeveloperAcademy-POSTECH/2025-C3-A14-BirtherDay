@@ -24,9 +24,9 @@ final class CouponService {
     /// - Throws: 삽입 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
     func insertCoupon(_ insertCouponRequest: InsertCouponRequest) async throws -> PostgrestResponse<Void> {
         let res = try await client
-                .from("coupon")
-                .insert(insertCouponRequest)
-                .execute();
+            .from("coupon")
+            .insert(insertCouponRequest)
+            .execute();
         
         return res;
     }
@@ -79,10 +79,10 @@ final class CouponService {
     /// - Throws: 업데이트 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
     func registerReceiver(couponId: String, receiverId: String) async throws -> PostgrestResponse<Void> {
         let res = try await client
-                .from("coupon")
-                .update(["receiver_id": receiverId])
-                .eq("id", value: couponId)
-                .execute();
+            .from("coupon")
+            .update(["receiver_id": receiverId])
+            .eq("id", value: couponId)
+            .execute();
         
         return res;
     }
@@ -93,10 +93,10 @@ final class CouponService {
     /// - Throws: 업데이트 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
     func useCoupon(couponId: String) async throws -> PostgrestResponse<Void> {
         let res = try await client
-                .from("coupon")
-                .update(["is_used": true])
-                .eq("id", value: couponId)
-                .execute();
+            .from("coupon")
+            .update(["is_used": true])
+            .eq("id", value: couponId)
+            .execute();
         
         return res;
     }
