@@ -11,8 +11,8 @@ struct BDNavigationRoutingView: View {
     @State var destination: BDAppPath
     
     // 뷰모델 주입
-    let createCouponViewModel: CreateCouponViewModel
-    let couponDetailViewModel: CouponDetailViewModel
+    @ObservedObject var createCouponViewModel: CreateCouponViewModel
+    var couponDetailViewModel: CouponDetailViewModel
     
     var body: some View {
         switch destination {
