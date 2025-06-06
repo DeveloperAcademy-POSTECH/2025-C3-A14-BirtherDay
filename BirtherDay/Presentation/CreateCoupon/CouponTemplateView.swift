@@ -38,21 +38,13 @@ struct CouponTemplateView: View {
                 nextButton // 다음 버튼
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(red: 0.96, green: 0.95, blue: 1))
+            .background(Color.mainViolet50)
             .navigationTitle("쿠폰 디자인 선택")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        navPathManager.popPath()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.black)
-                            .font(.system(size: 18, weight: .medium))
-                    }
-                }
-            }
+            .modifier(NavigationToolbar {
+                navPathManager.popPath()
+            })
             .onAppear {
                 loadExistingTemplate()
             }
@@ -94,8 +86,8 @@ extension CouponTemplateView {
                 .font(.system(size: 18, weight: .semibold))
         }
         .buttonStyle(BDButtonStyle(buttonType: .activate))
-        .padding(.horizontal, 20)
-        .padding(.bottom, 10)
+        .padding(.horizontal, 16)
+        .padding(.bottom, 20)
     }
 }
 

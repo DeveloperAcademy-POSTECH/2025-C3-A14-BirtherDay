@@ -17,6 +17,8 @@ struct BDTemplate: View {
     }
     
     var body: some View {
+        var formattedDate = DateFormatter.expiredDateFormatter.string(from: data.deadline)
+        
         VStack(spacing: 0) {
             mainCouponView()
             if isShownSubtitleView {
@@ -64,6 +66,7 @@ struct BDTemplate: View {
             Text("From. \(data.senderName)")
                 .font(.sb3)
                 .foregroundStyle(Color.textTitle)
+            
             Text("\(data.deadline)까지")
                 .font(.r3)
         }

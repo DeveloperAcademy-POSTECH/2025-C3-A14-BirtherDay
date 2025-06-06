@@ -23,19 +23,22 @@ struct CouponPhotoView: View {
             
             Spacer()
             
-            if $viewModel.couponData.selectedImages.isEmpty {
+            if selectedImages.isEmpty {
                 photoPickerView()
+                    .padding(.horizontal, 37)
             } else {
                 photoCarouselView()
+                    .padding(.horizontal, 37)
             }
             
             Spacer()
             
             nextButtonView()
                 .padding(.bottom, 20)
+                .padding(.horizontal, 16)
         }
         .keyboardAware(
-            navigationTitle: "쿠폰 멘트 작성하기",
+            navigationTitle: "사진 첨부",
             onBackButtonTapped: {
                 navPathManager.popPath()
             }
@@ -77,19 +80,17 @@ struct CouponPhotoView: View {
             .onChange(of: selectedItems) { oldValue, newValue in
                 Task {
                     selectedImages = []
-                    var decodedImages: [UIImage] = []
+                    
                     for item in newValue {
                         do {
                             if let data = try await item.loadTransferable(type: Data.self),
                                let uiImage = UIImage(data: data) {
-                                decodedImages.append(uiImage)
+                                selectedImages.append(uiImage)
                             }
                         } catch {
                             print("이미지 디코딩 실패: \(error.localizedDescription)")
                         }
                     }
-                    selectedImages = decodedImages
-                    uploadedImagePaths = await viewModel.uploadImages(decodedImages)
                 }
             }
         }
@@ -98,12 +99,13 @@ struct CouponPhotoView: View {
     func photoCarouselView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
-                ForEach(Array(viewModel.couponData.selectedImages.enumerated()), id: \.element) { index, image in
+                ForEach(Array(selectedImages.enumerated()), id: \.element) { index, image in
                     selectedImageView(index: index, image: image)
                 }
             }
-            .padding(.horizontal)
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.viewAligned)
     }
     
     func selectedImageView(index: Int, image: UIImage) -> some View {
@@ -144,8 +146,6 @@ struct CouponPhotoView: View {
                 .font(.system(size: 18, weight: .semibold))
         }
         .buttonStyle(BDButtonStyle(buttonType: .activate))
-        .padding(.horizontal, 20)
-        .padding(.bottom, 10)
     }
 }
 
