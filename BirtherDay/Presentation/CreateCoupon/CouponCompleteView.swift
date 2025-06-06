@@ -24,6 +24,8 @@ struct CouponCompleteView: View {
                     .padding(.top, 16)
             }
             
+            bottomGradientView()
+            
             bottomActionView()
                 .padding(.horizontal, 15)
                 .padding(.bottom, 20)
@@ -55,6 +57,17 @@ struct CouponCompleteView: View {
                 navigateHomeButtonView()
             }
         }
+    }
+    
+    func bottomGradientView() -> some View {
+        VStack {
+            Spacer()
+            
+            (viewModel.couponData.template == .orange ? LinearGradient.orangeButtonBackground : LinearGradient.blueButtonBackground)
+                .frame(maxWidth: .infinity)
+                .frame(height: 143)
+        }
+        .ignoresSafeArea(.all)
     }
     
     func shareButtonView() -> some View {

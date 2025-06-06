@@ -67,7 +67,7 @@ struct BDTemplate: View {
                 .font(.sb3)
                 .foregroundStyle(Color.textTitle)
             
-            Text("\(formattedDate)까지")
+            Text("\(data.deadline)까지")
                 .font(.r3)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
