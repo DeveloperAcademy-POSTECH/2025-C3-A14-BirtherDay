@@ -31,6 +31,10 @@ class CouponDetailViewModel: NSObject {
     
     var distance: Float?
     
+    init(selectedCoupon: RetrieveCouponResponse) {
+        self.selectedCoupon = selectedCoupon
+    }
+    
     func startupMPC() {
         print("CouponViewModel - startupMPC()")
         

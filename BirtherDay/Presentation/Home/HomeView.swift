@@ -12,6 +12,7 @@ struct HomeView: View {
     @StateObject private var couponViewModel = CreateCouponViewModel()
     @State private var couponType: CouponType = .received
     private var homeViewModel = HomeViewModel()
+    private var myCouponViewModel = MyCouponViewModel()
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
@@ -29,7 +30,8 @@ struct HomeView: View {
                     BDNavigationRoutingView(
                         destination: path,
                         createCouponViewModel: couponViewModel,
-                        couponDetailViewModel: CouponDetailViewModel()
+//                        couponDetailViewModel: CouponDetailViewModel(),
+                        myCouponViewModel: myCouponViewModel
                     )
                 }
             }.scrollIndicators(.hidden)
@@ -127,8 +129,14 @@ struct HomeView: View {
             .padding(.top, 8)
         }
     }
-    
-    /// 미사용 쿠폰 리스트
+
+    // TODO: - 미사용 쿠폰 리스트
+    /// 1. fetching
+    ///     1.1. 에러핸들링
+    /// 2. isEmpty 여부 검사
+    ///     2.1. 텅!
+    ///     2.2.  HStack으로 카드리스트뷰
+    /// 3. 5개 카드 이후, 더보기 카드
     func unusedCouponListView() -> some View {
         ScrollView(.horizontal) {
             HStack(alignment: .center, spacing: 8) {
@@ -136,7 +144,7 @@ struct HomeView: View {
                 // TODO: - 일정 갯수 이상 나오면, 더보기 카드(보관함)
                 ForEach(homeViewModel.mockCoupons) { coupon in
                     Button {
-                        navPathManager.pushMyCouponPath(.couponDetail(coupon.couponId))
+                        navPathManager.pushMyCouponPath(.couponDetail(coupon))
                     } label: {
                         BDMiniCoupon(coupon: coupon)
                     }

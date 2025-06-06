@@ -96,7 +96,7 @@ extension InsertCouponRequest {
     }()
 }
 
-struct RetrieveCouponResponse: Codable, Identifiable {
+struct RetrieveCouponResponse: Hashable, Codable, Identifiable {
     var id = UUID().uuidString
     var couponId: String
     var senderId: String

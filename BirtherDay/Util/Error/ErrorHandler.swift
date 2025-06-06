@@ -11,8 +11,6 @@ import SwiftUI
 
 struct ErrorHandler {
     static func handle(_ error: Error) {
-        print("🧨 Error: \(error.localizedDescription)")
-    
         switch error {
         case let error as CouponError:
             handleCouponError(error)
@@ -25,14 +23,19 @@ struct ErrorHandler {
 
         case let error as DeepLinkError:
             handleDeepLinkError(error)
-
-        default:
-            print("❓ Unhandled Error: \(error.localizedDescription)")
+        default: break
         }
     }
 }
 
 private extension ErrorHandler {
+    static func handleUserError(_ error: UserError) {
+        switch error {
+        case .userNotFound:
+            print("Error: \(error) - 사용자를 찾을 수 없습니다.")
+        }
+    }
+    
     static func handleCouponError(_ error: CouponError) {
         switch error {
         case .alreadyUsed:

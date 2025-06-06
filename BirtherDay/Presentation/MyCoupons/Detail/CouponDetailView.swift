@@ -26,7 +26,7 @@ struct CouponDetailView: View {
         }
         .onAppear {
             print("viewModel.startupMPC()")
-            viewModel.startupMPC()
+//            viewModel.startupMPC()
         }
     }
     
@@ -57,6 +57,6 @@ struct CouponDetailView: View {
 }
 
 #Preview {
-    CouponDetailView(viewModel: CouponDetailViewModel())
+    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
         .environmentObject(BDNavigationPathManager())
 }

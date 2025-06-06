@@ -71,5 +71,5 @@ struct CouponInteractionView: View {
 }
 
 #Preview {
-    CouponInteractionView(viewModel: CouponDetailViewModel())
+    CouponInteractionView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
 }

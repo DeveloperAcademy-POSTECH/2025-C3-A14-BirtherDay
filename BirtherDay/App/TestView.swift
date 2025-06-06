@@ -57,7 +57,7 @@ struct TestView: View {
                         print("쿠폰 조회 전")
                         let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString ?? ""
                         print(userId)
-                        let state = try await couponService.retrieveCoupons(userId)
+                        let state = try await couponService.retrieveSentCoupons(userId)
                         print(state)
                         print("쿠폰 조회 후")
                     } catch {
