@@ -12,6 +12,7 @@ struct HomeView: View {
     @StateObject private var couponViewModel = CreateCouponViewModel()
     @State private var couponType: CouponType = .received
     private var homeViewModel = HomeViewModel()
+    private var myCouponViewModel = MyCouponViewModel()
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
@@ -30,7 +31,7 @@ struct HomeView: View {
                         destination: path,
                         createCouponViewModel: couponViewModel,
 //                        couponDetailViewModel: CouponDetailViewModel(),
-                        myCouponViewModel: MyCouponViewModel()
+                        myCouponViewModel: myCouponViewModel
                     )
                 }
             }.scrollIndicators(.hidden)

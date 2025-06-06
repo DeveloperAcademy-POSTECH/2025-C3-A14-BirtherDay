@@ -10,10 +10,8 @@ import Foundation
 @MainActor
 class MyCouponViewModel: ObservableObject {
     
-//    @Published var coupons: [RetrieveCouponResponse]?
-
-    
-    
+    /// fetch쿠폰 캐시용 변수
+    @Published private var allCoupons: [RetrieveCouponResponse] = []
     @Published var coupons: [RetrieveCouponResponse] = []
     @Published var isLoading: Bool = false
     @Published var userError: UserError?
@@ -21,11 +19,23 @@ class MyCouponViewModel: ObservableObject {
     
     let couponService = CouponService()
     
+    /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
     func fetchCoupons(for type: CouponType, isUsed: Bool) async {
-        coupons = await fetchCouponsFromService(ofType: type, isUsed: isUsed)
+        let fetched = await fetchCouponsFromService(ofType: type)
+        self.allCoupons = fetched
+        self.coupons = fetched
+        self.coupons = fetched.filter { $0.isUsed == isUsed }
     }
     
-    private func fetchCouponsFromService(ofType type: CouponType, isUsed: Bool) async -> [RetrieveCouponResponse] {
+    /// 쿠폰 필터링
+    func filterCoupons(by isUsed: Bool) {
+        self.coupons = allCoupons.filter { $0.isUsed == isUsed }
+    }
+    
+    /// 쿠폰 Fetching
+    private func fetchCouponsFromService(ofType type: CouponType) async -> [RetrieveCouponResponse] {
+        
+        // TODO: 실제 사용할 코드
         // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
         //     self.userError = .userNotFound
         //     ErrorHandler.handle(userError!)
@@ -33,7 +43,7 @@ class MyCouponViewModel: ObservableObject {
         // }
 
         do {
-            // TODO: Replace with real userId
+            // TODO: 임시 방편 - 테스트 유저아이디
             let userId = "154dea32-8607-4418-a619-d80692456678"
             let response: [RetrieveCouponResponse]
 
@@ -44,9 +54,8 @@ class MyCouponViewModel: ObservableObject {
                 response = try await couponService.retrieveReceivedCoupons(userId).value
             }
 
-            let filtered = response.filter { $0.isUsed == isUsed }
-            self.coupons = filtered
-            return filtered
+            return response
+            
         } catch {
             if let couponError = error as? CouponError {
                 ErrorHandler.handle(couponError)

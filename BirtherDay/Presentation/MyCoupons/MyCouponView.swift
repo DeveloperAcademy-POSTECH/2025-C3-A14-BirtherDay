@@ -34,16 +34,15 @@ struct MyCouponView: View {
         .toolbar {
             leadingBackButton
         }
-        /// 최초 실행 fetch
+        
+        /// 최초 fetch.
         .task {
             await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
         }
         
-        /// 미사용/사용완료 탭 할 때마다
+        /// tab 변화 시, 캐시에서 필터링함.
         .onChange(of: selectedTab) {
-            Task {
-                await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
-            }
+            myCouponViewModel.filterCoupons(by: selectedTab.isUsed)
         }
     }
     // MARK: - Views
