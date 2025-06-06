@@ -16,7 +16,6 @@ struct CouponDetailView: View {
         ZStack {
             ScrollView(.vertical) {
                 DetailedCoupon(couponData: viewModel.selectedCoupon)
-                
             }
             .background(viewModel.selectedCoupon.template.backgroundColor.ignoresSafeArea())
             .scrollIndicators(.hidden)
@@ -26,7 +25,6 @@ struct CouponDetailView: View {
                 
         }
         .onAppear {
-//            viewModel.()
             print("viewModel.startupMPC()")
             viewModel.startupMPC()
         }

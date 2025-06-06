@@ -19,8 +19,10 @@ struct CouponCompleteView: View {
     
     var body: some View {
         ZStack {
-            completedCouponView()
-                .padding(.top, 16)
+            ScrollView {
+                completedCouponView()
+                    .padding(.top, 16)
+            }
             
             bottomActionView()
                 .padding(.horizontal, 15)
@@ -32,10 +34,6 @@ struct CouponCompleteView: View {
                 navPathManager.popPath()
             }
         )
-        .background(viewModel.couponData.template?.backgroundColor.ignoresSafeArea(.all))
-        .onAppear {
-            UINavigationBar.setAppearance(backgroundColor: viewModel.couponData.template?.backgroundColor)
-        }
     }
     
     func completedCouponView() -> some View {

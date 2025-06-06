@@ -79,7 +79,7 @@ class CreateCouponViewModel: ObservableObject {
         couponData.selectedImages.remove(at: index)
     }
     
-    func buildCoupon() -> Coupon? {
+    func buildCoupon() -> RetrieveCouponResponse? {
         guard let template = couponData.template,
               let couponTitle = couponData.couponTitle,
               let senderName = couponData.senderName,
