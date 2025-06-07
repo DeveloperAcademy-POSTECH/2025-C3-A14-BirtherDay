@@ -154,7 +154,7 @@ class CouponDetailViewModel: NSObject {
 
 extension CouponDetailViewModel: NISessionDelegate {
     func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
-        print("NISession didUpdate")
+//        print("NISession didUpdate")
         guard let peerToken = peerDiscoveryToken else {
             fatalError("don't have peer token")
         }
