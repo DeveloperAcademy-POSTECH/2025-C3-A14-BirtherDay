@@ -32,7 +32,9 @@ struct CouponInteractionView: View {
                         .multilineTextAlignment(.center)
                         .foregroundStyle(Color.bgLight)
                     
-                    
+                    BDTemplate(data: viewModel.selectedCoupon, isShowSubtitleView: true, horizontalPadding: 44)
+                        .scaleEffect(204/320)
+                        .rotationEffect(.degrees(7.86))
 
                     Text("0.5m 이내로 가까워졌을 때 사용이 가능해요.")
                         .font(.m1)
