@@ -317,6 +317,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BirtherDay/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "이 앱은 근처 기기와 통신하기 위해 로컬 네트워크 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "이 앱은 근처의 기기와 상호작용하여 쿠폰 사용 기능을 제공합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -350,6 +352,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BirtherDay/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "이 앱은 근처 기기와 통신하기 위해 로컬 네트워크 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "이 앱은 근처의 기기와 상호작용하여 쿠폰 사용 기능을 제공합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
