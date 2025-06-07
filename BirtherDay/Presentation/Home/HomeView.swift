@@ -12,8 +12,12 @@ struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @StateObject private var couponViewModel = CreateCouponViewModel()
     @State private var couponType: CouponType = .received
-    private var homeViewModel = HomeViewModel()
+    @ObservedObject var homeViewModel: HomeViewModel
     private var myCouponViewModel = MyCouponViewModel()
+
+    init(homeViewModel: HomeViewModel) {
+        self.homeViewModel = homeViewModel
+    }
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
@@ -35,6 +39,11 @@ struct HomeView: View {
                     )
                 }
             }.scrollIndicators(.hidden)
+        }
+        .onAppear {
+            Task {
+                await homeViewModel.fetchCoupons()
+            }
         }
     }
     
@@ -143,6 +152,7 @@ struct HomeView: View {
         VStack {
             // TODO: - 빈 경우, 어떻게 넣을 지 추가
             if homeViewModel.coupons.isEmpty {
+                
                 VStack {
                     Spacer()
                     Spacer()
@@ -176,6 +186,6 @@ struct HomeView: View {
 
 
 #Preview {
-    HomeView()
+    HomeView(homeViewModel: HomeViewModel())
         .environmentObject(BDNavigationPathManager())
 }

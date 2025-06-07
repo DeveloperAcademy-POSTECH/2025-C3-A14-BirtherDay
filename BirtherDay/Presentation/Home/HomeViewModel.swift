@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class HomeViewModel: ObservableObject {
     
     /// fetch쿠폰 캐시용 변수
@@ -20,15 +21,15 @@ class HomeViewModel: ObservableObject {
     let couponService = CouponService()
     
     /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
-    func fetchCoupons(for type: CouponType, isUsed: Bool) async {
-        let fetched = await homeFetchCouponsFromService(ofType: type)
+    func fetchCoupons() async {
+        let fetched = await homeFetchCouponsFromService()
         self.allCoupons = fetched
         self.coupons = fetched
-        self.coupons = fetched.filter { $0.isUsed == isUsed }
+        self.coupons = fetched.filter { $0.isUsed == false }
     }
-    
+
     /// 쿠폰 Fetching
-    private func homeFetchCouponsFromService(ofType type: CouponType) async -> [RetrieveCouponResponse] {
+    private func homeFetchCouponsFromService() async -> [RetrieveCouponResponse] {
         
         // TODO: 실제 사용할 코드
         // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
@@ -41,14 +42,7 @@ class HomeViewModel: ObservableObject {
             // TODO: 임시 방편 - 테스트 유저아이디
             let userId = "154dea32-8607-4418-a619-d80692456678"
             let response: [RetrieveCouponResponse]
-
-            switch type {
-            case .sent:
-                response = try await couponService.retrieveSentCoupons(userId).value
-            case .received:
-                response = try await couponService.retrieveTopFiveReceivedCoupons(userId).value
-            }
-
+            response = try await couponService.retrieveTopFiveReceivedCoupons(userId).value
             return response
             
         } catch {
