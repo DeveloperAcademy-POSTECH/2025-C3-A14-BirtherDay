@@ -11,7 +11,7 @@ import Supabase
 final class CouponService {
     private let client = SupabaseManager.shared.client
     
-    // 쿠폰을 생성합니다.
+    /// 쿠폰을 생성합니다.
     /// - Parameter insertCouponRequest: 삽입할 쿠폰 데이터
     /// - Returns: `PostgrestResponse<Void>` — Status Code가 포함된 응답 객체
     ///
@@ -37,7 +37,7 @@ final class CouponService {
         return res;
     }
     
-    /// 주어진 사용자 ID(sender 또는 receiver)와 관련된 쿠폰 목록을 조회합니다.
+    /// 내가 선물 한 쿠폰을 조회합니다.
     /// - Parameter userId: 사용자 고유 식별자 (sender_id 또는 receiver_id와 일치하는 쿠폰을 조회)
     /// - Returns: `PostgrestResponse<[RetrieveCouponResponse]>` – 조회된 쿠폰 응답 (status 포함)
     /// - Throws: 조회 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
@@ -59,6 +59,7 @@ final class CouponService {
         }
     }
     
+    /// 내가 선물 받은 쿠폰을 조회합니다.
     func retrieveReceivedCoupons(_ userId: String) async throws -> PostgrestResponse<[RetrieveCouponResponse]> {
         do {
             let res: PostgrestResponse<[RetrieveCouponResponse]> = try await client
@@ -73,6 +74,26 @@ final class CouponService {
             dump(error)
             
             /// 우리 앱에서의 처리를 위해 throw
+            throw CouponError.serverFetchFailed
+        }
+    }
+    
+    /// 내가 받은 선물 쿠폰 중, 최대 5개까지만 조회합니다.
+    /// /// 내가 받은 선물 쿠폰 중, 최대 5개까지만 조회합니다.
+    /// - Parameter userId: 수신자 ID
+    /// - Returns: 최대 5개의 쿠폰 리스트
+    func retrieveTopFiveReceivedCoupons(_ userId: String) async throws -> PostgrestResponse<[RetrieveCouponResponse]> {
+        do {
+            let res: PostgrestResponse<[RetrieveCouponResponse]> = try await client
+                .from("coupon")
+                .select()
+                .eq("receiver_id", value: userId)
+                .limit(5)
+                .execute()
+            
+            return res
+        } catch {
+            dump(error)
             throw CouponError.serverFetchFailed
         }
     }

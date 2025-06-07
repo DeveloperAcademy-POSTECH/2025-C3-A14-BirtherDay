@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DotLottie
 
 struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
@@ -30,7 +31,6 @@ struct HomeView: View {
                     BDNavigationRoutingView(
                         destination: path,
                         createCouponViewModel: couponViewModel,
-//                        couponDetailViewModel: CouponDetailViewModel(),
                         myCouponViewModel: myCouponViewModel
                     )
                 }
@@ -42,7 +42,7 @@ struct HomeView: View {
     ///  쿠폰 만들러 가기
     func createCouponCTACardView() -> some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 30)
+            RoundedRectangle(cornerRadius: 20)
                 .fill(Color.mainViolet100)
             
             VStack(alignment: .center, spacing: 20) {
@@ -52,17 +52,19 @@ struct HomeView: View {
                     .multilineTextAlignment(.center)
                 
                 // TODO: - Image 연결
-                Rectangle()
-                    .frame(width: 120, height: 120)
+                DotLottieAnimation(fileName: "giftbox", config: AnimationConfig(autoplay: true, loop: true)
+                )
+                .view()
+                .frame(minWidth: 150, minHeight: 150)
+                .padding(-16)
                 
                 Button(action: {
                     navPathManager.pushCreatePath(.selectTemplate)
                 }) {
-                    Text("쿠폰 만들러 가기")
+                    Text("쿠폰 만들러 가기 > ")
                         .font(.sb1)
                 }
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
-                //.padding(.horizontal, 16)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 20)
@@ -87,7 +89,7 @@ struct HomeView: View {
             navPathManager.pushMyCouponPath(.couponInventory(couponType))
         } label: {
             HStack(alignment: .center, spacing: 8) {
-        
+                
                 Rectangle()
                     .frame(width: 38, height: 38)
                 
@@ -106,7 +108,7 @@ struct HomeView: View {
         }
         .background(Color.gray100)
         .clipShape(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 15)
         )
         .padding(.bottom, 6)
     }
@@ -129,7 +131,7 @@ struct HomeView: View {
             .padding(.top, 8)
         }
     }
-
+    
     // TODO: - 미사용 쿠폰 리스트
     /// 1. fetching
     ///     1.1. 에러핸들링
@@ -138,23 +140,40 @@ struct HomeView: View {
     ///     2.2.  HStack으로 카드리스트뷰
     /// 3. 5개 카드 이후, 더보기 카드
     func unusedCouponListView() -> some View {
-        ScrollView(.horizontal) {
-            HStack(alignment: .center, spacing: 8) {
-                
-                // TODO: - 일정 갯수 이상 나오면, 더보기 카드(보관함)
-                ForEach(homeViewModel.mockCoupons) { coupon in
-                    Button {
-                        navPathManager.pushMyCouponPath(.couponDetail(coupon))
-                    } label: {
-                        BDMiniCoupon(coupon: coupon)
-                    }
-                    
+        VStack {
+            // TODO: - 빈 경우, 어떻게 넣을 지 추가
+            if homeViewModel.coupons.isEmpty {
+                VStack {
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Text(couponType.emptyUsedText)
                 }
+                .multilineTextAlignment(.center)
+                .lineSpacing(8)
+                .frame(maxWidth: .infinity)
+                .font(.sb3)
+                .foregroundStyle(Color.textCaption1)
+                
+                Spacer()
+            } else {
+                ScrollView(.horizontal) {
+                    HStack(alignment: .center, spacing: 8) {
+                        ForEach(homeViewModel.coupons) { coupon in
+                            Button {
+                                navPathManager.pushMyCouponPath(.couponDetail(coupon))
+                            } label: {
+                                BDMiniCoupon(coupon: coupon)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                }.scrollIndicators(.hidden)
             }
-            .padding(.horizontal, 16)
-        }.scrollIndicators(.hidden)
+        }
     }
 }
+
 
 #Preview {
     HomeView()

@@ -50,7 +50,7 @@ struct BDButtonStyle: ButtonStyle {
             .frame(height: 56)
             .font(.sb1)
             .background(buttonType.backgroundColor)
-            .clipShape(Capsule())
+            .clipShape(RoundedRectangle(cornerRadius: 15))
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
             .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
