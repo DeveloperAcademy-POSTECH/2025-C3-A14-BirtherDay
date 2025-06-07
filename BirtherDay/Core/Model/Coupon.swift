@@ -127,7 +127,7 @@ extension RetrieveCouponResponse {
 //            fatalError("No user ID found")
 //        }
         
-        return .init(couponId: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
+        return .init(couponId: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가프레이가프레이가프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
         )
     }()
 }

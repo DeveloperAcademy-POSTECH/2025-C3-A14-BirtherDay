@@ -42,9 +42,9 @@ struct BDNavigationRoutingView: View {
             case .couponDetail(let coupon):
                 CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: coupon))
                 
-            case .interaction:
-                Text("interaction")
-//                CouponInteractionView(viewModel: couponDetailViewModel)
+            case .interaction(let viewModel):
+//                Text("interaction")
+                CouponInteractionView(viewModel: viewModel)
                 
             case .interactionComplete:
                 InteractionCompleteView()
