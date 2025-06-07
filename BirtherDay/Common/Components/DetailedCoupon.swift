@@ -18,16 +18,19 @@ struct DetailedCoupon: View {
 //        ScrollView {
             VStack(spacing: 0) {
                 mainCouponView()
-                dashedLineView(color: couponData.template.dashLineColor, color2: couponData.template.basicColor)
-                subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
-                dashedLineView(color: Color.gray200, color2: Color.white)
-                imageListView()
+                if !couponData.imageList.isEmpty {
+                    dashedLineView(color: couponData.template.dashLineColor, color2: couponData.template.basicColor)
+                    subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
+                    dashedLineView(color: Color.gray200, color2: Color.white)
+                    imageListView()
+                }
                 dashedLineView(color: Color.gray200, color2: Color.white)
                 subtitleView(subtitle: "💌 함께 도착한 편지를 읽어보세요!")
                 dashedLineView(color: Color.gray200, color2: Color.white)
                 letterView()
             }
             .padding(.horizontal, 27)
+            .padding(.bottom, 133)
 //            .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
 //        }
 //        .scrollIndicators(.hidden)

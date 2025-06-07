@@ -12,10 +12,19 @@ import Kingfisher
 struct CouponCompleteView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
+    @State private var showShareModal = false
     
-    var completedCouponData: RetrieveCouponResponse? {
-        viewModel.buildCoupon()
+    private let couponService: CouponService = CouponService()
+    
+    var couponForRequest: InsertCouponRequest? {
+        viewModel.buildCouponForRequest()
     }
+    
+    var couponForResponse: RetrieveCouponResponse? {
+        viewModel.buildCouponForResponse()
+    }
+    
+    
     
     var body: some View {
         ZStack {
@@ -23,7 +32,7 @@ struct CouponCompleteView: View {
                 completedCouponView()
                     .padding(.top, 16)
             }
-            
+    
             bottomGradientView()
             
             bottomActionView()
@@ -36,12 +45,16 @@ struct CouponCompleteView: View {
                 navPathManager.popPath()
             }
         )
+        .sheet(isPresented: $showShareModal) {
+            shareModalView()
+            .presentationDetents([.height(195)])
+        }
     }
     
     func completedCouponView() -> some View {
         Group {
-            if let completedCouponData = completedCouponData {
-                DetailedCoupon(couponData: completedCouponData)
+            if let couponForResponse = couponForResponse {
+                DetailedCoupon(couponData: couponForResponse)
             } else {
                 Text("쿠폰 정보 없음")
             }
@@ -71,17 +84,82 @@ struct CouponCompleteView: View {
     }
     
     func shareButtonView() -> some View {
-        Button {} label: {
+        Button {
+            showShareModal.toggle()
+        } label: {
             Label("공유", systemImage: "square.and.arrow.up")
         }
         .buttonStyle(BDButtonStyle(buttonType: .share))
     }
     
+    func shareModalView() -> some View {
+        VStack {
+            Capsule()
+                .fill(Color.gray)
+                .frame(width: 40, height: 5)
+                .padding(.top, 2)
+            
+            Text("공유하기")
+                .font(.b2)
+                .padding(.top, 16)
+            
+            HStack(spacing: 25) {
+                kakaoShareButtonView()
+                moreShareButtonView()
+            }
+            .padding(.top, 24)
+        }
+    }
+    
     func navigateHomeButtonView() -> some View {
-        Button {} label: {
+        Button {
+            if let couponForRequest = self.couponForRequest {
+                Task {
+                    do {
+                        _ = try await couponService.insertCoupon(couponForRequest)
+                    } catch {
+                        print("쿠폰 등록 실패: \(error.localizedDescription)")
+                    }
+                }
+            } else {
+                print("쿠폰 등록 실패: 데이터 불완전")
+            }
+        } label: {
             Text("홈으로")
         }
         .buttonStyle(BDButtonStyle(buttonType: .activate))
+    }
+    
+    func kakaoShareButtonView() -> some View {
+        VStack {
+            Button {
+                
+            } label: {
+                Image("kakaoIcon")
+                    .resizable()
+                    .frame(height: 57)
+                    .frame(width: 57)
+            }
+            
+            Text("카카오톡")
+                .font(.r1)
+        }
+    }
+    
+    func moreShareButtonView() -> some View {
+        VStack {
+            Button {
+                
+            } label: {
+                Image("moreIcon")
+                    .resizable()
+                    .frame(height: 57)
+                    .frame(width: 57)
+            }
+            
+            Text("더보기")
+                .font(.r1)
+        }
     }
 }
 

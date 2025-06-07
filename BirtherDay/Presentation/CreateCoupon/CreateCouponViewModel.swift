@@ -79,8 +79,9 @@ class CreateCouponViewModel: ObservableObject {
         couponData.selectedImages.remove(at: index)
     }
     
-    func buildCoupon() -> RetrieveCouponResponse? {
-        guard let template = couponData.template,
+    func buildCouponForRequest() -> InsertCouponRequest? {
+        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
+              let template = couponData.template,
               let couponTitle = couponData.couponTitle,
               let senderName = couponData.senderName,
               let expireDate = couponData.expireDate,
@@ -89,8 +90,45 @@ class CreateCouponViewModel: ObservableObject {
             return nil
         }
 
+        return InsertCouponRequest(
+            senderId: senderId,
+            senderName: senderName,
+            template: template,
+            title: couponTitle,
+            letter: letter,
+            imageList: couponData.uploadedImagePaths,
+            thumbnail: "",
+            deadline: expireDate,
+            isUsed: false
+        )
+    }
+    
+    func buildCouponForResponse() -> RetrieveCouponResponse? {
+        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
+              let template = couponData.template,
+              let couponTitle = couponData.couponTitle,
+              let senderName = couponData.senderName,
+              let expireDate = couponData.expireDate,
+              let letter = couponData.letterContent else {
+            print("Incomplete data, cannot build Coupon")
+            return nil
+        }
+        
         return RetrieveCouponResponse(
-            couponId: "", senderId: "", senderName: senderName, template: template, title: couponTitle, letter: letter, imageList: couponData.uploadedImagePaths, thumbnail: "", deadline: expireDate, isUsed: false, createdAt: Date())
+            couponId: "",
+            senderId: senderId,
+            senderName: senderName,
+            template: template,
+            title: couponTitle,
+            letter: letter,
+            imageList: couponData.uploadedImagePaths,
+            thumbnail: "",
+            deadline: expireDate,
+            isUsed: false,
+            createdAt: Date()
+        )
         
     }
+    
+    
 }
