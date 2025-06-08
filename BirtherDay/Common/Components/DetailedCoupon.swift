@@ -16,25 +16,25 @@ struct DetailedCoupon: View {
     }
     
     var body: some View {
-//        ScrollView {
-            VStack(spacing: 0) {
-                mainCouponView()
-                if !couponData.imageList.isEmpty {
-                    dashedLineView(color: couponData.template.dashLineColor, color2: couponData.template.basicColor)
-                    subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
-                    dashedLineView(color: Color.gray200, color2: Color.white)
-                    imageListView()
-                }
+        //        ScrollView {
+        VStack(spacing: 0) {
+            mainCouponView()
+            if !couponData.imageList.isEmpty {
+                dashedLineView(color: couponData.template.dashLineColor, color2: couponData.template.basicColor)
+                subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
                 dashedLineView(color: Color.gray200, color2: Color.white)
-                subtitleView(subtitle: "💌 함께 도착한 편지를 읽어보세요!")
-                dashedLineView(color: Color.gray200, color2: Color.white)
-                letterView()
+                imageListView()
             }
-            .padding(.horizontal, 27)
-            .padding(.bottom, 133)
-//            .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
-//        }
-//        .scrollIndicators(.hidden)
+            dashedLineView(color: Color.gray200, color2: Color.white)
+            subtitleView(subtitle: "💌 함께 도착한 편지를 읽어보세요!")
+            dashedLineView(color: Color.gray200, color2: Color.white)
+            letterView()
+        }
+        .padding(.horizontal, 27)
+        .padding(.bottom, 133)
+        //            .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
+        //        }
+        //        .scrollIndicators(.hidden)
     }
     
     // 메인 쿠폰 뷰
@@ -75,47 +75,63 @@ struct DetailedCoupon: View {
             .padding(.vertical, 38)
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 30))
-    
+        
     }
     
     func imageListView() -> some View {
-        
-        // TODO: - 예시코드, 삭제 가능
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(couponData.imageList, id: \.self) { urlString in
-                    if let url = URL(string: urlString ?? "") {
-                        KFImage(url)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 300, height: 300)
-                            .clipped()
-                            .cornerRadius(10)
-                    } else {
-                        Color.gray
-                            .frame(width: 300, height: 300)
-                            .cornerRadius(10)
-                    }
-                }
-            }
-            .scrollTargetLayout()
+        ZStack {
+            Color.white
+            
+            imageCarouselView()
+                .padding(.top, 56)
+                .padding(.bottom, 68)
         }
-        .scrollTargetBehavior(.viewAligned)
-        .padding(.horizontal, 50)
         .frame(minHeight: 430)
         .clipShape(RoundedRectangle(cornerRadius: 30))
     }
     
-    // TODO: - 편지 뷰
     func letterView() -> some View {
-        VStack {
+        ZStack {
             Color.white
+            
+
+            ScrollView {
+                Text(couponData.letter)
+                    .font(.sb2)
+                    .foregroundStyle(Color.textTitle)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 25)
+            }
         }
         .frame(minHeight: 430)
         .clipShape(RoundedRectangle(cornerRadius: 30))
     }
+    
+    func imageCarouselView() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 20) {
+                let urls = couponData.imageList.compactMap { URL(string: $0 ?? "")}
+                ForEach(Array(urls.enumerated()), id: \.element) { index, url in
+                    imageItemView(url: url)
+                        .padding(.leading, index == 0 ? 50 : 0) // 첫 번째 이미지에 padding
+                        .padding(.trailing, index == urls.count - 1 ? 50 : 0) // 마지막 이미지에 padding
+                }
+            }
+        }
+    }
+    
+    // CarouselView의 내부 이미지 뷰
+    func imageItemView(url: URL) -> some View {
+        KFImage(url)
+            .resizable()
+            .frame(
+                width: 215,
+                height: 306
+            )
+            .aspectRatio(contentMode: .fit)
+            .clipped()
+            .cornerRadius(10)
+    }
 }
-//
-//#Preview {
-//    DetailedCoupon(couponData: )
-//}
