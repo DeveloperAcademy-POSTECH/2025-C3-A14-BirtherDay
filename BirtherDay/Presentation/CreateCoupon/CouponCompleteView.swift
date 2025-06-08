@@ -24,8 +24,6 @@ struct CouponCompleteView: View {
         viewModel.buildCouponForResponse()
     }
     
-    
-    
     var body: some View {
         ZStack {
             ScrollView {
@@ -55,6 +53,9 @@ struct CouponCompleteView: View {
         Group {
             if let couponForResponse = couponForResponse {
                 DetailedCoupon(couponData: couponForResponse)
+                    .onAppear {
+                        print("✅ couponForResponse: \(couponForResponse)")
+                    }
             } else {
                 Text("쿠폰 정보 없음")
             }
@@ -117,6 +118,7 @@ struct CouponCompleteView: View {
                 Task {
                     do {
                         _ = try await couponService.insertCoupon(couponForRequest)
+                        navPathManager.goToRoot()
                     } catch {
                         print("쿠폰 등록 실패: \(error.localizedDescription)")
                     }
@@ -124,6 +126,7 @@ struct CouponCompleteView: View {
             } else {
                 print("쿠폰 등록 실패: 데이터 불완전")
             }
+            
         } label: {
             Text("홈으로")
         }

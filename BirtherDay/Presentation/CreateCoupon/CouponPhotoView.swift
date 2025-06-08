@@ -118,7 +118,7 @@ struct CouponPhotoView: View {
                 .cornerRadius(10)
 
             Button(action: {
-                viewModel.deletePhoto(index: index)
+                viewModel.deletePhoto(image: image)
             }) {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()
@@ -134,14 +134,20 @@ struct CouponPhotoView: View {
     func nextButtonView() -> some View {
         Button(
             action: {
-                viewModel.update(
-                    .photos(
-                        images: selectedImages,
-                        paths: uploadedImagePaths
+                Task {
+                    let uploadedPaths = await viewModel.uploadImages(selectedImages)
+                    uploadedImagePaths = uploadedPaths
+
+                    viewModel.update(
+                        .photos(
+                            images: selectedImages,
+                            paths: uploadedImagePaths
+                        )
                     )
-                )
-                navPathManager.pushCreatePath(.couponComplete)
-        }) {
+
+                    navPathManager.pushCreatePath(.couponComplete)
+                }
+            }) {
             Text("다음")
                 .font(.system(size: 18, weight: .semibold))
         }

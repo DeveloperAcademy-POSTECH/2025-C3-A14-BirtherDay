@@ -75,8 +75,10 @@ class CreateCouponViewModel: ObservableObject {
         return uploadedPaths
     }
     
-    func deletePhoto(index: Int) {
-        couponData.selectedImages.remove(at: index)
+    func deletePhoto(image: UIImage) {
+        if let index = couponData.selectedImages.firstIndex(where: { $0.pngData() == image.pngData() }) {
+            couponData.selectedImages.remove(at: index)
+        }
     }
     
     func buildCouponForRequest() -> InsertCouponRequest? {
@@ -127,8 +129,5 @@ class CreateCouponViewModel: ObservableObject {
             isUsed: false,
             createdAt: Date()
         )
-        
     }
-    
-    
 }
