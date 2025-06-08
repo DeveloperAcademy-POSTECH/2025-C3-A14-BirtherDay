@@ -116,10 +116,10 @@ struct CouponPhotoView: View {
                 .frame(width: 300, height: 300)
                 .clipped()
                 .cornerRadius(10)
-
-            Button(action: {
+            
+            Button {
                 viewModel.deletePhoto(image: image)
-            }) {
+            } label: {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()
                     .frame(width: 25, height: 25)

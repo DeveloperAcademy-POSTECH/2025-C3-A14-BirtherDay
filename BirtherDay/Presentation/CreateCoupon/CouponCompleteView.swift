@@ -13,17 +13,8 @@ struct CouponCompleteView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     @State private var showShareModal = false
-    
-    private let couponService: CouponService = CouponService()
-    
-    var couponForRequest: InsertCouponRequest? {
-        viewModel.buildCouponForRequest()
-    }
-    
-    var couponForResponse: RetrieveCouponResponse? {
-        viewModel.buildCouponForResponse()
-    }
-    
+    private let shareModalHeight: CGFloat = 195
+        
     var body: some View {
         ZStack {
             ScrollView {
@@ -45,17 +36,14 @@ struct CouponCompleteView: View {
         )
         .sheet(isPresented: $showShareModal) {
             shareModalView()
-            .presentationDetents([.height(195)])
+            .presentationDetents([.height(shareModalHeight)])
         }
     }
     
     func completedCouponView() -> some View {
         Group {
-            if let couponForResponse = couponForResponse {
+            if let couponForResponse = viewModel.couponForResponse {
                 DetailedCoupon(couponData: couponForResponse)
-                    .onAppear {
-                        print("✅ couponForResponse: \(couponForResponse)")
-                    }
             } else {
                 Text("쿠폰 정보 없음")
             }
@@ -97,7 +85,10 @@ struct CouponCompleteView: View {
         VStack {
             Capsule()
                 .fill(Color.gray)
-                .frame(width: 40, height: 5)
+                .frame(
+                    width: 40,
+                    height: 5
+                )
                 .padding(.top, 2)
             
             Text("공유하기")
@@ -114,19 +105,8 @@ struct CouponCompleteView: View {
     
     func navigateHomeButtonView() -> some View {
         Button {
-            if let couponForRequest = self.couponForRequest {
-                Task {
-                    do {
-                        _ = try await couponService.insertCoupon(couponForRequest)
-                        navPathManager.goToRoot()
-                    } catch {
-                        print("쿠폰 등록 실패: \(error.localizedDescription)")
-                    }
-                }
-            } else {
-                print("쿠폰 등록 실패: 데이터 불완전")
-            }
-            
+            viewModel.uploadCoupon()
+            navPathManager.goToRoot()
         } label: {
             Text("홈으로")
         }
@@ -140,8 +120,10 @@ struct CouponCompleteView: View {
             } label: {
                 Image("kakaoIcon")
                     .resizable()
-                    .frame(height: 57)
-                    .frame(width: 57)
+                    .frame(
+                        width: 57,
+                        height: 57
+                    )
             }
             
             Text("카카오톡")
@@ -156,8 +138,10 @@ struct CouponCompleteView: View {
             } label: {
                 Image("moreIcon")
                     .resizable()
-                    .frame(height: 57)
-                    .frame(width: 57)
+                    .frame(
+                        width: 57,
+                        height: 57
+                    )
             }
             
             Text("더보기")

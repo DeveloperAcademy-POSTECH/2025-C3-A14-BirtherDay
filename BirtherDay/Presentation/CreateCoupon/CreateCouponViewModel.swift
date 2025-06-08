@@ -28,10 +28,23 @@ struct CouponData {
 class CreateCouponViewModel: ObservableObject {
     @Published var couponData = CouponData()
     
-    private let fileService: FileService
+    var couponForRequest: InsertCouponRequest? {
+        buildCouponForRequest()
+    }
     
-    init(fileService: FileService = FileService()) {
+    var couponForResponse: RetrieveCouponResponse? {
+        buildCouponForResponse()
+    }
+    
+    private let fileService: FileService
+    private let couponService: CouponService
+    
+    init(
+        fileService: FileService = FileService(),
+        couponService: CouponService = CouponService()
+    ) {
         self.fileService = fileService
+        self.couponService = couponService
     }
     
     func update(_ field: CouponField) {
@@ -81,6 +94,20 @@ class CreateCouponViewModel: ObservableObject {
         }
     }
     
+    func uploadCoupon() {
+        if let couponForRequest = couponForRequest {
+            Task {
+                do {
+                    _ = try await couponService.insertCoupon(couponForRequest)
+                } catch {
+                    print("쿠폰 등록 실패: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            print("쿠폰 등록 실패: 데이터가 모두 입력되지 않음")
+        }
+    }
+    
     func buildCouponForRequest() -> InsertCouponRequest? {
         guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
               let template = couponData.template,
@@ -88,7 +115,6 @@ class CreateCouponViewModel: ObservableObject {
               let senderName = couponData.senderName,
               let expireDate = couponData.expireDate,
               let letter = couponData.letterContent else {
-            print("Incomplete data, cannot build Coupon")
             return nil
         }
 
@@ -112,7 +138,6 @@ class CreateCouponViewModel: ObservableObject {
               let senderName = couponData.senderName,
               let expireDate = couponData.expireDate,
               let letter = couponData.letterContent else {
-            print("Incomplete data, cannot build Coupon")
             return nil
         }
         
