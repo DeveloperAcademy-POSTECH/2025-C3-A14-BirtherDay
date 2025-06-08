@@ -17,8 +17,6 @@ struct BDTemplate: View {
     }
     
     var body: some View {
-        var formattedDate = DateFormatter.expiredDateFormatter.string(from: data.deadline)
-        
         VStack(spacing: 0) {
             mainCouponView()
             if isShownSubtitleView {
@@ -39,9 +37,10 @@ struct BDTemplate: View {
             
             Spacer()
             
-            // TODO: - Image 연결
-            Rectangle()
-                .frame(width: 200, height: 200)
+            Image(data.template == .orange ? "Card1Box" : "Card2Box")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 150, height: 150)
             
             Spacer()
             
@@ -63,11 +62,13 @@ struct BDTemplate: View {
     /// 전송자 및 만료날짜
     func senderDateView()-> some View {
         VStack(alignment: .leading, spacing: 4) {
+            var formattedDate = DateFormatter.expiredDateFormatter.string(from: data.deadline)
+            
             Text("From. \(data.senderName)")
                 .font(.sb3)
                 .foregroundStyle(Color.textTitle)
             
-            Text("\(data.deadline)까지")
+            Text("\(formattedDate)까지")
                 .font(.r3)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
