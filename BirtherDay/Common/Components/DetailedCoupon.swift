@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct DetailedCoupon: View {
     var couponData: RetrieveCouponResponse
@@ -77,11 +78,30 @@ struct DetailedCoupon: View {
     
     }
     
-    // TODO: - 첨부한 이미지 뷰
     func imageListView() -> some View {
-        VStack {
-            Color.white
+        
+        // TODO: - 예시코드, 삭제 가능
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(couponData.imageList, id: \.self) { urlString in
+                    if let url = URL(string: urlString ?? "") {
+                        KFImage(url)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 300, height: 300)
+                            .clipped()
+                            .cornerRadius(10)
+                    } else {
+                        Color.gray
+                            .frame(width: 300, height: 300)
+                            .cornerRadius(10)
+                    }
+                }
+            }
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.viewAligned)
+        .padding(.horizontal, 50)
         .frame(minHeight: 430)
         .clipShape(RoundedRectangle(cornerRadius: 30))
     }
