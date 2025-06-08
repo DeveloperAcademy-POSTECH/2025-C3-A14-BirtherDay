@@ -70,8 +70,12 @@ struct HomeView: View {
                 Button(action: {
                     navPathManager.pushCreatePath(.selectTemplate)
                 }) {
-                    Text("쿠폰 만들러 가기 > ")
-                        .font(.sb1)
+                    HStack(spacing: 0) {
+                        Text("쿠폰 만들러 가기 ")
+                        Image(systemName: "chevron.right")
+                            .imageScale(.small)
+                    }
+                    .font(.sb1)
                 }
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
             }
@@ -109,12 +113,12 @@ struct HomeView: View {
                     .lineLimit(2)
                     .frame(alignment: .leading)
                     .multilineTextAlignment(.leading)
-                
-                //Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.trailing, 8)
             .padding(20)
         }
+        .frame(maxWidth: .infinity)
         .background(Color.gray100)
         .clipShape(
             RoundedRectangle(cornerRadius: 15)
@@ -175,6 +179,11 @@ struct HomeView: View {
                             } label: {
                                 BDMiniCoupon(coupon: coupon)
                             }
+                        }
+                        Button {
+                            navPathManager.pushMyCouponPath(.couponInventory(.received))
+                        } label: {
+                            BDAllMiniCoupon()
                         }
                     }
                     .padding(.horizontal, 16)

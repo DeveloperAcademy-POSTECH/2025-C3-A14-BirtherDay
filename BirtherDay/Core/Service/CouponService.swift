@@ -88,6 +88,7 @@ final class CouponService {
                 .from("coupon")
                 .select()
                 .eq("receiver_id", value: userId)
+                .order("deadline", ascending: true)
                 .limit(5)
                 .execute()
             

@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct BDAllMiniCoupon: View {
-    let coupon: RetrieveCouponResponse
-    
     var body: some View {
         VStack(spacing: 0) {
             couponMainView()
@@ -87,5 +85,5 @@ struct BDAllMiniCoupon: View {
 }
 
 #Preview {
-    BDAllMiniCoupon(coupon: .stub01)
+    BDAllMiniCoupon()
 }
