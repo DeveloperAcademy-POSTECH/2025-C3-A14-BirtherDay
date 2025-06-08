@@ -15,6 +15,8 @@ struct CouponInfoView: View {
     @State private var senderName: String = ""
     @State private var selectedDate: Date = Date()
     @State private var showDatePicker: Bool = false
+    @State private var showTitleLengthWarning: Bool = false
+    let maxCouponTitleLength = 25
     
     // 랜덤 예시 목록
     private let randomExamples = [
@@ -123,7 +125,7 @@ struct CouponInfoView: View {
     
     // MARK: - Input Component Functions
     func couponTitleInput() -> some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading) {
             HStack {
                 Text("쿠폰명을 입력해주세요")
                     .font(.sb1)
@@ -150,13 +152,32 @@ struct CouponInfoView: View {
                     .cornerRadius(60)
                 }
             }
+            
+            Spacer()
+                .frame(height: 16)
 
-            TextField("함께할 수 있는 쿠폰이라면 더 좋아요.", text: $couponTitle)
-                .font(.m1)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 13)
-                .background(Color.bgLight)
-                .cornerRadius(8)
+            ZStack(alignment: .bottomLeading) {
+                VStack(spacing: 0) {
+                    TextField("함께할 수 있는 쿠폰이라면 더 좋아요.", text: $couponTitle)
+                        .font(.m1)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 13)
+                        .background(Color.bgLight)
+                        .cornerRadius(8)
+                        .onChange(of: couponTitle) {
+                            showTitleLengthWarning = couponTitle.count > maxCouponTitleLength
+                        }
+                }
+
+                // ✅ 경고 문구가 아래 간격에 "떠서" 들어옴
+                if showTitleLengthWarning {
+                    Text("25자 이내로 입력해주세요")
+                        .font(.system(size: 13))
+                        .foregroundColor(.red)
+                        .padding(.leading, 20)
+                        .offset(y: 20)
+                }
+            }
         }
     }
     
