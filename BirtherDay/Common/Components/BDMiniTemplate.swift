@@ -29,7 +29,7 @@ struct BDMiniTemplate: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack() {
             senderDateView()
             
             Spacer()
@@ -41,23 +41,30 @@ struct BDMiniTemplate: View {
             Spacer()
             
             titleView()
+            
+            Spacer()
+                .frame(height: 9.29)
         }
-        .padding(.vertical, 20)
-        .padding(.horizontal, 16)
+        .padding(.vertical, 12.53)
+        .padding(.horizontal, 11.38)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
-            bluredCircleView()
+            backgroundImage(template: template) // <-- 이미지 배경 사용
         }
-        .background(template.backgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .overlay(RoundedRectangle(cornerRadius: 20).stroke(template.strokeColor, lineWidth: 1))
+    }
+    
+    /// 에셋에 등록된 카드 배경 이미지 사용
+    func backgroundImage(template: CouponTemplate) -> some View {
+        Image(template == .orange ? "Card1Back" : "Card2Back")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
     }
     
     /// 전송자 및 만료날짜
     func senderDateView() -> some View {
         VStack(alignment: .leading, spacing: 3) {
             Text("From. \(senderName)")
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: 9, weight: .semibold))
                 .foregroundStyle(Color.textTitle)
             
             Text("\(DateFormatter.expiredDateFormatter.string(from: expireDate))까지")
@@ -72,48 +79,17 @@ struct BDMiniTemplate: View {
         Image(template == .orange ? "Card1Box" : "Card2Box")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 60, height: 60)
+            .frame(width: 66, height: 66)
     }
     
     /// 타이틀 뷰
     func titleView() -> some View {
         Text(couponTitle)
-            .font(.system(size: 12, weight: .semibold))
+            .font(.system(size: 10, weight: .semibold))
             .foregroundStyle(Color.textTitle)
             .multilineTextAlignment(.center)
             .lineLimit(2)
             .minimumScaleFactor(0.8)
-    }
-    
-    /// 미니 버전 블러 원형 배경
-    func bluredCircleView() -> some View {
-        ZStack {
-            // 좌상단 원
-            VStack {
-                HStack {
-                    Circle()
-                        .foregroundStyle(template.backgroundPointColor[0].opacity(0.6))
-                        .blur(radius: 40)
-                        .frame(width: 80, height: 80)
-                        .offset(x: -20, y: -20)
-                    Spacer()
-                }
-                Spacer()
-            }
-            
-            // 우하단 원
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Circle()
-                        .foregroundStyle(template.backgroundPointColor[1].opacity(0.5))
-                        .blur(radius: 35)
-                        .frame(width: 100, height: 100)
-                        .offset(x: 30, y: 30)
-                }
-            }
-        }
     }
 }
 

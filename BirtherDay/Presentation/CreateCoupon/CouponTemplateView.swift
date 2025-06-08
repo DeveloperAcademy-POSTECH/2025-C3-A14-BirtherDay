@@ -16,7 +16,7 @@ struct CouponTemplateView: View {
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
-                .frame(height: 12)
+                .frame(height: 28)
             
             titleSection() // 원하는 쿠폰 디자인을 선택해 주세요 뷰
             

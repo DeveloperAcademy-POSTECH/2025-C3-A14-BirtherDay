@@ -53,7 +53,6 @@ struct CouponLetterView: View {
             couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요"
         )
         .frame(width: 140, height: 183)
-        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
     
     func letterInputSection() -> some View {

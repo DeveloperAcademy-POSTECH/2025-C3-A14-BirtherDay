@@ -29,7 +29,7 @@ struct CouponInfoView: View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: 16)
+                    .frame(height: 32)
                 
                 cardPreviewSection() // 쿠폰 실시간보기 뷰
                 
@@ -67,7 +67,6 @@ struct CouponInfoView: View {
             couponTitle: couponTitle.isEmpty ? "쿠폰명을 입력해주세요" : couponTitle
         )
         .frame(width: 140, height: 183)
-        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
     
     func inputFormSection() -> some View {
