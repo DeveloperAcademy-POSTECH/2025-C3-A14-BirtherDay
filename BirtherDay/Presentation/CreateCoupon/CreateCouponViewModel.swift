@@ -88,20 +88,12 @@ class CreateCouponViewModel: ObservableObject {
         return uploadedPaths
     }
     
-    func deletePhoto(image: UIImage) {
-        if let index = couponData.selectedImages.firstIndex(where: { $0.pngData() == image.pngData() }) {
-            couponData.selectedImages.remove(at: index)
-        }
-    }
-    
-    func uploadCoupon() {
+    func uploadCoupon() async {
         if let couponForRequest = couponForRequest {
-            Task {
-                do {
-                    _ = try await couponService.insertCoupon(couponForRequest)
-                } catch {
-                    print("쿠폰 등록 실패: \(error.localizedDescription)")
-                }
+            do {
+                _ = try await couponService.insertCoupon(couponForRequest)
+            } catch {
+                print("쿠폰 등록 실패: \(error.localizedDescription)")
             }
         } else {
             print("쿠폰 등록 실패: 데이터가 모두 입력되지 않음")

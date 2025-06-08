@@ -11,8 +11,12 @@ import Kingfisher
 
 struct CouponCompleteView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    
     @ObservedObject var viewModel: CreateCouponViewModel
+    
     @State private var showShareModal = false
+    @State private var isLoading: Bool = false
+    
     private let shareModalHeight: CGFloat = 195
         
     var body: some View {
@@ -24,9 +28,13 @@ struct CouponCompleteView: View {
     
             bottomGradientView()
             
-            bottomActionView()
-                .padding(.horizontal, 15)
-                .padding(.bottom, 20)
+            if isLoading {
+                ProgressView()
+                    .padding(.bottom, 20)
+            } else {
+                bottomActionView()
+                    .padding(.horizontal, 15)
+            }
         }
         .keyboardAware(
             navigationTitle: "사진 첨부",
@@ -105,8 +113,12 @@ struct CouponCompleteView: View {
     
     func navigateHomeButtonView() -> some View {
         Button {
-            viewModel.uploadCoupon()
-            navPathManager.goToRoot()
+            Task {
+                isLoading = true
+                await viewModel.uploadCoupon()
+                isLoading = false
+                navPathManager.goToRoot()
+            }
         } label: {
             Text("홈으로")
         }

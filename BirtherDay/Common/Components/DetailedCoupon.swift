@@ -111,15 +111,16 @@ struct DetailedCoupon: View {
     
     func imageCarouselView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 20) {
+            LazyHStack(spacing: 15) {
                 let urls = couponData.imageList.compactMap { URL(string: $0 ?? "")}
                 ForEach(Array(urls.enumerated()), id: \.element) { index, url in
                     imageItemView(url: url)
-                        .padding(.leading, index == 0 ? 50 : 0) // 첫 번째 이미지에 padding
-                        .padding(.trailing, index == urls.count - 1 ? 50 : 0) // 마지막 이미지에 padding
                 }
             }
+            .padding(.horizontal, 50)
+            .scrollTargetLayout()
         }
+        .scrollTargetBehavior(.viewAligned)
     }
     
     // CarouselView의 내부 이미지 뷰
