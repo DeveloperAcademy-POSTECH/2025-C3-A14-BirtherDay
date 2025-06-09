@@ -18,7 +18,7 @@ class HomeViewModel: ObservableObject {
     @Published var userError: UserError?
     @Published var couponError: CouponError?
     
-    let couponService = CouponService()
+    private let couponService = CouponService()
     
     /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
     func fetchCoupons() async {

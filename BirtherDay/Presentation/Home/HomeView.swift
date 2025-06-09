@@ -12,12 +12,8 @@ struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @StateObject private var couponViewModel = CreateCouponViewModel()
     @State private var couponType: CouponType = .received
-    @ObservedObject var homeViewModel: HomeViewModel
+    @StateObject private var homeViewModel = HomeViewModel()
     private var myCouponViewModel = MyCouponViewModel()
-
-    init(homeViewModel: HomeViewModel) {
-        self.homeViewModel = homeViewModel
-    }
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
@@ -67,9 +63,9 @@ struct HomeView: View {
                 .frame(minWidth: 150, minHeight: 150)
                 .padding(-16)
                 
-                Button(action: {
+                Button {
                     navPathManager.pushCreatePath(.selectTemplate)
-                }) {
+                } label: {
                     HStack(spacing: 0) {
                         Text("쿠폰 만들러 가기 ")
                         Image(systemName: "chevron.right")
@@ -195,6 +191,6 @@ struct HomeView: View {
 
 
 #Preview {
-    HomeView(homeViewModel: HomeViewModel())
+    HomeView()
         .environmentObject(BDNavigationPathManager())
 }

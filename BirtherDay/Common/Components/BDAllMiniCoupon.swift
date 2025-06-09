@@ -30,7 +30,7 @@ struct BDAllMiniCoupon: View {
                     Font.custom("Pretendard", size: 64)
                       .weight(.semibold)
                   )
-                  .foregroundStyle(Color.gray)
+                  .foregroundStyle(Color.gray300)
                   .frame(maxWidth: .infinity, alignment: .center)
                 
                 Spacer()
