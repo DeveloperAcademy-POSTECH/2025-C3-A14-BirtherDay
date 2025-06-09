@@ -34,7 +34,9 @@ struct HomeView: View {
                         myCouponViewModel: myCouponViewModel
                     )
                 }
-            }.scrollIndicators(.hidden)
+            }
+            .scrollIndicators(.hidden)
+            .navigationBarTitleDisplayMode(.inline)
         }
         .onAppear {
             Task {

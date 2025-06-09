@@ -18,14 +18,14 @@ struct CouponCompleteView: View {
     @State private var isLoading: Bool = false
     
     private let shareModalHeight: CGFloat = 195
-        
+    
     var body: some View {
         ZStack {
             ScrollView {
                 completedCouponView()
                     .padding(.top, 16)
             }
-    
+            
             bottomGradientView()
             
             if isLoading {
@@ -36,12 +36,12 @@ struct CouponCompleteView: View {
                     .padding(.horizontal, 15)
             }
         }
-        .background(completedCouponData?.template.backgroundColor)
+        .background(viewModel.couponData.template?.backgroundColor)
         .keyboardAware()
         .bdNavigationBar(title: "쿠폰 생성 완료", backButtonAction: navPathManager.popPath)
         .sheet(isPresented: $showShareModal) {
             shareModalView()
-            .presentationDetents([.height(shareModalHeight)])
+                .presentationDetents([.height(shareModalHeight)])
         }
     }
     

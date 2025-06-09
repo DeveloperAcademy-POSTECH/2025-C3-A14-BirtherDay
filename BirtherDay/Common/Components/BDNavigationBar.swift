@@ -31,7 +31,6 @@ struct BDNavigationBar: ViewModifier {
     private func setupNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.clear
 
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
