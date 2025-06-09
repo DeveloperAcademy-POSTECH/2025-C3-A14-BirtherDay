@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CouponInfoView {
+struct CouponInfoView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     
@@ -15,29 +15,37 @@ struct CouponInfoView {
     @State private var senderName: String = ""
     @State private var selectedDate: Date = Date()
     @State private var showDatePicker: Bool = false
-}
-
-// MARK: - Main View
-extension CouponInfoView: View {
+    @State private var showTitleLengthWarning: Bool = false
+    let maxCouponTitleLength = 25
+    
+    // 랜덤 예시 목록
+    private let randomExamples = [
+        "데이트 초대 쿠폰",
+        "야식 먹기 쿠폰",
+        "산책 가기 쿠폰",
+        "같이 영화보기 쿠폰",
+        "게임 같이 하기 쿠폰"
+    ]
+    
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: 16)
+                    .frame(height: 32)
                 
-                cardPreviewSection // 쿠폰 실시간보기 뷰
+                cardPreviewSection() // 쿠폰 실시간보기 뷰
                 
                 Spacer()
                     .frame(height: 26)
                 
-                inputFormSection // 쿠폰 정보 입력(쿠폰명, 보내는 이, 마감기한) 뷰
+                inputFormSection() // 쿠폰 정보 입력(쿠폰명, 보내는 이, 마감기한) 뷰
                 
                 Spacer()
             }
             
             Spacer()
             
-            nextButton
+            nextButton()
         }
         .keyboardAware(
             navigationTitle: "쿠폰 멘트 작성하기",
@@ -49,72 +57,51 @@ extension CouponInfoView: View {
             loadExistingData()
         }
         .sheet(isPresented: $showDatePicker) {
-            DatePickerSheet(selectedDate: $selectedDate, showDatePicker: $showDatePicker)
+            datePickerSheet()
         }
     }
-}
-
-// MARK: - View Components
-extension CouponInfoView {
-    private var cardPreviewSection: some View {
-        CouponCardPreview(
-            template: selectedTemplate,
+    
+    func cardPreviewSection() -> some View {
+        BDMiniTemplate(
+            template: selectedTemplate(),
             senderName: senderName.isEmpty ? "보내는 사람" : senderName,
             expireDate: selectedDate,
-            couponTitle: couponTitle.isEmpty ? "쿠폰명을 입력해주세요" : couponTitle,
-            dateFormatter: dateFormatter
+            couponTitle: couponTitle.isEmpty ? "쿠폰명을 입력해주세요" : couponTitle
         )
-        .frame(maxWidth: 200, maxHeight: 280)
+        .frame(width: 140, height: 183)
     }
     
-    private var inputFormSection: some View {
+    func inputFormSection() -> some View {
         VStack(alignment: .leading, spacing: 32) {
-            CouponTitleInput(couponTitle: $couponTitle)
-            SenderNameInput(senderName: $senderName)
-            DateSelectionInput(
-                selectedDate: selectedDate,
-                dateFormatter: dateFormatter,
-                onTap: { showDatePicker.toggle() }
-            )
+            couponTitleInput()
+            senderNameInput()
+            dateSelectionInput()
         }
         .padding(.horizontal, 20)
     }
     
-    private var nextButton: some View {
+    func nextButton() -> some View {
         Button(action: {
             saveDataAndNavigate()
         }) {
             Text("다음")
                 .font(.system(size: 18, weight: .semibold))
         }
-        .buttonStyle(BDButtonStyle(buttonType: isFormValid ? .activate : .deactivate))
-        .disabled(!isFormValid)
+        .buttonStyle(BDButtonStyle(buttonType: isFormValid() ? .activate : .deactivate))
+        .disabled(!isFormValid())
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
     }
-}
-
-// MARK: - Computed Properties
-extension CouponInfoView {
-    private var selectedTemplate: CouponTemplate {
+    
+    func selectedTemplate() -> CouponTemplate {
         viewModel.couponData.template ?? .orange
     }
     
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy. M. d"
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter
-    }
-    
-    private var isFormValid: Bool {
+    func isFormValid() -> Bool {
         !couponTitle.isEmpty && !senderName.isEmpty
     }
-}
-
-// MARK: - Methods
-extension CouponInfoView {
-    private func loadExistingData() {
+    
+    func loadExistingData() {
         let couponData = viewModel.couponData
         if let existingTitle = couponData.couponTitle {
             couponTitle = existingTitle
@@ -127,7 +114,7 @@ extension CouponInfoView {
         }
     }
     
-    private func saveDataAndNavigate() {
+    func saveDataAndNavigate() {
         viewModel.update(.info(
             title: couponTitle,
             senderName: senderName,
@@ -135,23 +122,10 @@ extension CouponInfoView {
         ))
         navPathManager.pushCreatePath(.couponLetter)
     }
-}
-
-// MARK: - Input Components
-struct CouponTitleInput: View {
-    @Binding var couponTitle: String
     
-    // 랜덤 예시 목록
-    private let randomExamples = [
-        "데이트 초대 쿠폰",
-        "야식 먹기 쿠폰",
-        "산책 가기 쿠폰",
-        "같이 영화보기 쿠폰",
-        "게임 같이 하기 쿠폰"
-    ]
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+    // MARK: - Input Component Functions
+    func couponTitleInput() -> some View {
+        VStack(alignment: .leading) {
             HStack {
                 Text("쿠폰명을 입력해주세요")
                     .font(.sb1)
@@ -178,22 +152,36 @@ struct CouponTitleInput: View {
                     .cornerRadius(60)
                 }
             }
+            
+            Spacer()
+                .frame(height: 16)
 
-            TextField("함께할 수 있는 쿠폰이라면 더 좋아요.", text: $couponTitle)
-                .font(.m1)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 13)
-                .background(Color.bgLight)
-                .cornerRadius(8)
+            ZStack(alignment: .bottomLeading) {
+                VStack(spacing: 0) {
+                    TextField("함께할 수 있는 쿠폰이라면 더 좋아요.", text: $couponTitle)
+                        .font(.m1)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 13)
+                        .background(Color.bgLight)
+                        .cornerRadius(8)
+                        .onChange(of: couponTitle) {
+                            showTitleLengthWarning = couponTitle.count > maxCouponTitleLength
+                        }
+                }
+
+                // ✅ 경고 문구가 아래 간격에 "떠서" 들어옴
+                if showTitleLengthWarning {
+                    Text("25자 이내로 입력해주세요")
+                        .font(.system(size: 13))
+                        .foregroundColor(.red)
+                        .padding(.leading, 20)
+                        .offset(y: 20)
+                }
+            }
         }
     }
-}
-
-
-struct SenderNameInput: View {
-    @Binding var senderName: String
     
-    var body: some View {
+    func senderNameInput() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("보내는 사람(닉네임)을 입력해주세요")
                 .font(.sb1)
@@ -207,20 +195,14 @@ struct SenderNameInput: View {
                 .cornerRadius(8)
         }
     }
-}
-
-struct DateSelectionInput: View {
-    let selectedDate: Date
-    let dateFormatter: DateFormatter
-    let onTap: () -> Void
     
-    var body: some View {
+    func dateSelectionInput() -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("쿠폰 마감기한을 설정해주세요")
                 .font(.sb1)
                 .foregroundColor(.black)
             
-            Button(action: onTap) {
+            Button(action: { showDatePicker.toggle() }) {
                 HStack {
                     Text(DateFormatter.englishShortMonthFormatter.string(from: selectedDate))
                         .font(Font.custom("SF Pro", size: 17))
@@ -233,14 +215,9 @@ struct DateSelectionInput: View {
             }
         }
     }
-}
-
-// MARK: - Date Picker Sheet
-struct DatePickerSheet: View {
-    @Binding var selectedDate: Date
-    @Binding var showDatePicker: Bool
     
-    var body: some View {
+    // MARK: - Date Picker Sheet Function
+    func datePickerSheet() -> some View {
         NavigationView {
             DatePicker("마감 날짜 선택", selection: $selectedDate, displayedComponents: .date)
                 .datePickerStyle(GraphicalDatePickerStyle())
@@ -250,44 +227,52 @@ struct DatePickerSheet: View {
         }
         .presentationDetents([.height(400)])
     }
-}
-
-// MARK: - Card Preview Component
-struct CouponCardPreview: View {
-    let template: CouponTemplate
-    let senderName: String
-    let expireDate: Date
-    let couponTitle: String
-    let dateFormatter: DateFormatter
-}
-
-extension CouponCardPreview {
-    var body: some View {
+    
+    // MARK: - Card Preview Functions
+    func couponCardPreview(
+        template: CouponTemplate,
+        senderName: String,
+        expireDate: Date,
+        couponTitle: String,
+        dateFormatter: DateFormatter
+    ) -> some View {
         ZStack {
-            backgroundImage
-            contentOverlay
+            backgroundImage(template: template)
+            contentOverlay(
+                template: template,
+                senderName: senderName,
+                expireDate: expireDate,
+                couponTitle: couponTitle,
+                dateFormatter: dateFormatter
+            )
         }
         .frame(width: 140, height: 183)
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
     
-    private var backgroundImage: some View {
+    func backgroundImage(template: CouponTemplate) -> some View {
         Image(template == .orange ? "Card1Back" : "Card2Back")
             .resizable()
             .aspectRatio(contentMode: .fill)
     }
     
-    private var contentOverlay: some View {
+    func contentOverlay(
+        template: CouponTemplate,
+        senderName: String,
+        expireDate: Date,
+        couponTitle: String,
+        dateFormatter: DateFormatter
+    ) -> some View {
         VStack(spacing: 0) {
-            cardHeaderInfo
+            cardHeaderInfo(senderName: senderName, expireDate: expireDate, dateFormatter: dateFormatter)
             Spacer()
-            giftBoxImage
+            giftBoxImage(template: template)
             Spacer()
-            couponTitleSection
+            couponTitleSection(couponTitle: couponTitle)
         }
     }
     
-    private var cardHeaderInfo: some View {
+    func cardHeaderInfo(senderName: String, expireDate: Date, dateFormatter: DateFormatter) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("From. \(senderName)")
@@ -307,7 +292,7 @@ extension CouponCardPreview {
         .padding(.top, 10)
     }
     
-    private var giftBoxImage: some View {
+    func giftBoxImage(template: CouponTemplate) -> some View {
         Image(template == .orange ? "Card1Box" : "Card2Box")
             .resizable()
             .aspectRatio(contentMode: .fit)
@@ -315,7 +300,7 @@ extension CouponCardPreview {
             .padding(.vertical, 12)
     }
     
-    private var couponTitleSection: some View {
+    func couponTitleSection(couponTitle: String) -> some View {
         VStack(spacing: 2) {
             Text(couponTitle)
                 .font(.system(size: 11, weight: .medium))
