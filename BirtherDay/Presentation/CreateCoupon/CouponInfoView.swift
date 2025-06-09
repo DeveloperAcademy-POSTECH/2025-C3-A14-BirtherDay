@@ -47,12 +47,9 @@ struct CouponInfoView: View {
             
             nextButton()
         }
-        .keyboardAware(
-            navigationTitle: "쿠폰 멘트 작성하기",
-            onBackButtonTapped: {
-                navPathManager.popPath()
-            }
-        )
+        .background(Color.mainViolet50)
+        .keyboardAware()
+        .bdNavigationBar(title: "쿠폰 멘트 작성하기", backButtonAction: navPathManager.popPath)
         .onAppear {
             loadExistingData()
         }

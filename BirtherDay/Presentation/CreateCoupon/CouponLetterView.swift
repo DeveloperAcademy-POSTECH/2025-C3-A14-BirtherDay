@@ -34,12 +34,9 @@ struct CouponLetterView: View {
             
             nextButton()
         }
-        .keyboardAware(
-            navigationTitle: "편지 작성하기",
-            onBackButtonTapped: {
-                navPathManager.popPath()
-            }
-        )
+        .keyboardAware()
+        .bdNavigationBar(title: "편지 작성하기", backButtonAction: navPathManager.popPath)
+        .background(Color.mainViolet50)
         .onAppear {
             loadExistingLetter()
         }

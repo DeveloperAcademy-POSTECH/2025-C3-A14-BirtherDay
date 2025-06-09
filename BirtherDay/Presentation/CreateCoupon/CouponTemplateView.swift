@@ -35,6 +35,8 @@ struct CouponTemplateView: View {
             nextButton() // 다음 버튼
                 .padding(.horizontal, 16)
                 .padding(.bottom, 20)
+            .keyboardAware()
+            .bdNavigationBar(title: "쿠폰 디자인 선택", backButtonAction: navPathManager.popPath)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.mainViolet50)

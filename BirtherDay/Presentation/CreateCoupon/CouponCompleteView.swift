@@ -36,12 +36,9 @@ struct CouponCompleteView: View {
                     .padding(.horizontal, 15)
             }
         }
-        .keyboardAware(
-            navigationTitle: "사진 첨부",
-            onBackButtonTapped: {
-                navPathManager.popPath()
-            }
-        )
+        .background(completedCouponData?.template.backgroundColor)
+        .keyboardAware()
+        .bdNavigationBar(title: "쿠폰 생성 완료", backButtonAction: navPathManager.popPath)
         .sheet(isPresented: $showShareModal) {
             shareModalView()
             .presentationDetents([.height(shareModalHeight)])
