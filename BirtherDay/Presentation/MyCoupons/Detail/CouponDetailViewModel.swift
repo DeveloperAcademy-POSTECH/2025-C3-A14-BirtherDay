@@ -31,6 +31,10 @@ class CouponDetailViewModel: NSObject {
     
     var distance: Float?
     
+    init(selectedCoupon: RetrieveCouponResponse) {
+        self.selectedCoupon = selectedCoupon
+    }
+    
     func startupMPC() {
         print("CouponViewModel - startupMPC()")
         
@@ -59,13 +63,16 @@ class CouponDetailViewModel: NSObject {
         
         if connectedPeer != nil && mpc != nil {
             if let myToken = niSession?.discoveryToken {
+                print("myToken: \(myToken)")
                 // 화면 업데이트 (찾는 중)
                 if !sharedTokenWithPeer {
                     shareMyDiscoveryToken(token: myToken)
                 }
                 guard let peerToken = peerDiscoveryToken else {
+                    print("peerToken 없음")
                     return
                 }
+                print("run config")
                 let config = NINearbyPeerConfiguration(peerToken: peerToken)
                 niSession?.run(config)
             } else {
@@ -121,6 +128,7 @@ class CouponDetailViewModel: NSObject {
     
     // NI
     func shareMyDiscoveryToken(token: NIDiscoveryToken) {
+        print("shareMyDiscoveryToken()")
         guard let encodedData = try?  NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true) else {
             fatalError("Unexpectedly failed to encode discovery token.")
         }
@@ -146,7 +154,7 @@ class CouponDetailViewModel: NSObject {
 
 extension CouponDetailViewModel: NISessionDelegate {
     func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
-        print("NISession didUpdate")
+//        print("NISession didUpdate")
         guard let peerToken = peerDiscoveryToken else {
             fatalError("don't have peer token")
         }
@@ -162,7 +170,7 @@ extension CouponDetailViewModel: NISessionDelegate {
         
         
         self.distance = nearbyObjectUpdate.distance
-        print("\(String(describing: distance))")
+//        print("\(String(describing: distance))")
     }
 
     func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {

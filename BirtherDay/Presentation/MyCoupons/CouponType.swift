@@ -8,7 +8,7 @@
 import Foundation
 
 /// 쿠폰 타입
-enum CouponType: String {
+enum CouponType: String, Equatable {
     case sent
     case received
     
@@ -80,7 +80,27 @@ enum CouponType: String {
 }
 
 /// 미사용 - 사용완료
-enum CouponUsageTab: String, CaseIterable {
-    case unused = "미사용"
-    case used = "사용 완료"
+enum CouponUsageTab: CaseIterable {
+    case unused
+    case used
+    
+    /// coupon.isUsed
+    var isUsed: Bool {
+        switch self {
+        case .unused:
+            return false
+        case .used:
+            return true
+        }
+    }
+    
+    /// 미사용, 사용완료 탭 텍스트
+    var segmentTitle: String {
+        switch self {
+        case .unused:
+            return "미사용"
+        case .used:
+            return "사용완료"
+        }
+    }
 }

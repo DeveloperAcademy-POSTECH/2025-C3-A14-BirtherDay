@@ -16,7 +16,6 @@ struct CouponDetailView: View {
         ZStack {
             ScrollView(.vertical) {
                 DetailedCoupon(couponData: viewModel.selectedCoupon)
-                
             }
             .background(viewModel.selectedCoupon.template.backgroundColor.ignoresSafeArea())
             .scrollIndicators(.hidden)
@@ -26,7 +25,6 @@ struct CouponDetailView: View {
                 
         }
         .onAppear {
-//            viewModel.()
             print("viewModel.startupMPC()")
             viewModel.startupMPC()
         }
@@ -44,12 +42,13 @@ struct CouponDetailView: View {
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
                 
                 Button {
-                    navPathManager.pushMyCouponPath(.interaction)
+                    navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel ))
                 } label: {
                     Text("사용하기")
                 }
-                .buttonStyle(BDButtonStyle(buttonType: .activate))
+                .buttonStyle(BDButtonStyle(buttonType: viewModel.isConnectWithPeer ? .activate : .deactivate))
                 .disabled(!viewModel.isConnectWithPeer)
+    
             }
             .padding(.top, 37)
             .padding(.horizontal, 16)
@@ -59,6 +58,6 @@ struct CouponDetailView: View {
 }
 
 #Preview {
-    CouponDetailView(viewModel: CouponDetailViewModel())
+    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
         .environmentObject(BDNavigationPathManager())
 }

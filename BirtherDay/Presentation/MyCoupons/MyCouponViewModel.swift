@@ -1,15 +1,14 @@
 //
-//  HomeViewModel.swift
+//  MyCouponViewModel.swift
 //  BirtherDay
 //
-//  Created by 길지훈 on 6/3/25.
+//  Created by 길지훈 on 6/5/25.
 //
 
 import Foundation
-import SwiftUI
 
 @MainActor
-class HomeViewModel: ObservableObject {
+class MyCouponViewModel: ObservableObject {
     
     /// fetch쿠폰 캐시용 변수
     @Published private var allCoupons: [RetrieveCouponResponse] = []
@@ -18,18 +17,23 @@ class HomeViewModel: ObservableObject {
     @Published var userError: UserError?
     @Published var couponError: CouponError?
     
-    private let couponService = CouponService()
+    let couponService = CouponService()
     
     /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
-    func fetchCoupons() async {
-        let fetched = await homeFetchCouponsFromService()
+    func fetchCoupons(for type: CouponType, isUsed: Bool) async {
+        let fetched = await fetchCouponsFromService(ofType: type)
         self.allCoupons = fetched
         self.coupons = fetched
-        self.coupons = fetched.filter { $0.isUsed == false }
+        self.coupons = fetched.filter { $0.isUsed == isUsed }
     }
-
+    
+    /// 쿠폰 필터링
+    func filterCoupons(by isUsed: Bool) {
+        self.coupons = allCoupons.filter { $0.isUsed == isUsed }
+    }
+    
     /// 쿠폰 Fetching
-    private func homeFetchCouponsFromService() async -> [RetrieveCouponResponse] {
+    private func fetchCouponsFromService(ofType type: CouponType) async -> [RetrieveCouponResponse] {
         
         // TODO: 실제 사용할 코드
         // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
@@ -42,7 +46,14 @@ class HomeViewModel: ObservableObject {
             // TODO: 임시 방편 - 테스트 유저아이디
             let userId = "154dea32-8607-4418-a619-d80692456678"
             let response: [RetrieveCouponResponse]
-            response = try await couponService.retrieveTopFiveReceivedCoupons(userId).value
+
+            switch type {
+            case .sent:
+                response = try await couponService.retrieveSentCoupons(userId).value
+            case .received:
+                response = try await couponService.retrieveReceivedCoupons(userId).value
+            }
+
             return response
             
         } catch {
@@ -67,7 +78,7 @@ class HomeViewModel: ObservableObject {
             imageList: [],
             thumbnail: "", // UIImage → URL string 변환이 필요하다면 추가 처리
             deadline: Date().addingTimeInterval(86400 * 60),
-            isUsed: false,
+            isUsed: true,
             createdAt: Date()
         ),
         RetrieveCouponResponse(
@@ -197,7 +208,7 @@ class HomeViewModel: ObservableObject {
             imageList: [],
             thumbnail: "",
             deadline: Date().addingTimeInterval(86400 * 12),
-            isUsed: false,
+            isUsed: true,
             createdAt: Date()
         )
     ]

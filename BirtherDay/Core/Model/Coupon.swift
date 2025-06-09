@@ -5,11 +5,24 @@
 //  Created by Rama on 5/29/25.
 //
 
-import Foundation
+import SwiftUI
+import PhotosUI
 import UIKit
 
-/// Coupon 삭제 예정.
-/// InsertCouponRequest, RetrieveCouponResponse 사용하기
+enum CouponField {
+    case template(CouponTemplate)
+    case info(
+        title: String,
+        senderName: String,
+        expireDate: Date
+    )
+    case letter(String)
+    case photos(
+        images: [UIImage],
+        paths: [String]
+    )
+}
+
 struct Coupon: Identifiable {
     let id = UUID().uuidString
     let couponId: String
@@ -83,7 +96,7 @@ extension InsertCouponRequest {
     }()
 }
 
-struct RetrieveCouponResponse: Codable, Identifiable {
+struct RetrieveCouponResponse: Hashable, Codable, Identifiable {
     var id = UUID().uuidString
     var couponId: String
     var senderId: String
@@ -114,7 +127,7 @@ extension RetrieveCouponResponse {
 //            fatalError("No user ID found")
 //        }
         
-        return .init(couponId: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
+        return .init(couponId: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가프레이가프레이가프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
         )
     }()
 }

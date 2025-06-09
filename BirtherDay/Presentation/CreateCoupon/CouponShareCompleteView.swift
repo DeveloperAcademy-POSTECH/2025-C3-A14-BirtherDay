@@ -28,7 +28,7 @@ struct CouponShareCompleteView: View {
                         .foregroundStyle(Color.textCaption1)
                         .padding(.bottom, 44)
                 
-                    Image("Conpetti2")
+                    Image("confettiIcon")
                         .resizable()
                         .frame(width: 235, height: 235)
                 }

@@ -11,22 +11,27 @@ import SwiftUI
 enum BDButtonType {
    case activate
    case deactivate
+    case share
     
    var backgroundColor: Color {
        switch self {
        case .activate:
-           return Color(red: 0.5, green: 0.31, blue: 0.85)
+           return Color.mainPrimary
        case .deactivate:
-           return Color(red: 0.9, green: 0.9, blue: 0.9)
+           return Color.gray200
+       case .share:
+           return Color.bgLight
        }
    }
    
    var textColor: Color {
        switch self {
        case .activate:
-           return Color.white
+           return Color.bgLight
        case .deactivate:
-           return Color(red: 0.6, green: 0.6, blue: 0.6)
+           return Color.textCaption1
+       case .share:
+           return Color.mainPrimary
        }
    }
 }
@@ -43,8 +48,9 @@ struct BDButtonStyle: ButtonStyle {
             .foregroundColor(buttonType.textColor)
             .frame(maxWidth: .infinity)
             .frame(height: 56)
+            .font(.sb1)
             .background(buttonType.backgroundColor)
-            .clipShape(Capsule())
+            .clipShape(RoundedRectangle(cornerRadius: 15))
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
             .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }

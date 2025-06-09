@@ -7,27 +7,24 @@
 
 import SwiftUI
 
-struct CouponLetterView {
+struct CouponLetterView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     
     @State private var letterContent: String = ""
-}
-
-// MARK: - Main View
-extension CouponLetterView: View {
+    
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 Spacer()
                     .frame(height: 40)
                 
-                cardPreviewSection // 쿠폰 실시간 보기 뷰
+                cardPreviewSection() // 쿠폰 실시간 보기 뷰
                 
                 Spacer()
                     .frame(height: 40)
                 
-                letterInputSection // 편지 작성 뷰
+                letterInputSection() // 편지 작성 뷰
                 
                 Spacer()
                     .frame(height: 80)
@@ -35,7 +32,7 @@ extension CouponLetterView: View {
             
             Spacer()
             
-            nextButton
+            nextButton()
         }
         .keyboardAware(
             navigationTitle: "편지 작성하기",
@@ -47,90 +44,87 @@ extension CouponLetterView: View {
             loadExistingLetter()
         }
     }
-}
-
-// MARK: - View Components
-extension CouponLetterView {
-    private var cardPreviewSection: some View {
-        CouponCardPreview(
+    
+    func cardPreviewSection() -> some View {
+        BDMiniTemplate(
             template: viewModel.couponData.template ?? .blue,
             senderName: viewModel.couponData.senderName ?? "보내는 사람",
             expireDate: viewModel.couponData.expireDate ?? Date(),
-            couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요",
-            dateFormatter: dateFormatter
+            couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요"
         )
-        .frame(maxWidth: 200, maxHeight: 280)
+        .frame(width: 140, height: 183)
     }
     
-    private var letterInputSection: some View {
-        LetterInputField(letterContent: $letterContent)
+    func letterInputSection() -> some View {
+        letterInputField()
             .padding(.horizontal, 20)
     }
     
-    private var nextButton: some View {
+    func nextButton() -> some View {
         Button(action: {
             saveLetterAndNavigate()
         }) {
             Text("다음")
                 .font(.system(size: 18, weight: .semibold))
         }
-        .buttonStyle(BDButtonStyle(buttonType: isFormValid ? .activate : .deactivate))
-        .disabled(!isFormValid)
-        .padding(.horizontal, 20)
-        .padding(.bottom, 10)
-    }
-}
-
-// MARK: - Computed Properties
-extension CouponLetterView {
-    private var couponData: CouponData {
-        viewModel.couponData
+        .buttonStyle(BDButtonStyle(buttonType: isFormValid() ? .activate : .deactivate))
+        .disabled(!isFormValid())
+        .padding(.horizontal, 16)
+        .padding(.bottom, 20)
     }
     
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy. M. d"
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter
-    }
-    
-    private var isFormValid: Bool {
+    func isFormValid() -> Bool {
         !letterContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
-}
-
-// MARK: - Methods
-extension CouponLetterView {
-    private func loadExistingLetter() {
+    
+    func loadExistingLetter() {
         if let existingLetterContent = viewModel.couponData.letterContent {
             letterContent = existingLetterContent
         }
     }
     
-    private func saveLetterAndNavigate() {
+    func saveLetterAndNavigate() {
         viewModel.update(.letter(letterContent))
         navPathManager.pushCreatePath(.couponPicture)
     }
-}
-
-// MARK: - Letter Input Component
-struct LetterInputField: View {
-    @Binding var letterContent: String
     
-    var body: some View {
+    func makePreviewData() -> RetrieveCouponResponse {
+        // 현재까지 입력된 데이터를 포함한 미리보기 생성
+        let tempViewModel = CreateCouponViewModel()
+        tempViewModel.couponData = viewModel.couponData
+        tempViewModel.update(.letter(letterContent))
+        
+        // buildCoupon이 실패할 경우를 대비한 기본값
+        return tempViewModel.buildCoupon() ?? RetrieveCouponResponse(
+            couponId: "",
+            senderId: "",
+            senderName: viewModel.couponData.senderName ?? "보내는 사람",
+            template: viewModel.couponData.template ?? .blue,
+            title: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요",
+            letter: letterContent,
+            imageList: [],
+            thumbnail: "",
+            deadline: viewModel.couponData.expireDate ?? Date(),
+            isUsed: false,
+            createdAt: Date()
+        )
+    }
+    
+    // MARK: - Letter Input Component Function
+    func letterInputField() -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            inputTitle
-            textEditorWithPlaceholder
+            inputTitle()
+            textEditorWithPlaceholder()
         }
     }
     
-    private var inputTitle: some View {
+    func inputTitle() -> some View {
         Text("편지를 작성해주세요")
             .font(.system(size: 16, weight: .semibold))
             .foregroundColor(.black)
     }
     
-    private var textEditorWithPlaceholder: some View {
+    func textEditorWithPlaceholder() -> some View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $letterContent)
                 .font(.system(size: 16))
@@ -141,12 +135,12 @@ struct LetterInputField: View {
                 .frame(minHeight: 200)
             
             if letterContent.isEmpty {
-                placeholderText
+                placeholderText()
             }
         }
     }
     
-    private var placeholderText: some View {
+    func placeholderText() -> some View {
         Text("편지 작성 중...")
             .font(.system(size: 16))
             .foregroundColor(.gray)

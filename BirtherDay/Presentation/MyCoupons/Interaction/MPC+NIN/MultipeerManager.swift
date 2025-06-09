@@ -19,7 +19,7 @@ class MultipeerManager: NSObject {
     
     private let serviceType = "birtherday" // same as that in info.plist
     private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
-    private let maxNumPeers: Int = 1
+    private let maxNumPeers: Int = 9999
     
     var peerDataHandler: ((Data, MCPeerID) -> Void)?    // 다른 피어로부터 데이터를 받았을 때
     var peerConnectedHandler: ((MCPeerID) -> Void)?     // 다른 피어와 연결됐을 때
@@ -35,14 +35,14 @@ class MultipeerManager: NSObject {
         print("MPC init()")
         
         self.myCoupon = myCoupon    // MCSession 연결시, 상대 peer와 같은 coupon을 접속하고 있는지 비교. 일치시 Session 연결
-        
+        print("myCoupon: \(myCoupon)")
         // init objects
         // session
         self.mcSession = MCSession(peer: myPeerID, securityIdentity: nil, encryptionPreference: .required)
         
         
         // advertiser
-        self.advertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: ["couponId": myCoupon.id], serviceType: serviceType)
+        self.advertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: ["couponId": myCoupon.couponId], serviceType: serviceType)
         
         
         // browser
@@ -164,6 +164,9 @@ extension MultipeerManager: MCNearbyServiceBrowserDelegate {
 //        print("peerCouponId : \(peerCouponId)")
         
         let context = ["couponId": myCoupon.couponId].jsonData
+        
+        print("\(String(describing: context))")
+        
         browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 100)
 //        browser.invitePeer(peerID, to: mcSession, withContext: nil, timeout: 100)
 
@@ -195,7 +198,7 @@ extension MultipeerManager: MCNearbyServiceAdvertiserDelegate {
         guard let couponId = context?.asStringDictionary?["couponId"] else { return }
         print("상대 쿠폰: \(couponId) || 내 쿠폰: \(myCoupon.couponId)")
             
-           if couponId == myCoupon.couponId && mcSession.connectedPeers.count < maxNumPeers {
+           if couponId == myCoupon.couponId/* && mcSession.connectedPeers.count < maxNumPeers*/ {
                 // ✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음
             print("✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음")
             
