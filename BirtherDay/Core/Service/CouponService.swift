@@ -28,6 +28,12 @@ final class CouponService {
             .insert(insertCouponRequest)
             .execute();
         
+        if res.status == 201 {
+            print("✅ 쿠폰 생성 성공: \(insertCouponRequest)")
+        } else {
+            print("⚠️ 쿠폰 생성 응답 status: \(res.status)")
+        }
+        
         return res;
     }
     

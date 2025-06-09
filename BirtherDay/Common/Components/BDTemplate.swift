@@ -45,10 +45,15 @@ struct BDTemplate: View {
         VStack(spacing: 30) {
             senderDateView()
             
-            // TODO: - Image 연결
-            data.template.miniCouponImage
-                .frame(width: 200, height: 200)
-
+            Spacer()
+            
+            Image(data.template == .orange ? "Card1Box" : "Card2Box")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 150, height: 150)
+            
+            Spacer()
+          
             titleView()
         }
 //        .frame(height: 320)
@@ -67,13 +72,15 @@ struct BDTemplate: View {
     /// 전송자 및 만료날짜
     func senderDateView()-> some View {
         VStack(alignment: .leading, spacing: 4) {
+            var formattedDate = DateFormatter.expiredDateFormatter.string(from: data.deadline)
+            
             Text("From. \(data.senderName)")
                 .font(.sb3)
                 .foregroundStyle(Color.textTitle)
             
-            formattedDateView(data.deadline)
+
+            Text("\(formattedDate)까지")
                 .font(.r3)
-//                .foregroundStyle(Color.gray200)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
