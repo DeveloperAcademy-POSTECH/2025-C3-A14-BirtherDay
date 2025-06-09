@@ -28,10 +28,23 @@ struct CouponData {
 class CreateCouponViewModel: ObservableObject {
     @Published var couponData = CouponData()
     
-    private let fileService: FileService
+    var couponForRequest: InsertCouponRequest? {
+        buildCouponForRequest()
+    }
     
-    init(fileService: FileService = FileService()) {
+    var couponForResponse: RetrieveCouponResponse? {
+        buildCouponForResponse()
+    }
+    
+    private let fileService: FileService
+    private let couponService: CouponService
+    
+    init(
+        fileService: FileService = FileService(),
+        couponService: CouponService = CouponService()
+    ) {
         self.fileService = fileService
+        self.couponService = couponService
     }
     
     func update(_ field: CouponField) {
@@ -75,22 +88,67 @@ class CreateCouponViewModel: ObservableObject {
         return uploadedPaths
     }
     
-    func deletePhoto(index: Int) {
-        couponData.selectedImages.remove(at: index)
+    func uploadCoupon() async {
+        if let couponForRequest = couponForRequest {
+            do {
+                _ = try await couponService.insertCoupon(couponForRequest)
+            } catch {
+                print("쿠폰 등록 실패: \(error.localizedDescription)")
+            }
+        } else {
+            print("쿠폰 등록 실패: 데이터가 모두 입력되지 않음")
+        }
     }
     
-    func buildCoupon() -> RetrieveCouponResponse? {
-        guard let template = couponData.template,
+    func resetCouponData() {
+        couponData = CouponData()
+    }
+    
+    func buildCouponForRequest() -> InsertCouponRequest? {
+        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
+              let template = couponData.template,
               let couponTitle = couponData.couponTitle,
               let senderName = couponData.senderName,
               let expireDate = couponData.expireDate,
               let letter = couponData.letterContent else {
-            print("Incomplete data, cannot build Coupon")
             return nil
         }
 
-        return RetrieveCouponResponse(
-            couponId: "", senderId: "", senderName: senderName, template: template, title: couponTitle, letter: letter, imageList: couponData.uploadedImagePaths, thumbnail: "", deadline: expireDate, isUsed: false, createdAt: Date())
+        return InsertCouponRequest(
+            senderId: senderId,
+            senderName: senderName,
+            template: template,
+            title: couponTitle,
+            letter: letter,
+            imageList: couponData.uploadedImagePaths,
+            thumbnail: "",
+            deadline: expireDate,
+            isUsed: false
+        )
+    }
+    
+    func buildCouponForResponse() -> RetrieveCouponResponse? {
+        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
+              let template = couponData.template,
+              let couponTitle = couponData.couponTitle,
+              let senderName = couponData.senderName,
+              let expireDate = couponData.expireDate,
+              let letter = couponData.letterContent else {
+            return nil
+        }
         
+        return RetrieveCouponResponse(
+            couponId: "",
+            senderId: senderId,
+            senderName: senderName,
+            template: template,
+            title: couponTitle,
+            letter: letter,
+            imageList: couponData.uploadedImagePaths,
+            thumbnail: "",
+            deadline: expireDate,
+            isUsed: false,
+            createdAt: Date()
+        )
     }
 }

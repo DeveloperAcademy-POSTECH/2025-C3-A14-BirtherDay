@@ -13,6 +13,7 @@
 		4C3A7B1B2DE96386005DAEA2 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B1A2DE96386005DAEA2 /* PostgREST */; };
 		4C3A7B1D2DE96386005DAEA2 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B1C2DE96386005DAEA2 /* Storage */; };
 		4C3A7B4B2DE9831E005DAEA2 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A7B4A2DE9831E005DAEA2 /* Supabase */; };
+		4C3A83652DF41621005DAEA2 /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 4C3A83642DF41621005DAEA2 /* DotLottie */; };
 		6CA3A8BD2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6CA3A8BC2DF1E266002FFF35 /* KakaoSDKFriendResources.bundle */; };
 		E7F753F32DF03CCD003A41F8 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E7F753F22DF03CCD003A41F8 /* KakaoSDK */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				210199F62DEFEA2000C5425F /* Kingfisher in Frameworks */,
+				4C3A83652DF41621005DAEA2 /* DotLottie in Frameworks */,
 				4C3A7B4B2DE9831E005DAEA2 /* Supabase in Frameworks */,
 				4C3A7B1D2DE96386005DAEA2 /* Storage in Frameworks */,
 				4C3A7B1B2DE96386005DAEA2 /* PostgREST in Frameworks */,
@@ -113,6 +115,7 @@
 				4C3A7B4A2DE9831E005DAEA2 /* Supabase */,
 				210199F52DEFEA2000C5425F /* Kingfisher */,
 				E7F753F22DF03CCD003A41F8 /* KakaoSDK */,
+				4C3A83642DF41621005DAEA2 /* DotLottie */,
 			);
 			productName = BirtherDay;
 			productReference = 2192E0312DE60D1F00E25BF7 /* BirtherDay.app */;
@@ -146,6 +149,7 @@
 				4C3A7B152DE96386005DAEA2 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 				210199F42DEFEA2000C5425F /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E7F753F12DF03CCD003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				4C3A83632DF41621005DAEA2 /* XCRemoteSwiftPackageReference "dotlottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2192E0322DE60D1F00E25BF7 /* Products */;
@@ -317,6 +321,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BirtherDay/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "이 앱은 근처 기기와 통신하기 위해 로컬 네트워크 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "이 앱은 근처의 기기와 상호작용하여 쿠폰 사용 기능을 제공합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -345,11 +351,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BirtherDay/App/Preview Content\"";
-				DEVELOPMENT_TEAM = 2YBZ5GS4MN;
+				DEVELOPMENT_TEAM = 5M5VM39FM9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BirtherDay/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "이 앱은 근처 기기와 통신하기 위해 로컬 네트워크 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "이 앱은 근처의 기기와 상호작용하여 쿠폰 사용 기능을 제공합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -408,6 +416,14 @@
 				minimumVersion = 2.5.1;
 			};
 		};
+		4C3A83632DF41621005DAEA2 /* XCRemoteSwiftPackageReference "dotlottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LottieFiles/dotlottie-ios";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		E7F753F12DF03CCD003A41F8 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -448,6 +464,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4C3A7B152DE96386005DAEA2 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
+		};
+		4C3A83642DF41621005DAEA2 /* DotLottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C3A83632DF41621005DAEA2 /* XCRemoteSwiftPackageReference "dotlottie-ios" */;
+			productName = DotLottie;
 		};
 		E7F753F22DF03CCD003A41F8 /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;

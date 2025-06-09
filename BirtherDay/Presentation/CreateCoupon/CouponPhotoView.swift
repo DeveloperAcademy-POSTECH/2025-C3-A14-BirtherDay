@@ -10,11 +10,13 @@ import SwiftUI
 
 struct CouponPhotoView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    
     @ObservedObject var viewModel: CreateCouponViewModel
     
     @State private var selectedItems: [PhotosPickerItem] = []
     @State private var selectedImages: [UIImage] = []
     @State private var uploadedImagePaths: [String] = []
+    @State private var isLoading: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -28,14 +30,21 @@ struct CouponPhotoView: View {
                     .padding(.horizontal, 37)
             } else {
                 photoCarouselView()
-                    .padding(.horizontal, 37)
             }
             
             Spacer()
             
-            nextButtonView()
-                .padding(.bottom, 20)
-                .padding(.horizontal, 16)
+            if isLoading {
+                ProgressView()
+                    .padding(.bottom, 24)
+            } else {
+                nextButtonView()
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 16)
+            }
+        }
+        .onAppear {
+            loadExistingPhotos()
         }
         .keyboardAware(
             navigationTitle: "사진 첨부",
@@ -50,7 +59,7 @@ struct CouponPhotoView: View {
             .font(.sb4)
             .foregroundStyle(Color.textTitle)
             .multilineTextAlignment(.center)
-        }
+    }
     
     func photoPickerView() -> some View {
         PhotosPicker(selection: $selectedItems,
@@ -71,7 +80,7 @@ struct CouponPhotoView: View {
                         )
                         .foregroundStyle(Color.textCaption1)
                     
-                    Text("여기를 눌러\n사진을 선택하세요") //TODO: LineHeight 설정
+                    Text("여기를 눌러\n사진을 선택하세요")
                         .font(.sb2)
                         .foregroundStyle(Color.textCaption1)
                         .multilineTextAlignment(.center)
@@ -98,12 +107,13 @@ struct CouponPhotoView: View {
     
     func photoCarouselView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 10) {
+            LazyHStack(spacing: 12) {
                 ForEach(Array(selectedImages.enumerated()), id: \.element) { index, image in
                     selectedImageView(index: index, image: image)
                 }
             }
             .scrollTargetLayout()
+            .padding(.horizontal, 40)
         }
         .scrollTargetBehavior(.viewAligned)
     }
@@ -116,10 +126,10 @@ struct CouponPhotoView: View {
                 .frame(width: 300, height: 300)
                 .clipped()
                 .cornerRadius(10)
-
-            Button(action: {
-                viewModel.deletePhoto(index: index)
-            }) {
+            
+            Button {
+                deletePhoto(at: index)
+            } label: {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()
                     .frame(width: 25, height: 25)
@@ -134,18 +144,44 @@ struct CouponPhotoView: View {
     func nextButtonView() -> some View {
         Button(
             action: {
-                viewModel.update(
-                    .photos(
-                        images: selectedImages,
-                        paths: uploadedImagePaths
+                Task {
+                    isLoading = true
+                    let uploadedPaths = await viewModel.uploadImages(selectedImages)
+                    uploadedImagePaths = uploadedPaths
+                    
+                    viewModel.update(
+                        .photos(
+                            images: selectedImages,
+                            paths: uploadedImagePaths
+                        )
                     )
-                )
-                navPathManager.pushCreatePath(.couponComplete)
-        }) {
-            Text("다음")
-                .font(.system(size: 18, weight: .semibold))
+                    
+                    isLoading = false
+                    navPathManager.pushCreatePath(.couponComplete)
+                }
+            }) {
+                Text("다음")
+                    .font(.system(size: 18, weight: .semibold))
+            }
+            .buttonStyle(BDButtonStyle(buttonType: .activate))
+    }
+}
+
+extension CouponPhotoView {
+    private func loadExistingPhotos() {
+        if !viewModel.couponData.selectedImages.isEmpty {
+            selectedItems = viewModel.couponData.selectedItems
+            selectedImages = viewModel.couponData.selectedImages
         }
-        .buttonStyle(BDButtonStyle(buttonType: .activate))
+    }
+    
+    private func deletePhoto(at index: Int) {
+        selectedImages.remove(at: index)
+        
+        // 모든 이미지가 삭제되면 선택 상태도 초기화
+        if selectedImages.isEmpty {
+            selectedItems = []
+        }
     }
 }
 

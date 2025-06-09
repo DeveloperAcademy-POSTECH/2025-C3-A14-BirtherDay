@@ -25,7 +25,7 @@ enum BDCreateCouponPath: Hashable, Equatable {
 enum BDMyCouponPath: Equatable, Hashable  {
     case couponInventory(CouponType)
     case couponDetail(RetrieveCouponResponse)
-    case interaction
+    case interaction(viewModel: CouponDetailViewModel)
     case interactionComplete
 }
 
