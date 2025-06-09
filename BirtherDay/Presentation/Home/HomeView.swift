@@ -15,7 +15,7 @@ struct HomeView: View {
     
     @StateObject private var couponViewModel = CreateCouponViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
-    private var myCouponViewModel = MyCouponViewModel()
+    @StateObject private var myCouponViewModel = MyCouponViewModel()
     
     @State private var couponType: CouponType = .received
     @State private var showSharedCouponModal: Bool = false
