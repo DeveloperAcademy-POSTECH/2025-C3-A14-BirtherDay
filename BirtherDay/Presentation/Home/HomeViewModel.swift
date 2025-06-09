@@ -8,8 +8,53 @@
 import Foundation
 import SwiftUI
 
-//@Observable
+@MainActor
 class HomeViewModel: ObservableObject {
+    
+    /// fetch쿠폰 캐시용 변수
+    @Published private var allCoupons: [RetrieveCouponResponse] = []
+    @Published var coupons: [RetrieveCouponResponse] = []
+    @Published var isLoading: Bool = false
+    @Published var userError: UserError?
+    @Published var couponError: CouponError?
+    
+    private let couponService = CouponService()
+    
+    /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
+    func fetchCoupons() async {
+        let fetched = await homeFetchCouponsFromService()
+        self.allCoupons = fetched
+        self.coupons = fetched
+        self.coupons = fetched.filter { $0.isUsed == false }
+    }
+
+    /// 쿠폰 Fetching
+    private func homeFetchCouponsFromService() async -> [RetrieveCouponResponse] {
+        
+        // TODO: 실제 사용할 코드
+        // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
+        //     self.userError = .userNotFound
+        //     ErrorHandler.handle(userError!)
+        //     return []
+        // }
+
+        do {
+            // TODO: 임시 방편 - 테스트 유저아이디
+            let userId = "154dea32-8607-4418-a619-d80692456678"
+            let response: [RetrieveCouponResponse]
+            response = try await couponService.retrieveTopFiveReceivedCoupons(userId).value
+            return response
+            
+        } catch {
+            if let couponError = error as? CouponError {
+                ErrorHandler.handle(couponError)
+                self.couponError = couponError
+            } else {
+                print("🙈 이건 예외처리 안된곤댕~!: \(error)")
+            }
+            return []
+        }
+    }
     
     @Published var mockCoupons: [RetrieveCouponResponse] = [
         RetrieveCouponResponse(
@@ -156,5 +201,4 @@ class HomeViewModel: ObservableObject {
             createdAt: Date()
         )
     ]
-
 }

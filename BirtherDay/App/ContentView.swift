@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("isOnboarded") private var isOnboarded: Bool = true
     @StateObject private var bdNavigationManager = BDNavigationPathManager()
-    
+
     var body: some View {
         Group {
             if !isOnboarded {
