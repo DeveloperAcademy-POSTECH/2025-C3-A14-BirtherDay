@@ -128,4 +128,23 @@ final class CouponService {
         
         return res;
     }
+    
+    /// 쿠폰 ID를 기준으로 특정 쿠폰의 상세 정보를 조회합니다.
+    /// - Parameter couponId: 조회할 쿠폰의 고유 식별자
+    /// - Returns: `PostgrestResponse<[RetrieveCouponResponse]>` – 조회된 쿠폰 응답 (status 포함)
+    /// - Throws: 조회 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
+    func retrieveCouponBy(couponId: String) async throws -> PostgrestResponse<[RetrieveCouponResponse]> {
+        do {
+            let res: PostgrestResponse<[RetrieveCouponResponse]> = try await client
+                .from("coupon")
+                .select()
+                .eq("id", value: couponId)
+                .execute();
+            
+            return res
+        } catch {
+            dump(error)
+            throw CouponError.serverFetchFailed
+        }
+    }
 }
