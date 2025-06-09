@@ -88,28 +88,6 @@ struct CouponLetterView: View {
         navPathManager.pushCreatePath(.couponPicture)
     }
     
-    func makePreviewData() -> RetrieveCouponResponse {
-        // 현재까지 입력된 데이터를 포함한 미리보기 생성
-        let tempViewModel = CreateCouponViewModel()
-        tempViewModel.couponData = viewModel.couponData
-        tempViewModel.update(.letter(letterContent))
-        
-        // buildCoupon이 실패할 경우를 대비한 기본값
-        return tempViewModel.buildCoupon() ?? RetrieveCouponResponse(
-            couponId: "",
-            senderId: "",
-            senderName: viewModel.couponData.senderName ?? "보내는 사람",
-            template: viewModel.couponData.template ?? .blue,
-            title: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요",
-            letter: letterContent,
-            imageList: [],
-            thumbnail: "",
-            deadline: viewModel.couponData.expireDate ?? Date(),
-            isUsed: false,
-            createdAt: Date()
-        )
-    }
-    
     // MARK: - Letter Input Component Function
     func letterInputField() -> some View {
         VStack(alignment: .leading, spacing: 12) {
