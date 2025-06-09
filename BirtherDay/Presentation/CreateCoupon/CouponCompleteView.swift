@@ -117,6 +117,7 @@ struct CouponCompleteView: View {
                 isLoading = true
                 await viewModel.uploadCoupon()
                 isLoading = false
+                viewModel.resetCouponData()
                 navPathManager.goToRoot()
             }
         } label: {

@@ -100,6 +100,10 @@ class CreateCouponViewModel: ObservableObject {
         }
     }
     
+    func resetCouponData() {
+        couponData = CouponData()
+    }
+    
     func buildCouponForRequest() -> InsertCouponRequest? {
         guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
               let template = couponData.template,
