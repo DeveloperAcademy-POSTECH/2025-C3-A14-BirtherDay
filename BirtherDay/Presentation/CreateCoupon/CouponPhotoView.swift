@@ -46,12 +46,9 @@ struct CouponPhotoView: View {
         .onAppear {
             loadExistingPhotos()
         }
-        .keyboardAware(
-            navigationTitle: "사진 첨부",
-            onBackButtonTapped: {
-                navPathManager.popPath()
-            }
-        )
+        .background(Color.mainViolet50)
+        .keyboardAware()
+        .bdNavigationBar(title: "사진 첨부", backButtonAction: navPathManager.popPath)
     }
     
     func photoTitleView() -> some View {
