@@ -13,7 +13,7 @@ struct HomeView: View {
     @StateObject private var couponViewModel = CreateCouponViewModel()
     @State private var couponType: CouponType = .received
     @StateObject private var homeViewModel = HomeViewModel()
-    private var myCouponViewModel = MyCouponViewModel()
+    @StateObject private var myCouponViewModel = MyCouponViewModel()
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
