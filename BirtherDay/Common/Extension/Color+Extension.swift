@@ -41,6 +41,7 @@ extension Color {
     // Background
     static let bgLight = Color(hex: "ffffff")
     static let bgDark = Color(hex: "292929")
+    static let bgDimmed = Color(hex: "000000").opacity(0.3)
     
     // Warning
     static let warning = Color(hex: "ff4848")
