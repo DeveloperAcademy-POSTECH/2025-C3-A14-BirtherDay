@@ -34,7 +34,7 @@ extension Color {
     // GrayScale
     static let gray100 = Color(hex: "f2f3f5")
     static let gray200 = Color(hex: "e5e5e5")
-    static let gray300 = Color(hex: "e5e5e5")
+    static let gray300 = Color(hex: "999999")
     static let gray400 = Color(hex: "434343")
     static let gray600 = Color(hex: "262626")
     
