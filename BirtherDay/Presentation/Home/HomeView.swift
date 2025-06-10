@@ -31,7 +31,7 @@ struct HomeView: View {
                     homeHeaderView(text: "주고 받은 쿠폰을 확인해보세요!")
                     couponBoxSelectorView()
                     homeDivider()
-                    //homeEmptyView()
+                    homeHeaderView(text: "선물 받은 생일 쿠폰을 빠르게 사용해보아요!")
                     unusedCouponListView()
                 }
                 .navigationDestination(for: BDAppPath.self) { path in
@@ -139,14 +139,13 @@ struct HomeView: View {
     
     /// 개별 보관함 가기
     func couponBoxCardView(_ type: CouponType) -> some View {
-        
         Button {
             couponType = type
             navPathManager.pushMyCouponPath(.couponInventory(couponType))
         } label: {
             HStack(alignment: .center, spacing: 8) {
-                
-                Image(couponType.homeCouponTypeImage)
+                let imageType: CouponType = type
+                Image(imageType.homeCouponTypeImage)
                 
                 Text(type.couponBoxTitle)
                     .font(.sb1)
@@ -192,29 +191,20 @@ struct HomeView: View {
         HStack(spacing: 0) {
             Image("HomeLogo")
                 .padding(.leading, 16)
-                .padding(.top, 8)
+                .padding(.top, 19)
             
             Spacer()
         }
     }
-    
-    // TODO: - 미사용 쿠폰 리스트
-    /// 1. fetching
-    ///     1.1. 에러핸들링
-    /// 2. isEmpty 여부 검사
-    ///     2.1. 텅!
-    ///     2.2.  HStack으로 카드리스트뷰
-    /// 3. 5개 카드 이후, 더보기 카드
+
     func unusedCouponListView() -> some View {
         VStack {
-            // TODO: .mockCoupons -> coupons
-            if homeViewModel.mockCoupons.isEmpty {
+            if homeViewModel.coupons.isEmpty {
                 homeEmptyView()
             } else {
-                homeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
                 ScrollView(.horizontal) {
                     HStack(alignment: .center, spacing: 8) {
-                        ForEach(homeViewModel.mockCoupons) { coupon in
+                        ForEach(homeViewModel.coupons) { coupon in
                             Button {
                                 navPathManager.pushMyCouponPath(.couponDetail(coupon))
                             } label: {
@@ -224,7 +214,7 @@ struct HomeView: View {
                         Button {
                             navPathManager.pushMyCouponPath(.couponInventory(.received))
                         } label: {
-                            BDAllMiniCoupon()
+                            BDSeeMoreCoupon()
                         }
                     }
                     .padding(.horizontal, 16)
@@ -233,17 +223,21 @@ struct HomeView: View {
         }
     }
     
-    func homeEmptyView() -> some View {
-        ZStack {
-            Image("homeEmptyCoupon")
-                .resizable()
-            Text("미사용된 쿠폰이 없어요!\n쿠폰을 더 생성하러 가볼까요?")
-                .multilineTextAlignment(.center)
-                .lineSpacing(8)
-                .font(.sb1)
-                .foregroundStyle(Color.textTitle)
+    func homeEmptyView() -> some View { 
+        Button {
+            navPathManager.pushCreatePath(.selectTemplate)
+        } label: {
+            ZStack {
+                Image("homeEmptyCoupon")
+                    .resizable()
+                    .padding(.horizontal, 16)
+                Text("미사용된 쿠폰이 없어요!\n쿠폰을 더 생성하러 가볼까요?")
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(8)
+                    .font(.sb1)
+                    .foregroundStyle(Color.textCaption1)
+            }
         }
-        .padding(.horizontal, 16)
     }
 }
 

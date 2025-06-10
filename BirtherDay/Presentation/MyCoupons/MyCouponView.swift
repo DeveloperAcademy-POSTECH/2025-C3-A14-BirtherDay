@@ -45,16 +45,16 @@ struct MyCouponView: View {
         )
         /// 최초 fetch.
         .onAppear {
-            if myCouponViewModel.coupons.isEmpty {
-                Task {
-                    await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
-                }
+            Task {
+                await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
             }
+            print("\(couponType)")
         }
         
         /// tab 변화 시, 캐시에서 필터링함.
         .onChange(of: selectedTab) {
             myCouponViewModel.filterCoupons(by: selectedTab.isUsed)
+            
         }
     }
     // MARK: - Views
