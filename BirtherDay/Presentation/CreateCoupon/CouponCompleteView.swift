@@ -74,25 +74,22 @@ struct CouponCompleteView: View {
         }
     }
     
+    @ViewBuilder
     func bottomGradientView() -> some View {
         VStack {
             Spacer()
             
-            Group {
-                switch viewModel.couponData.template {
-                case .heart:
-                    LinearGradient.heartButtonBackground
-                case .money:
-                    LinearGradient.moneyButtonBackground
-                case .cake:
-                    LinearGradient.cakeButtonBackground
-                case .none:
-                    LinearGradient.heartButtonBackground
-                }
+            switch viewModel.couponData.template {
+            case .heart:
+                LinearGradient.heartButtonBackground
+            case .money:
+                LinearGradient.moneyButtonBackground
+            case .cake:
+                LinearGradient.cakeButtonBackground
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 143)
         }
+        .frame(maxWidth: .infinity)
+        .frame(height: 143)
         .ignoresSafeArea(.all)
     }
     

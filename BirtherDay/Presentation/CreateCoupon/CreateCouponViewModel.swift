@@ -21,7 +21,7 @@ struct CouponData {
     var uploadedImagePaths: [String] = []
     
     init() {
-        self.template = .blue
+        self.template = .heart
         self.couponTitle = ""
         self.senderName = ""
         self.letterContent = ""
