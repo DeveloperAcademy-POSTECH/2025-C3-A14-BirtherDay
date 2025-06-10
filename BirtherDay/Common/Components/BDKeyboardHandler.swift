@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// 키보드 숨김을 위한 Handler
 struct BDKeyboardHandler: ViewModifier {
     @State private var isKeyboardVisible: Bool = false
     
