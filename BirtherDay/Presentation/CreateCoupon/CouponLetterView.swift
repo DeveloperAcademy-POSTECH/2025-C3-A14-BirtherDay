@@ -17,17 +17,17 @@ struct CouponLetterView: View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: 40)
+                    .frame(height: 32)
                 
                 cardPreviewSection() // 쿠폰 실시간 보기 뷰
                 
                 Spacer()
-                    .frame(height: 40)
+                    .frame(height: 35)
                 
                 letterInputSection() // 편지 작성 뷰
                 
                 Spacer()
-                    .frame(height: 80)
+                    .frame(height: 40)
             }
             
             Spacer()
@@ -62,7 +62,7 @@ struct CouponLetterView: View {
             saveLetterAndNavigate()
         }) {
             Text("다음")
-                .font(.system(size: 18, weight: .semibold))
+                .font(.sb1)
         }
         .buttonStyle(BDButtonStyle(buttonType: isFormValid() ? .activate : .deactivate))
         .disabled(!isFormValid())
@@ -95,16 +95,16 @@ struct CouponLetterView: View {
     
     func inputTitle() -> some View {
         Text("편지를 작성해주세요")
-            .font(.system(size: 16, weight: .semibold))
+            .font(.sb1)
             .foregroundColor(.black)
     }
     
     func textEditorWithPlaceholder() -> some View {
         ZStack(alignment: .topLeading) {
             TextEditor(text: $letterContent)
-                .font(.system(size: 16))
+                .font(.m1)
                 .padding(.horizontal, 12)
-                .padding(.vertical, 10)
+                .padding(.vertical, 12)
                 .background(.white)
                 .cornerRadius(10)
                 .frame(minHeight: 200)
@@ -117,10 +117,10 @@ struct CouponLetterView: View {
     
     func placeholderText() -> some View {
         Text("편지 작성 중...")
-            .font(.system(size: 16))
+            .font(.m1)
             .foregroundColor(.gray)
             .padding(.horizontal, 16)
-            .padding(.vertical, 18)
+            .padding(.vertical, 20)
             .allowsHitTesting(false)
     }
 }
