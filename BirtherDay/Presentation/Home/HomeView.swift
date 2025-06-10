@@ -26,7 +26,7 @@ struct HomeView: View {
         NavigationStack(path: $navPathManager.appPaths) {
             ScrollView {
                 VStack(spacing: 16) {
-                    homeHeaderView(text: "자~ 로고들어갑니다 ^^")
+                    homeLogoView()
                     createCouponCTACardView()
                     homeHeaderView(text: "주고 받은 쿠폰을 확인해보세요!")
                     couponBoxSelectorView()
@@ -50,7 +50,7 @@ struct HomeView: View {
                 if SupabaseManager.shared.client.auth.currentSession == nil {
                     await homeViewModel.signUp()
                 }
-
+                
                 await homeViewModel.fetchCoupons()
             }
         }
@@ -110,12 +110,15 @@ struct HomeView: View {
                 Button {
                     navPathManager.pushCreatePath(.selectTemplate)
                 } label: {
-                    HStack(spacing: 0) {
-                        Text("쿠폰 만들러 가기 ")
-                        Image(systemName: "chevron.right")
-                            .imageScale(.small)
+                    ZStack {
+                        LinearGradient.createCouponBackground
+                        HStack(spacing: 0) {
+                            Text("쿠폰 만들러 가기 ")
+                            Image(systemName: "chevron.right")
+                                .imageScale(.small)
+                        }
+                        .font(.sb1)
                     }
-                    .font(.sb1)
                 }
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
             }
@@ -182,6 +185,17 @@ struct HomeView: View {
             }
             .padding(.leading, 16)
             .padding(.top, 8)
+        }
+    }
+    
+    /// 홈 로고
+    func homeLogoView() -> some View {
+        HStack(spacing: 0) {
+            Image("HomeLogo")
+                .padding(.leading, 16)
+                .padding(.top, 8)
+            
+            Spacer()
         }
     }
     
