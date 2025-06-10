@@ -33,6 +33,8 @@ struct CouponLetterView: View {
             Spacer()
             
             nextButton()
+                .padding(.horizontal, 16)
+                .padding(.bottom, 20)
         }
         .keyboardAware()
         .bdNavigationBar(
@@ -50,10 +52,10 @@ struct CouponLetterView: View {
     
     func cardPreviewSection() -> some View {
         BDMiniTemplate(
-            template: viewModel.couponData.template ?? .heart,
-            senderName: viewModel.couponData.senderName ?? "보내는 사람",
-            expireDate: viewModel.couponData.expireDate ?? Date(),
-            couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요"
+            template: viewModel.couponData.template,
+            senderName: viewModel.couponData.senderName,
+            expireDate: viewModel.couponData.expireDate,
+            couponTitle: viewModel.couponData.couponTitle
         )
         .frame(width: 140, height: 183)
     }
