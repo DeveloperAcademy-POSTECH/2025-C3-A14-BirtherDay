@@ -20,8 +20,7 @@ class CouponDetailViewModel: NSObject {
     var selectedCoupon: RetrieveCouponResponse = .stub01                 // 사용자가 고른 coupon
     var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
     var connectedPeer: MCPeerID?                // 연결된 Peer
-    var currentDistance: Float?                 // peer간의 거리 (0.00m)
-    var isCompleted: Bool = false                // 쿠폰 사용 완료 여부
+    var isCompleted: Bool = false               // 쿠폰 사용 완료 여부
     
     var mpc: MultipeerManager?                  // MPC Manager
     
@@ -30,7 +29,7 @@ class CouponDetailViewModel: NSObject {
     var sharedTokenWithPeer = false             // peer와 discoveryToken을 교환했는지 여부
     var currentDistanceDirectionState: DistanceDirectionState = .unknown
     
-    var distance: Float?
+    var distance: Float?                        // peer간의 거리 (0.00m)
     let nearbyDistanceThreshold: Float = 0.5
     
     init(selectedCoupon: RetrieveCouponResponse) {
@@ -98,15 +97,13 @@ class CouponDetailViewModel: NSObject {
         }
     }
     
-    // NI 종료
+    /// NI 종료
     func stopNI() {
         self.niSession?.pause()
         self.niSession?.invalidate()
-//        self.isConnectWithPeer = false
-//        self.connectedPeer = nil
     }
     
-    // MPC 연결이 완료되었을 때 호출
+    /// MPC 연결이 완료되었을 때 호출
     func connectedToPeer(peer: MCPeerID) {
         print("MPC Connected")
         
@@ -119,18 +116,17 @@ class CouponDetailViewModel: NSObject {
         isConnectWithPeer = true
     }
 
-    // MPC 연결이 끊겼을 때 실행됨
+    /// MPC 연결이 끊겼을 때 실행
     func disconnectedFromPeer(peer: MCPeerID) {
         
         print("MPC Disconnected")
         if connectedPeer == peer {
             connectedPeer = nil         // 연결된 Peer id 제거
             isConnectWithPeer = false   // TODO: - 상태 변경 -> enum으로 관리하기
-            mpc?.invalidate()
         }
     }
 
-    // 상대방이 보내온 NIDiscoveryToken을 수신했을 때 실행
+    /// 상대방이 보내온 NIDiscoveryToken을 수신했을 때 실행
     func dataReceivedHandler(data: Data, peer: MCPeerID) {
         // discoveryToken을 서로 공유했다면, ni 시작
         print("상대방이 보내온 NIDiscoveryToken을 수신했을 때 실행")
@@ -141,7 +137,7 @@ class CouponDetailViewModel: NSObject {
         peerDidShareDiscoveryToken(peer: peer, token: discoveryToken)
     }
     
-    // NI
+    /// NIN 통신을 위한 discoveryToken 공유
     func shareMyDiscoveryToken(token: NIDiscoveryToken) {
         print("shareMyDiscoveryToken()")
         guard let encodedData = try?  NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true) else {
@@ -151,6 +147,7 @@ class CouponDetailViewModel: NSObject {
         sharedTokenWithPeer = true
     }
     
+    /// discoveryToken 공유, config 파일 제작, NIN 통신 시작
     func peerDidShareDiscoveryToken(peer: MCPeerID, token: NIDiscoveryToken) {
         print("peerDidShareDiscoveryToken(\(token)")
         if connectedPeer != peer {
@@ -175,12 +172,11 @@ class CouponDetailViewModel: NSObject {
 
 extension CouponDetailViewModel: NISessionDelegate {
     func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
-//        print("NISession didUpdate")
         guard let peerToken = peerDiscoveryToken else {
             fatalError("don't have peer token")
         }
-
-        // Find the right peer.
+        
+        /// discoveryToken을 사용해서 peer 확인
         let peerObj = nearbyObjects.first { (obj) -> Bool in
             return obj.discoveryToken == peerToken
         }
@@ -189,9 +185,7 @@ extension CouponDetailViewModel: NISessionDelegate {
             return
         }
         
-        
         self.distance = nearbyObjectUpdate.distance
-//        print("\(String(describing: distance))")
     }
 
     func session(_ session: NISession, didRemove nearbyObjects: [NINearbyObject], reason: NINearbyObject.RemovalReason) {
