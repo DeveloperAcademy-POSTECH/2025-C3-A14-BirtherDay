@@ -17,6 +17,8 @@ struct CouponCompleteView: View {
     @State private var showShareModal = false
     @State private var isLoading: Bool = false
     
+    //TODO: 삭제
+    
     private let shareModalHeight: CGFloat = 195
     
     var body: some View {
@@ -36,9 +38,15 @@ struct CouponCompleteView: View {
                     .padding(.horizontal, 15)
             }
         }
-        .background(viewModel.couponData.template?.backgroundColor)
+        .background(viewModel.couponData.template.backgroundColor)
         .keyboardAware()
-        .bdNavigationBar(title: "쿠폰 생성 완료", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "쿠폰 생성 완료",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .sheet(isPresented: $showShareModal) {
             shareModalView()
                 .presentationDetents([.height(shareModalHeight)])
@@ -100,11 +108,8 @@ struct CouponCompleteView: View {
                 .font(.b2)
                 .padding(.top, 16)
             
-            HStack(spacing: 25) {
-                kakaoShareButtonView()
-                moreShareButtonView()
-            }
-            .padding(.top, 24)
+            ShareButtons()
+                .padding(.top, 24)
         }
     }
     
@@ -121,42 +126,6 @@ struct CouponCompleteView: View {
             Text("홈으로")
         }
         .buttonStyle(BDButtonStyle(buttonType: .activate))
-    }
-    
-    func kakaoShareButtonView() -> some View {
-        VStack {
-            Button {
-                
-            } label: {
-                Image("kakaoIcon")
-                    .resizable()
-                    .frame(
-                        width: 57,
-                        height: 57
-                    )
-            }
-            
-            Text("카카오톡")
-                .font(.r1)
-        }
-    }
-    
-    func moreShareButtonView() -> some View {
-        VStack {
-            Button {
-                
-            } label: {
-                Image("moreIcon")
-                    .resizable()
-                    .frame(
-                        width: 57,
-                        height: 57
-                    )
-            }
-            
-            Text("더보기")
-                .font(.r1)
-        }
     }
 }
 

@@ -7,11 +7,19 @@
 
 import SwiftUI
 
+// 키보드 숨김을 위한 Handler
 struct BDKeyboardHandler: ViewModifier {
     @State private var isKeyboardVisible: Bool = false
     
     func body(content: Content) -> some View {
-        content
+        ZStack {
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    hideKeyboard()
+                }
+            
+            content
             .onTapGesture { hideKeyboard() }
             .overlay(
                 VStack {
@@ -31,6 +39,7 @@ struct BDKeyboardHandler: ViewModifier {
                 withAnimation { isKeyboardVisible = false }
             }
     }
+}
     
     private func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

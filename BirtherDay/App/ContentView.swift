@@ -10,6 +10,8 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("isOnboarded") private var isOnboarded: Bool = true
     @StateObject private var bdNavigationManager = BDNavigationPathManager()
+    
+    private var authService: AuthService = AuthService()
 
     var body: some View {
         Group {
@@ -18,6 +20,24 @@ struct ContentView: View {
             } else {
                 HomeView()
                     .environmentObject(bdNavigationManager)
+            }
+        }
+        .onAppear { checkSignIn() }
+    }
+}
+
+extension ContentView {
+    func checkSignIn() {
+        if let session = SupabaseManager.shared.client.auth.currentSession {
+            print("가입된 사용자: \(session.user.id)")
+        } else {
+            Task {
+                do {
+                    let session = try await authService.signUp()
+                    print("신규 가입: \(session.user.id)")
+                } catch {
+                    print("\(error)")
+                }
             }
         }
     }
