@@ -44,10 +44,10 @@ struct CouponDetailView: View {
 //            viewModel.startupMPC()
         }
         .navigationBarBackButtonHidden()
-        .bdNavigationBar(title: "쿠폰 상세보기") {
-            viewModel.stopMPC()
-            navPathManager.popPath()
-        }
+//        .bdNavigationBar(title: "쿠폰 상세보기") {
+//            viewModel.stopMPC()
+//            navPathManager.popPath()
+//        }
         .onDisappear {
             print("ondisappear called")
         }

@@ -69,10 +69,10 @@ struct CouponInteractionView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .bdNavigationBar(title: "") {
-            viewModel.stopNI()
-            self.navPathManager.popPath()
-        }
+//        .bdNavigationBar(title: "") {
+//            viewModel.stopNI()
+//            self.navPathManager.popPath()
+//        }
     }
 
     func distanceView() -> some View {
