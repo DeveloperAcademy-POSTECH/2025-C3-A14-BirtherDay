@@ -17,6 +17,10 @@ struct CouponCompleteView: View {
     @State private var showShareModal = false
     @State private var isLoading: Bool = false
     
+    private let shareManager: ShareManager = ShareManager(
+        message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.", params: ["test1": "value"], shareType: .coupon
+    )
+    
     private let shareModalHeight: CGFloat = 195
     
     var body: some View {
@@ -137,7 +141,7 @@ struct CouponCompleteView: View {
     func kakaoShareButtonView() -> some View {
         VStack {
             Button {
-                
+                shareManager.shareToKakao()
             } label: {
                 Image("kakaoIcon")
                     .resizable()
@@ -155,7 +159,15 @@ struct CouponCompleteView: View {
     func moreShareButtonView() -> some View {
         VStack {
             Button {
-                
+                let shareLinkData = shareManager.getShareLinkData()
+                ShareLink(
+                    item: shareLinkData.photo!
+                    , message: Text(shareLinkData.message)
+                    , preview: SharePreview(
+                        "",
+                        image: shareLinkData.photo!.image
+                    )
+                )
             } label: {
                 Image("moreIcon")
                     .resizable()

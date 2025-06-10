@@ -66,8 +66,6 @@ struct CouponLetterView: View {
         }
         .buttonStyle(BDButtonStyle(buttonType: isFormValid() ? .activate : .deactivate))
         .disabled(!isFormValid())
-        .padding(.horizontal, 16)
-        .padding(.bottom, 20)
     }
     
     func isFormValid() -> Bool {

@@ -126,12 +126,12 @@ struct BDTemplate: View {
     }
     
     func titleView()-> some View {
-        Text("ㅇㅇㅇddddㅇㅇㅇddddddddddddddddddddddㅇㅇ")
+        Text("\(data.letter)")
             .font(.sb4)
              .foregroundStyle(Color.textTitle)
              .multilineTextAlignment(.center)
              .lineLimit(2)
-             .fixedSize(horizontal: false, vertical: true) // <-- 핵심
+             .fixedSize(horizontal: false, vertical: true)
              .frame(maxWidth: .infinity)
              .frame(height: 62, alignment: .center)
     }

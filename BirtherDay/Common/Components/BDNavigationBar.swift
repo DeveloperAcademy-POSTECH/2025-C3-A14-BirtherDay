@@ -22,6 +22,7 @@ struct BDNavigationBar: ViewModifier {
                         onBackButtonTapped()
                     } label:{
                         Image(systemName: "chevron.left")
+                            .foregroundColor(.black)
                     }
                 }
             }
