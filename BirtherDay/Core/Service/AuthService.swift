@@ -30,6 +30,4 @@ final class AuthService {
         
         return session
     }
-    
-    
 }

@@ -44,7 +44,7 @@ extension Coupon {
         couponId: "sample-id",
         sender: UUID(),
         receiver: nil,
-        template: .blue,
+        template: .heart,
         couponTitle: "애슐리 디너\n1회 이용권",
         letter: "축하해!",
         imageList: [],
@@ -85,7 +85,7 @@ extension InsertCouponRequest {
         return .init(
             senderId: userId.uuidString,
             senderName: "프레이가",
-            template: .blue,
+            template: .heart,
             title: "프레잉",
             letter: "사랑하는 프레이에게",
             imageList: [],
@@ -127,7 +127,7 @@ extension RetrieveCouponResponse {
 //            fatalError("No user ID found")
 //        }
         
-        return .init(couponId: "", senderId: "", senderName: "프레이", template: .blue, title: "프레이가프레이가프레이가프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
+        return .init(couponId: "", senderId: "", senderName: "프레이", template: .heart, title: "프레이가프레이가프레이가프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
         )
     }()
 }

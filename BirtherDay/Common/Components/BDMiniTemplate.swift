@@ -55,7 +55,16 @@ struct BDMiniTemplate: View {
     
     /// 에셋에 등록된 카드 배경 이미지 사용
     func backgroundImage(template: CouponTemplate) -> some View {
-        Image(template == .orange ? "Card1Back" : "Card2Back")
+        Image({
+            switch template {
+            case .heart:
+                return "CardBackHeart"
+            case .money:
+                return "CardBackMoney"
+            case .cake:
+                return "CardBackCake"
+            }
+        }())
             .resizable()
             .aspectRatio(contentMode: .fill)
     }
@@ -76,7 +85,16 @@ struct BDMiniTemplate: View {
     
     /// 선물 박스 이미지
     func giftBoxImage() -> some View {
-        Image(template == .orange ? "Card1Box" : "Card2Box")
+        Image({
+            switch template {
+            case .heart:
+                return "heart"
+            case .money:
+                return "money"
+            case .cake:
+                return "cake"
+            }
+        }())
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 66, height: 66)
@@ -93,22 +111,10 @@ struct BDMiniTemplate: View {
     }
 }
 
-// MARK: - Preview Helper
-extension BDMiniTemplate {
-    static func fromCouponData(_ data: CouponData) -> BDMiniTemplate {
-        BDMiniTemplate(
-            template: data.template ?? .orange,
-            senderName: data.senderName ?? "보내는 사람",
-            expireDate: data.expireDate ?? Date(),
-            couponTitle: data.couponTitle ?? "쿠폰명을 입력해주세요"
-        )
-    }
-}
-
 #Preview {
     VStack(spacing: 20) {
         BDMiniTemplate(
-            template: .orange,
+            template: .heart,
             senderName: "친구",
             expireDate: Date(),
             couponTitle: "데이트 초대 쿠폰"
@@ -116,7 +122,7 @@ extension BDMiniTemplate {
         .frame(width: 140, height: 183)
         
         BDMiniTemplate(
-            template: .blue,
+            template: .money,
             senderName: "가족",
             expireDate: Date(),
             couponTitle: "함께 영화보기 쿠폰"

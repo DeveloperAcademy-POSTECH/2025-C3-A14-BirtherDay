@@ -34,16 +34,22 @@ extension Color {
     // GrayScale
     static let gray100 = Color(hex: "f2f3f5")
     static let gray200 = Color(hex: "e5e5e5")
-    static let gray300 = Color(hex: "e5e5e5")
+    static let gray300 = Color(hex: "999999")
     static let gray400 = Color(hex: "434343")
     static let gray600 = Color(hex: "262626")
     
     // Background
     static let bgLight = Color(hex: "ffffff")
     static let bgDark = Color(hex: "292929")
+    static let bgDimmed = Color(hex: "000000").opacity(0.3)
     
     // Warning
     static let warning = Color(hex: "ff4848")
+    
+    // Card
+    static let cardHeart = Color(hex: "FFC8C8")
+    static let cardMoney = Color(hex: "C5EFD3")
+    static let cardCake = Color(hex: "FFCC9F")
 }
 
 // hex code to Color

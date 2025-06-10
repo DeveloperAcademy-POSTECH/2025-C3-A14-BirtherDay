@@ -21,12 +21,6 @@ struct BirtherDayApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.light) // 라이트모드 고정
-                .onOpenURL { url in
-                    if ShareApi.isKakaoTalkSharingUrl(url) {
-                        // TODO: - 쿠폰 사용 완료 Modal 창 띄우기
-                        print("카카오톡 공유 URL 처리: \(url)")
-                    }
-                }
         }
     }
 }

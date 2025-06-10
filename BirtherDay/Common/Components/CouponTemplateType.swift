@@ -9,17 +9,21 @@ import Foundation
 import SwiftUI
 
 enum CouponTemplate: String, Codable, Equatable {
-    case blue
-    case orange
+    case heart
+    case money
+    case cake
     
     // BDCoupon
     /// 배경 색상
     var basicColor: Color {
         switch self {
-        case .blue:
+        case .heart:
             return Color(hex: "F8F5FF")
             
-        case .orange:
+        case .money:
+            return Color(hex: "FFF7FF")
+            
+        case .cake:
             return Color(hex: "FFF7FF")
         }
     }
@@ -27,14 +31,21 @@ enum CouponTemplate: String, Codable, Equatable {
     /// 배경 그라디언트 색상
     var backgroundPointColor: [Color] {
         switch self {
-        case .blue:
+        case .heart:
             return [
                 Color(hex: "F786FF").opacity(0.8),
                 Color(hex: "86BEFF").opacity(0.5),
                 Color(hex: "AA86FF").opacity(0.5)
             ]
             
-        case .orange:
+        case .money:
+            return [
+                Color(hex: "FFD586").opacity(0.8),
+                Color(hex: "FFD586").opacity(0.8),
+                Color(hex: "FFD586").opacity(0.8)
+            ]
+            
+        case .cake:
             return [
                 Color(hex: "FFD586").opacity(0.8),
                 Color(hex: "FFD586").opacity(0.8),
@@ -46,21 +57,27 @@ enum CouponTemplate: String, Codable, Equatable {
     /// 외곽선 색상
     var strokeColor: LinearGradient {
         switch self {
-        case .blue:
-            return LinearGradient.blueTemplateStroke
+        case .heart:
+            return LinearGradient.heartTemplateStroke
             
-        case .orange:
-            return LinearGradient.orangeTemplateStroke
+        case .money:
+            return LinearGradient.moneyTemplateStroke
+            
+        case .cake:
+            return LinearGradient.cakeTemplateStroke
         }
     }
     
     /// 점선 색상
     var dashLineColor: Color {
         switch self {
-        case .blue:
+        case .heart:
             return Color(hex: "B6D6FF")
             
-        case .orange:
+        case .money:
+            return Color(hex: "FFC68F")
+            
+        case .cake:
             return Color(hex: "FFC68F")
         }
     }
@@ -68,9 +85,11 @@ enum CouponTemplate: String, Codable, Equatable {
     /// 쿠폰 겉배경 색상
     var backgroundColor: Color {
         switch self {
-            case .blue:
+        case .heart:
             return Color(hex: "F6F2FF")
-        case .orange:
+        case .money:
+            return Color(hex: "FFF4F4")
+        case .cake:
             return Color(hex: "FFF4F4")
         }
     }
@@ -78,10 +97,12 @@ enum CouponTemplate: String, Codable, Equatable {
     /// 하단 버튼 배경에 적용되는 그라디언트
     var buttonBackgroundColor: LinearGradient {
         switch self {
-        case .blue:
-            LinearGradient.blueButtonBackground
-        case .orange:
-            LinearGradient.orangeButtonBackground
+        case .heart:
+            LinearGradient.heartButtonBackground
+        case .money:
+            LinearGradient.moneyButtonBackground
+        case .cake:
+            LinearGradient.cakeButtonBackground
         }
     }
     
@@ -89,19 +110,23 @@ enum CouponTemplate: String, Codable, Equatable {
     var miniCouponBackgroundColor: Color {
         switch self {
         
-        case .blue:
+        case .heart:
             return Color(hex: "E5ECFF")
-        case .orange:
+        case .money:
+            return Color.mainViolet100
+        case .cake:
             return Color.mainViolet100
         }
     }
     
     var miniCouponImage: SwiftUI.Image {
         switch self {
-        case .blue:
-            return Image("Card2Box")
-        case .orange:
-            return Image("Card1Box")
+        case .heart:
+            return Image("heart")
+        case .money:
+            return Image("money")
+        case .cake:
+            return Image("cake")
         }
     }
     
@@ -109,10 +134,12 @@ enum CouponTemplate: String, Codable, Equatable {
     /// mini 점선 색상
     var miniDashLineColor: Color {
         switch self {
-        case .blue:
+        case .heart:
             return Color(hex: "B6D6FF")
             
-        case .orange:
+        case .money:
+            return Color(hex: "FFC68F")
+        case .cake:
             return Color(hex: "FFC68F")
         }
     }

@@ -11,16 +11,20 @@ import SwiftUI
 import PhotosUI
 
 struct CouponData {
-    var template: CouponTemplate?
-    var couponTitle: String?
-    var senderName: String?
-    var expireDate: Date?
-    var letterContent: String?
+    var template: CouponTemplate
+    var couponTitle: String
+    var senderName: String
+    var expireDate: Date
+    var letterContent: String
     var selectedItems: [PhotosPickerItem] = []
     var selectedImages: [UIImage] = []
     var uploadedImagePaths: [String] = []
     
     init() {
+        self.template = .heart
+        self.couponTitle = ""
+        self.senderName = ""
+        self.letterContent = ""
         self.expireDate = Date()
     }
 }
@@ -105,15 +109,17 @@ class CreateCouponViewModel: ObservableObject {
     }
     
     func buildCouponForRequest() -> InsertCouponRequest? {
-        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
-              let template = couponData.template,
-              let couponTitle = couponData.couponTitle,
-              let senderName = couponData.senderName,
-              let expireDate = couponData.expireDate,
-              let letter = couponData.letterContent else {
+        let template = couponData.template
+        let couponTitle = couponData.couponTitle
+        let senderName = couponData.senderName
+        let expireDate = couponData.expireDate
+        let letter = couponData.letterContent
+        
+        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString
+        else {
             return nil
         }
-
+        
         return InsertCouponRequest(
             senderId: senderId,
             senderName: senderName,
@@ -128,12 +134,14 @@ class CreateCouponViewModel: ObservableObject {
     }
     
     func buildCouponForResponse() -> RetrieveCouponResponse? {
-        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString,
-              let template = couponData.template,
-              let couponTitle = couponData.couponTitle,
-              let senderName = couponData.senderName,
-              let expireDate = couponData.expireDate,
-              let letter = couponData.letterContent else {
+        let template = couponData.template
+        let couponTitle = couponData.couponTitle
+        let senderName = couponData.senderName
+        let expireDate = couponData.expireDate
+        let letter = couponData.letterContent
+        
+        guard let senderId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString
+        else {
             return nil
         }
         

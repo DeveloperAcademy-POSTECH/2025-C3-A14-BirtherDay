@@ -47,11 +47,17 @@ struct BDTemplate: View {
             
             Spacer()
             
-            Image(data.template == .orange ? "Card1Box" : "Card2Box")
+            let imageName = switch data.template {
+                case .heart: "heart"
+                case .money: "money"
+                case .cake: "cake"
+            }
+            
+            Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 150, height: 150)
-            
+
             Spacer()
           
             titleView()
@@ -120,12 +126,12 @@ struct BDTemplate: View {
     }
     
     func titleView()-> some View {
-        Text("ㅇㅇㅇddddㅇㅇㅇddddddddddddddddddddddㅇㅇ")
+        Text("\(data.letter)")
             .font(.sb4)
              .foregroundStyle(Color.textTitle)
              .multilineTextAlignment(.center)
              .lineLimit(2)
-             .fixedSize(horizontal: false, vertical: true) // <-- 핵심
+             .fixedSize(horizontal: false, vertical: true)
              .frame(maxWidth: .infinity)
              .frame(height: 62, alignment: .center)
     }

@@ -28,16 +28,28 @@ struct MyCouponView: View {
         .padding(.horizontal, 16)
         .padding(.top, 16)
         
-        .navigationTitle(couponType.couponNavigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            leadingBackButton
-        }
+//        .navigationTitle(couponType.couponNavigationTitle)
+//        .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarBackButtonHidden(true)
         
+//        .toolbar {
+//            leadingBackButton
+//        }
+        
+        .bdNavigationBar(
+            title: "\(couponType.couponNavigationTitle)",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                Color.bgLight
+            )
+        )
         /// 최초 fetch.
-        .task {
-            await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
+        .onAppear {
+            if myCouponViewModel.coupons.isEmpty {
+                Task {
+                    await myCouponViewModel.fetchCoupons(for: couponType, isUsed: selectedTab.isUsed)
+                }
+            }
         }
         
         /// tab 변화 시, 캐시에서 필터링함.

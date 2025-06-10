@@ -61,7 +61,7 @@ final class ShareManager {
         case .coupon:
             self.buttonTitle = "생일 쿠폰 확인하기"
             self.urlScheme = "kakao\(KakaoConfig.NATIVE_APP_KEY)://kakaolink"
-            self.imageUrl = "\(SupabaseConfig.url)\(SupabaseConfig.storagePath)coupon/common/SharePreview.png"
+            self.imageUrl = "\(SupabaseConfig.url)\(SupabaseConfig.storagePath)coupon/common/SharePreview.jpg"
         }
     }
     

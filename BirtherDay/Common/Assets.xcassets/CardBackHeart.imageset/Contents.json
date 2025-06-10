@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "CardCakeBack.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

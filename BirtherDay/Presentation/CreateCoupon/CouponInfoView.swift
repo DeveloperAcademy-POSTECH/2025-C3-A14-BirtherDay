@@ -16,15 +16,24 @@ struct CouponInfoView: View {
     @State private var selectedDate: Date = Date()
     @State private var showDatePicker: Bool = false
     @State private var showTitleLengthWarning: Bool = false
+    @State private var showSenderLengthWarning: Bool = false
+    
     let maxCouponTitleLength = 25
+    let maxSenderNameLength = 10
     
     // 랜덤 예시 목록
     private let randomExamples = [
-        "데이트 초대 쿠폰",
-        "야식 먹기 쿠폰",
-        "산책 가기 쿠폰",
-        "같이 영화보기 쿠폰",
-        "게임 같이 하기 쿠폰"
+        "애슐리 디너1회 이용권",
+        "성수동 오마카세내가 쏜닿ㅎㅎ 가자~",
+        "🍷와인바 1병 함께 하기청담 와인루프탑",
+        "🛍 코엑스 쇼핑 데이10만원 한도!",
+        "🎬 용산 아이맥스팝콘 세트 포함",
+        "🎮 PC방 5시간 이용권치킨도 내가 쏨",
+        "🍽 삼청동 브런치 투어카페 2곳 포함",
+        "🏞 남산 야경 드라이브야식은 내가 책임질게",
+        "🧖‍♀️ 찜질방 데이찜질+계란+식혜 세트",
+        "🎡 롯데월드 자유이용권1일 데이트권",
+        "🌊 속초 당일치기 여행기름값 내가 낼게!",
     ]
     
     var body: some View {
@@ -47,11 +56,14 @@ struct CouponInfoView: View {
             
             nextButton()
         }
-        .keyboardAware(
-            navigationTitle: "쿠폰 멘트 작성하기",
-            onBackButtonTapped: {
-                navPathManager.popPath()
-            }
+        .background(Color.mainViolet50)
+        .keyboardAware()
+        .bdNavigationBar(
+            title: "쿠폰 멘트 작성하기",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
         )
         .onAppear {
             loadExistingData()
@@ -72,7 +84,7 @@ struct CouponInfoView: View {
     }
     
     func inputFormSection() -> some View {
-        VStack(alignment: .leading, spacing: 32) {
+        VStack(alignment: .leading, spacing: 12) {
             couponTitleInput()
             senderNameInput()
             dateSelectionInput()
@@ -94,7 +106,7 @@ struct CouponInfoView: View {
     }
     
     func selectedTemplate() -> CouponTemplate {
-        viewModel.couponData.template ?? .orange
+        viewModel.couponData.template ?? .heart
     }
     
     func isFormValid() -> Bool {
@@ -103,15 +115,11 @@ struct CouponInfoView: View {
     
     func loadExistingData() {
         let couponData = viewModel.couponData
-        if let existingTitle = couponData.couponTitle {
-            couponTitle = existingTitle
-        }
-        if let existingSender = couponData.senderName {
-            senderName = existingSender
-        }
-        if let existingDate = couponData.expireDate {
-            selectedDate = existingDate
-        }
+        
+        couponTitle = couponData.couponTitle
+        senderName = couponData.senderName
+        selectedDate = couponData.expireDate
+        
     }
     
     func saveDataAndNavigate() {
@@ -134,7 +142,6 @@ struct CouponInfoView: View {
                 Spacer()
                 
                 Button(action: {
-                    // 랜덤으로 쿠폰명 예시 중 하나 선택
                     if let random = randomExamples.randomElement() {
                         couponTitle = random
                     }
@@ -165,17 +172,31 @@ struct CouponInfoView: View {
                         .background(Color.bgLight)
                         .cornerRadius(8)
                         .onChange(of: couponTitle) {
-                            showTitleLengthWarning = couponTitle.count > maxCouponTitleLength
+                            // 25자 초과시 입력 차단
+                            if couponTitle.count > maxCouponTitleLength {
+                                couponTitle = String(couponTitle.prefix(maxCouponTitleLength))
+                            }
+                            showTitleLengthWarning = couponTitle.count == maxCouponTitleLength
                         }
+                    
+                    // 글자수 표시
+                    HStack {
+                        Spacer()
+                        Text("\(couponTitle.count)/\(maxCouponTitleLength)")
+                            .font(.custom("Pretendard", size: 10).weight(.medium))
+                            .foregroundColor(couponTitle.count == maxCouponTitleLength ? .red : .gray)
+                            .padding(.trailing, 4)
+                            .padding(.top, 8)
+                    }
                 }
 
-                // ✅ 경고 문구가 아래 간격에 "떠서" 들어옴
+                // 경고 문구
                 if showTitleLengthWarning {
                     Text("25자 이내로 입력해주세요")
-                        .font(.system(size: 13))
+                        .font(.custom("Pretendard", size: 10).weight(.medium))
                         .foregroundColor(.red)
-                        .padding(.leading, 20)
-                        .offset(y: 20)
+                        .padding(.leading, 17)
+                        .padding(.top, 8)
                 }
             }
         }
@@ -187,12 +208,42 @@ struct CouponInfoView: View {
                 .font(.sb1)
                 .foregroundColor(.black)
             
-            TextField("보내는 사람", text: $senderName)
-                .font(.m1)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 13)
-                .background(Color.bgLight)
-                .cornerRadius(8)
+            ZStack(alignment: .bottomLeading) {
+                VStack(spacing: 0) {
+                    TextField("보내는 사람", text: $senderName)
+                        .font(.m1)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 13)
+                        .background(Color.bgLight)
+                        .cornerRadius(8)
+                        .onChange(of: senderName) {
+                            // 10자 초과시 입력 차단
+                            if senderName.count > maxSenderNameLength {
+                                senderName = String(senderName.prefix(maxSenderNameLength))
+                            }
+                            showSenderLengthWarning = senderName.count == maxSenderNameLength
+                        }
+                    
+                    // 글자수 표시
+                    HStack {
+                        Spacer()
+                        Text("\(senderName.count)/\(maxSenderNameLength)")
+                            .font(.custom("Pretendard", size: 10).weight(.medium))
+                            .foregroundColor(senderName.count == maxSenderNameLength ? .red : .gray)
+                            .padding(.trailing, 4)
+                            .padding(.top, 8)
+                    }
+                }
+                
+                // 경고 문구
+                if showSenderLengthWarning {
+                    Text("10자 이내로 입력해주세요")
+                        .font(.custom("Pretendard", size: 10).weight(.medium))
+                        .foregroundColor(.red)
+                        .padding(.leading, 17)
+                        .padding(.top, 8)
+                }
+            }
         }
     }
     
@@ -247,11 +298,16 @@ struct CouponInfoView: View {
             )
         }
         .frame(width: 140, height: 183)
-        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
     }
     
     func backgroundImage(template: CouponTemplate) -> some View {
-        Image(template == .orange ? "Card1Back" : "Card2Back")
+        let imageName = switch template {
+            case .heart: "CardBackHeart"
+            case .money: "CardBackMoney"
+            case .cake: "CardBackCake"
+        }
+        
+        return Image(imageName)
             .resizable()
             .aspectRatio(contentMode: .fill)
     }
@@ -293,7 +349,13 @@ struct CouponInfoView: View {
     }
     
     func giftBoxImage(template: CouponTemplate) -> some View {
-        Image(template == .orange ? "Card1Box" : "Card2Box")
+        let imageName = switch template {
+            case .heart: "heart"
+            case .money: "money"
+            case .cake: "cake"
+        }
+        
+        return Image(imageName)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 64, height: 64)
