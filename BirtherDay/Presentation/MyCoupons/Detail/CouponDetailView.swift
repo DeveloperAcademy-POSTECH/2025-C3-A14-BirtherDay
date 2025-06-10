@@ -16,17 +16,24 @@ struct CouponDetailView: View {
         ZStack {
             ScrollView(.vertical) {
                 DetailedCoupon(couponData: viewModel.selectedCoupon)
+                    .padding(.top, 11)
             }
-            .background(viewModel.selectedCoupon.template.backgroundColor.ignoresSafeArea())
+            
+            .background(viewModel.selectedCoupon.template.backgroundColor)
             .scrollIndicators(.hidden)
+            .bdNavigationBar(
+                title: "쿠폰 상세보기",
+                backButtonAction: navPathManager.popPath,
+                color: UIColor(
+                    viewModel.selectedCoupon.template.backgroundColor
+                )
+            )
             
             buttonsView()
-                
-                
         }
         .onAppear {
             print("viewModel.startupMPC()")
-            viewModel.startupMPC()
+//            viewModel.startupMPC()
         }
     }
     

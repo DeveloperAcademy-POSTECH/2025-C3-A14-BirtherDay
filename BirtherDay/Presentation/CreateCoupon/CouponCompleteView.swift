@@ -17,6 +17,7 @@ struct CouponCompleteView: View {
     @State private var showShareModal = false
     @State private var isLoading: Bool = false
     
+    //TODO: 삭제
     private let shareManager: ShareManager = ShareManager(
         message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.", params: ["test1": "value"], shareType: .coupon
     )

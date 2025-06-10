@@ -43,7 +43,7 @@ struct HomeView: View {
                 }
             }
             .scrollIndicators(.hidden)
-            .navigationBarTitleDisplayMode(.inline)
+            .background(Color.bgLight)
         }
         .onAppear {
             Task {
