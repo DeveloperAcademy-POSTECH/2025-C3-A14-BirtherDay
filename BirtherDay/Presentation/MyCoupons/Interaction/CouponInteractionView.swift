@@ -7,6 +7,7 @@
 
 import SwiftUI
 struct CouponInteractionView: View {
+    @EnvironmentObject var navPathManager: BDNavigationPathManager
     @Bindable var viewModel: CouponDetailViewModel
     
     var minimuDetectedDistance: Float = 2.0
@@ -47,12 +48,30 @@ struct CouponInteractionView: View {
         .onAppear {
             viewModel.startNI()
         }
-        .animation(.linear(duration: 0.3), value: viewModel.distance)
-        .onChange(of: viewModel.distance ?? 0.0) { _, new in
-            let new = max(new, 0)
-            animatedDistance = new
-            let height = screenHeight - CGFloat(new / minimuDetectedDistance) * screenHeight
-            animatedHeight = max(0, height)
+        .onChange(of: viewModel.distance) { oldValue, newValue in
+            guard let newValue else { return }
+            
+            withAnimation(.easeInOut(duration: 1.0)) {
+                let clampedValue = max(newValue, 0)
+                animatedDistance = clampedValue
+                let height = screenHeight - CGFloat(clampedValue / (minimuDetectedDistance + 0.5)) * screenHeight
+                animatedHeight = max(0, height)
+            }
+        }
+        .onChange(of: viewModel.distance) { oldValue, newValue in
+            if let newValue = newValue {
+                if viewModel.isNearby(newValue) {
+                    navPathManager.pushMyCouponPath(.interactionComplete)
+                    viewModel.stopNI()
+                    viewModel.stopMPC()
+                    
+                }
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .bdNavigationBar(title: "") {
+            viewModel.stopNI()
+            self.navPathManager.popPath()
         }
     }
 
@@ -61,7 +80,7 @@ struct CouponInteractionView: View {
             Text("우리사이 거리")
                 .foregroundStyle(Color.bgLight)
 
-            Text("\(animatedDistance, specifier: "%.2f")m")
+            Text("\(viewModel.distance ?? 0.0, specifier: "%.2f")m")
                 .foregroundStyle(animatedHeight == screenHeight ? Color.mainPrimary : Color.bgLight)
         }
         .font(.sb5)
