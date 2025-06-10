@@ -69,9 +69,7 @@ struct MyCouponView: View {
             
             Spacer()
             
-            Rectangle()
-                .frame(width: 57, height: 57)
-            
+            Image(couponType.myCouponTypeImage)
         }
     }
     

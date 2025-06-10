@@ -146,7 +146,7 @@ struct HomeView: View {
         } label: {
             HStack(alignment: .center, spacing: 8) {
                 
-                Image(couponType.couponTypeImage)
+                Image(couponType.homeCouponTypeImage)
                 
                 Text(type.couponBoxTitle)
                     .font(.sb1)
