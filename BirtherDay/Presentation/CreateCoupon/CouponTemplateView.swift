@@ -11,8 +11,8 @@ struct CouponTemplateView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
     @State private var selectedTemplate: CouponTemplate = .orange
-        
-        
+    
+    
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
@@ -39,7 +39,13 @@ struct CouponTemplateView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.mainViolet50)
         .keyboardAware()
-        .bdNavigationBar(title: "쿠폰 디자인 선택", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "쿠폰 디자인 선택",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .onAppear {
             loadExistingTemplate()
         }
@@ -109,7 +115,7 @@ struct CouponTemplateView: View {
                         .stroke(
                             isSelected ?
                             Color.mainPrimary :
-                            Color.clear,
+                                Color.clear,
                             lineWidth: 2
                         )
                 )
@@ -117,9 +123,7 @@ struct CouponTemplateView: View {
     }
     
     func loadExistingTemplate() {
-        if let existingTemplate = viewModel.couponData.template {
-            selectedTemplate = existingTemplate
-        }
+        selectedTemplate = viewModel.couponData.template
     }
 }
 

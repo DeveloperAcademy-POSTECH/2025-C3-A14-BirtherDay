@@ -40,9 +40,15 @@ struct CouponCompleteView: View {
                     .padding(.horizontal, 15)
             }
         }
-        .background(viewModel.couponData.template?.backgroundColor)
+        .background(viewModel.couponData.template.backgroundColor)
         .keyboardAware()
-        .bdNavigationBar(title: "쿠폰 생성 완료", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "쿠폰 생성 완료",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .sheet(isPresented: $showShareModal) {
             shareModalView()
                 .presentationDetents([.height(shareModalHeight)])

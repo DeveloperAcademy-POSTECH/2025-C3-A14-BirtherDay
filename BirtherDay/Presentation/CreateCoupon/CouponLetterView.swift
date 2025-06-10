@@ -31,7 +31,13 @@ struct CouponLetterView: View {
                 .padding(.horizontal, 16)
         }
         .keyboardAware()
-        .bdNavigationBar(title: "편지 작성하기", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "편지 작성하기",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .background(Color.mainViolet50)
         .onAppear {
             loadExistingLetter()
@@ -40,10 +46,10 @@ struct CouponLetterView: View {
     
     func cardPreviewSection() -> some View {
         BDMiniTemplate(
-            template: viewModel.couponData.template ?? .blue,
-            senderName: viewModel.couponData.senderName ?? "보내는 사람",
-            expireDate: viewModel.couponData.expireDate ?? Date(),
-            couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요"
+            template: viewModel.couponData.template,
+            senderName: viewModel.couponData.senderName,
+            expireDate: viewModel.couponData.expireDate,
+            couponTitle: viewModel.couponData.couponTitle
         )
         .frame(width: 140, height: 183)
     }
@@ -69,12 +75,12 @@ struct CouponLetterView: View {
     }
     
     func loadExistingLetter() {
-        if let existingLetterContent = viewModel.couponData.letterContent {
-            letterContent = existingLetterContent
-        }
+        let existingLetterContent = viewModel.couponData.letterContent
+        letterContent = existingLetterContent
     }
     
     func saveLetterAndNavigate() {
+//        viewModel.update(.letter(letterContent))
         viewModel.update(.letter(letterContent))
         navPathManager.pushCreatePath(.couponPicture)
     }

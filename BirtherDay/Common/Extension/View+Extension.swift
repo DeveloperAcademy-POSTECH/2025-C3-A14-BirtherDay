@@ -14,8 +14,15 @@ extension View {
     
     func bdNavigationBar(
         title: String,
-        backButtonAction: @escaping () -> Void
+        backButtonAction: @escaping () -> Void,
+        color: UIColor
     ) -> some View {
-        modifier(BDNavigationBar(title: title, onBackButtonTapped: backButtonAction))
+        modifier(
+            BDNavigationBar(
+                title: title,
+                onBackButtonTapped: backButtonAction,
+                backgroundColor: color
+            )
+        )
     }
 }
