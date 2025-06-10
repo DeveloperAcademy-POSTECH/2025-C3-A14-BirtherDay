@@ -8,6 +8,18 @@
 import Foundation
 import MultipeerConnectivity
 
+extension MCSessionState {
+    var string: String {
+        switch self {
+        case .connected: return "Connected"
+        case .notConnected: return "Not Connected"
+        case .connecting: return "Connecting"
+        @unknown default:
+            return ""
+        }
+    }
+}
+
 @Observable
 class MultipeerManager: NSObject {
  
@@ -17,7 +29,7 @@ class MultipeerManager: NSObject {
     var mcSession: MCSession                    // 하나의 MCSession 안에서 여러 기기와 연결. 내가 ad일 때도 사용, brow일 때도 상대에게 공유
     
     private let serviceType = "birtherday" // same as that in info.plist
-    private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
+    private let myPeerID = MCPeerID(displayName: "\(UIDevice.current.name)-\(UUID().uuidString.prefix(4))")
     private let maxNumPeers: Int = 1
     
     var peerDataHandler: ((Data, MCPeerID) -> Void)?    // 다른 피어로부터 데이터를 받았을 때
@@ -103,7 +115,7 @@ class MultipeerManager: NSObject {
         }
     }
     
-    // MPC 실행
+    /// MPC 실행
     func start() {
         print("MPC 실행")
         
@@ -123,7 +135,7 @@ class MultipeerManager: NSObject {
         browser?.startBrowsingForPeers()
     }
     
-    // MPC 중단
+    /// MPC adverting & browsing 중단
     func suspend() {
         print("MultiPeerManager - suspend()")
         
@@ -133,7 +145,7 @@ class MultipeerManager: NSObject {
         browser = nil
     }
 
-    // MPC
+    /// MPC adverting & browsing 중단 MCSession 해제
     func invalidate() {
         print("MultipeerManager - invalidate()")
         suspend()
@@ -157,6 +169,7 @@ class MultipeerManager: NSObject {
             }
         }
         
+        // 연결된 peer가 있다면 advertising, browsing 중단
         if mcSession.connectedPeers.count == maxNumPeers {
             self.suspend()
         }
@@ -171,12 +184,18 @@ class MultipeerManager: NSObject {
                 print("MPC: \(peerID) 연결 해제")
             }
         }
+        
+        // 연결된 peer가 없으면 계속 advertising, browsing 유지
+        if mcSession.connectedPeers.count < maxNumPeers {
+            self.start()
+        }
     }
     
+    /// 연결된 peer들에게 data 전송
     func sendDataToAllPeers(data: Data) {
         sendData(data: data, peers: mcSession.connectedPeers, mode: .reliable)
     }
-
+    
     func sendData(data: Data, peers: [MCPeerID], mode: MCSessionSendDataMode) {
         do {
             // data 전송
@@ -188,6 +207,7 @@ class MultipeerManager: NSObject {
 }
 
 extension MultipeerManager: MCNearbyServiceBrowserDelegate {
+    /// 연결할 수 있는 MPSession 찾고, Invitation 보내기
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         print("상대 peerID: \(peerID) || 내 peerID: \(self.myPeerID)")
         guard peerID != myPeerID else { return }  // 자기 자신에 대한 초대 방지
@@ -195,7 +215,7 @@ extension MultipeerManager: MCNearbyServiceBrowserDelegate {
         // 쿠폰 ID 일치 여부 확인 (상대 쿠폰 ID는 info에서 받아야 함)
         if let peerCouponId = info?["couponId"], peerCouponId == myCoupon.couponId {
             let context = ["couponId": myCoupon.couponId].jsonData
-            browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 100)
+            browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 1000)
         } else {
             // 쿠폰 ID 불일치 시 초대 보내지 않음
             self.mpcSessionState = .notConnected
@@ -214,6 +234,7 @@ extension MultipeerManager: MCNearbyServiceAdvertiserDelegate {
     // peerID: 연결을 요청한 상대방의 peer ID
     // context: 상대방이 초대에 포함시킨 부가 정보. ex. 사용자의 ID등 (신뢰할 수 없으므로 주의)
     // invitationHandler: 초대 수락/거절을 결정하는 콜백. true: 수락, false: 거절. 세션도 같이 넘겨야 함
+    /// MCSession 열고, 들어온 invitations 수락 or 거절
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         
         print("초대 받음: \(peerID.displayName), with context: \(String(describing: context?.string))")
