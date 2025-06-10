@@ -70,9 +70,20 @@ struct CouponCompleteView: View {
         VStack {
             Spacer()
             
-            (viewModel.couponData.template == .orange ? LinearGradient.orangeButtonBackground : LinearGradient.blueButtonBackground)
-                .frame(maxWidth: .infinity)
-                .frame(height: 143)
+            Group {
+                switch viewModel.couponData.template {
+                case .heart:
+                    LinearGradient.heartButtonBackground
+                case .money:
+                    LinearGradient.moneyButtonBackground
+                case .cake:
+                    LinearGradient.cakeButtonBackground
+                case .none:
+                    LinearGradient.heartButtonBackground
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 143)
         }
         .ignoresSafeArea(.all)
     }

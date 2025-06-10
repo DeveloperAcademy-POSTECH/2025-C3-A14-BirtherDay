@@ -44,6 +44,11 @@ extension Color {
     
     // Warning
     static let warning = Color(hex: "ff4848")
+    
+    // Card
+    static let cardHeart = Color(hex: "FFC8C8")
+    static let cardMoney = Color(hex: "C5EFD3")
+    static let cardCake = Color(hex: "FFCC9F")
 }
 
 // hex code to Color

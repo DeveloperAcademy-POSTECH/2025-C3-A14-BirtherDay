@@ -44,7 +44,7 @@ struct CouponLetterView: View {
     
     func cardPreviewSection() -> some View {
         BDMiniTemplate(
-            template: viewModel.couponData.template ?? .blue,
+            template: viewModel.couponData.template ?? .heart,
             senderName: viewModel.couponData.senderName ?? "보내는 사람",
             expireDate: viewModel.couponData.expireDate ?? Date(),
             couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요"

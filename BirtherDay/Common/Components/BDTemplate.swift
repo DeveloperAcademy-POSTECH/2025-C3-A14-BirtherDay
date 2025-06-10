@@ -47,11 +47,17 @@ struct BDTemplate: View {
             
             Spacer()
             
-            Image(data.template == .orange ? "Card1Box" : "Card2Box")
+            let imageName = switch data.template {
+                case .heart: "heart"
+                case .money: "money"
+                case .cake: "cake"
+            }
+            
+            Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 150, height: 150)
-            
+
             Spacer()
           
             titleView()

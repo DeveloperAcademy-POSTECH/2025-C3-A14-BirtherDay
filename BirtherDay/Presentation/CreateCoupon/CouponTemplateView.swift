@@ -10,7 +10,7 @@ import SwiftUI
 struct CouponTemplateView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     @ObservedObject var viewModel: CreateCouponViewModel
-    @State private var selectedTemplate: CouponTemplate = .orange
+    @State private var selectedTemplate: CouponTemplate = .heart
         
         
     var body: some View {
@@ -59,19 +59,16 @@ struct CouponTemplateView: View {
     }
     
     func templateImageSection() -> some View {
-        Group {
-            if selectedTemplate == .orange {
-                Image("cardTemplate1")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 387)
-            } else {
-                Image("cardTemplate2")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 387)
-            }
+        let imageName = switch selectedTemplate {
+            case .heart: "CardHeart"
+            case .money: "CardMoney"
+            case .cake: "CardCake"
         }
+        
+        return Image(imageName)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(maxHeight: 387)
     }
     
     func nextButton() -> some View {
@@ -88,15 +85,21 @@ struct CouponTemplateView: View {
     func templateSelectionButtons() -> some View {
         HStack(spacing: 30) {
             templateButton(
-                color: Color(red: 1.0, green: 0.9, blue: 0.5),
-                isSelected: selectedTemplate == .orange,
-                action: { selectedTemplate = .orange }
+                color: Color.cardHeart,
+                isSelected: selectedTemplate == .heart,
+                action: { selectedTemplate = .heart }
             )
             
             templateButton(
-                color: Color(red: 0.4, green: 0.6, blue: 1.0),
-                isSelected: selectedTemplate == .blue,
-                action: { selectedTemplate = .blue }
+                color: Color.cardMoney,
+                isSelected: selectedTemplate == .money,
+                action: { selectedTemplate = .money }
+            )
+            
+            templateButton(
+                color: Color.cardCake,
+                isSelected: selectedTemplate == .cake,
+                action: { selectedTemplate = .cake }
             )
         }
     }

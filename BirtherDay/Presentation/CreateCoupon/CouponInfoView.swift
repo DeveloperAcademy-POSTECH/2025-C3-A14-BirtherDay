@@ -91,7 +91,7 @@ struct CouponInfoView: View {
     }
     
     func selectedTemplate() -> CouponTemplate {
-        viewModel.couponData.template ?? .orange
+        viewModel.couponData.template ?? .heart
     }
     
     func isFormValid() -> Bool {
@@ -248,7 +248,13 @@ struct CouponInfoView: View {
     }
     
     func backgroundImage(template: CouponTemplate) -> some View {
-        Image(template == .orange ? "Card1Back" : "Card2Back")
+        let imageName = switch template {
+            case .heart: "CardBackHeart"
+            case .money: "CardBackMoney"
+            case .cake: "CardBackCake"
+        }
+        
+        return Image(imageName)
             .resizable()
             .aspectRatio(contentMode: .fill)
     }
@@ -290,7 +296,13 @@ struct CouponInfoView: View {
     }
     
     func giftBoxImage(template: CouponTemplate) -> some View {
-        Image(template == .orange ? "Card1Box" : "Card2Box")
+        let imageName = switch template {
+            case .heart: "heart"
+            case .money: "money"
+            case .cake: "cake"
+        }
+        
+        return Image(imageName)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: 64, height: 64)
