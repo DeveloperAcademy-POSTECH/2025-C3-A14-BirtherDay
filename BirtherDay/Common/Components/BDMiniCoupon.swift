@@ -118,8 +118,7 @@ struct BDMiniCoupon: View {
                     .padding(.top, 1)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("저녁 먹자")
-                    //Text("\(coupon.title)")
+                    Text("\(coupon.title)")
                         .font(.sb1)
                         .foregroundStyle(Color.textTitle)
                         .lineSpacing(6)
