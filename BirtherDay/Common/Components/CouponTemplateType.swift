@@ -122,11 +122,11 @@ enum CouponTemplate: String, Codable, Equatable {
     var miniCouponImage: SwiftUI.Image {
         switch self {
         case .heart:
-            return Image("Card2Box")
+            return Image("heart")
         case .money:
-            return Image("Card1Box")
+            return Image("money")
         case .cake:
-            return Image("Card1Box")
+            return Image("cake")
         }
     }
     
