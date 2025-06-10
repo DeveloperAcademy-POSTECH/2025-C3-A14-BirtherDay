@@ -31,7 +31,7 @@ struct HomeView: View {
                     homeHeaderView(text: "주고 받은 쿠폰을 확인해보세요!")
                     couponBoxSelectorView()
                     homeDivider()
-                    homeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
+                    //homeEmptyView()
                     unusedCouponListView()
                 }
                 .navigationDestination(for: BDAppPath.self) { path in
@@ -207,26 +207,14 @@ struct HomeView: View {
     /// 3. 5개 카드 이후, 더보기 카드
     func unusedCouponListView() -> some View {
         VStack {
-            // TODO: - 빈 경우, 어떻게 넣을 지 추가
-            if homeViewModel.coupons.isEmpty {
-                
-                VStack {
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Text(couponType.emptyUsedText)
-                }
-                .multilineTextAlignment(.center)
-                .lineSpacing(8)
-                .frame(maxWidth: .infinity)
-                .font(.sb3)
-                .foregroundStyle(Color.textCaption1)
-                
-                Spacer()
+            // TODO: .mockCoupons -> coupons
+            if homeViewModel.mockCoupons.isEmpty {
+                homeEmptyView()
             } else {
+                homeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
                 ScrollView(.horizontal) {
                     HStack(alignment: .center, spacing: 8) {
-                        ForEach(homeViewModel.coupons) { coupon in
+                        ForEach(homeViewModel.mockCoupons) { coupon in
                             Button {
                                 navPathManager.pushMyCouponPath(.couponDetail(coupon))
                             } label: {
@@ -243,6 +231,19 @@ struct HomeView: View {
                 }.scrollIndicators(.hidden)
             }
         }
+    }
+    
+    func homeEmptyView() -> some View {
+        ZStack {
+            Image("homeEmptyCoupon")
+                .resizable()
+            Text("미사용된 쿠폰이 없어요!\n쿠폰을 더 생성하러 가볼까요?")
+                .multilineTextAlignment(.center)
+                .lineSpacing(8)
+                .font(.sb1)
+                .foregroundStyle(Color.textTitle)
+        }
+        .padding(.horizontal, 16)
     }
 }
 
