@@ -11,15 +11,14 @@ import MultipeerConnectivity
 @Observable
 class MultipeerManager: NSObject {
  
-    private var advertiser: MCNearbyServiceAdvertiser
+    private var advertiser: MCNearbyServiceAdvertiser?
     private var browser: MCNearbyServiceBrowser?
     
-    private var discoveredPeers: [MCPeerID : [String : String]?] = [:]  //
     var mcSession: MCSession                    // 하나의 MCSession 안에서 여러 기기와 연결. 내가 ad일 때도 사용, brow일 때도 상대에게 공유
     
     private let serviceType = "birtherday" // same as that in info.plist
     private let myPeerID = MCPeerID(displayName: UIDevice.current.name)
-    private let maxNumPeers: Int = 9999
+    private let maxNumPeers: Int = 1
     
     var peerDataHandler: ((Data, MCPeerID) -> Void)?    // 다른 피어로부터 데이터를 받았을 때
     var peerConnectedHandler: ((MCPeerID) -> Void)?     // 다른 피어와 연결됐을 때
@@ -31,28 +30,42 @@ class MultipeerManager: NSObject {
     var myCoupon: RetrieveCouponResponse
     
     init(myCoupon: RetrieveCouponResponse) {
+        // 1. myCoupon 초기화
+        self.myCoupon = myCoupon
         
-        print("MPC init()")
+        // 2. myPeerID (이미 선언 시 초기화됨)
         
-        self.myCoupon = myCoupon    // MCSession 연결시, 상대 peer와 같은 coupon을 접속하고 있는지 비교. 일치시 Session 연결
-        print("myCoupon: \(myCoupon)")
-        // init objects
-        // session
-        self.mcSession = MCSession(peer: myPeerID, securityIdentity: nil, encryptionPreference: .required)
+        // 3. advertiser 초기화
+        self.advertiser = MCNearbyServiceAdvertiser(
+            peer: myPeerID,
+            discoveryInfo: ["couponId": myCoupon.couponId],
+            serviceType: serviceType
+        )
         
-        
-        // advertiser
-        self.advertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: ["couponId": myCoupon.couponId], serviceType: serviceType)
-        
-        
-        // browser
+        // 4. browser 초기화
         self.browser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: serviceType)
         
+        // 5. mcSession 초기화
+        self.mcSession = MCSession(
+            peer: myPeerID,
+            securityIdentity: nil,
+            encryptionPreference: .required
+        )
+        
+        // 6. super.init() 호출
         super.init()
         
+        // 7. delegate 설정
         mcSession.delegate = self
-        advertiser.delegate = self
+        advertiser?.delegate = self
         browser?.delegate = self
+    }
+
+    
+    private func makeNewSession() -> MCSession {
+        let session = MCSession(peer: myPeerID, securityIdentity: nil, encryptionPreference: .required)
+        session.delegate = self
+        return session
     }
     
     // Error
@@ -94,7 +107,13 @@ class MultipeerManager: NSObject {
     func start() {
         print("MPC 실행")
         
-        advertiser.startAdvertisingPeer()
+        if advertiser == nil {
+            print("start() - advertiser 재초기화")
+            advertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: ["couponId": myCoupon.couponId], serviceType: serviceType)
+            advertiser?.delegate = self
+        }
+        
+        advertiser?.startAdvertisingPeer()
         
         if browser == nil {
             print("start() - browser 재초기화")
@@ -108,36 +127,48 @@ class MultipeerManager: NSObject {
     func suspend() {
         print("MultiPeerManager - suspend()")
         
-        advertiser.stopAdvertisingPeer()
+        advertiser?.stopAdvertisingPeer()
         browser?.stopBrowsingForPeers()
+        advertiser = nil
         browser = nil
     }
 
     // MPC
     func invalidate() {
         print("MultipeerManager - invalidate()")
-        
         suspend()
         mcSession.disconnect()
+        mcSession.delegate = nil
+        advertiser?.delegate = nil
+        browser?.delegate = nil
+        advertiser = nil
+        browser = nil
     }
+
     
     /// peer의 연결에 성공했을 때 호출
     private func peerConnected(peerID: MCPeerID) {
+        print("MPC - peerConnected")
         if let handler = peerConnectedHandler {
             DispatchQueue.main.async {
                 handler(peerID)
                 self.connectedPeer = peerID
-                print("MP: \(peerID) 실행")
+                print("MPC: \(peerID) 실행")
             }
+        }
+        
+        if mcSession.connectedPeers.count == maxNumPeers {
+            self.suspend()
         }
     }
     
     /// peer의 연결이 끊어졌을 때 호출
     private func peerDisconnected(peerID: MCPeerID) {
+        print("MPC - peerDisconnected")
         if let handler = peerDisconnectedHandler {
             DispatchQueue.main.async {
                 handler(peerID)
-                print("MP: \(peerID) 연결 해제")
+                print("MPC: \(peerID) 연결 해제")
             }
         }
     }
@@ -158,24 +189,18 @@ class MultipeerManager: NSObject {
 
 extension MultipeerManager: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        print("MultipeerManager - browswer() - foundPeer")
-//        guard let peerCouponId = info?["couponId"] else { return }
-//
-//        print("peerCouponId : \(peerCouponId)")
+        print("상대 peerID: \(peerID) || 내 peerID: \(self.myPeerID)")
+        guard peerID != myPeerID else { return }  // 자기 자신에 대한 초대 방지
         
-        let context = ["couponId": myCoupon.couponId].jsonData
-        
-        print("\(String(describing: context))")
-        
-        browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 100)
-//        browser.invitePeer(peerID, to: mcSession, withContext: nil, timeout: 100)
-
-        // 상대의 쿠폰 id와 내 쿠폰 id가 일치하면 advertiser에게 invitation을 보냄
-//        if peerCouponId == self.myCoupon.couponId {
-//            browser.invitePeer(peerID, to: mcSession, withContext: ["couponId": self.myCoupon.couponId].jsonData, timeout: 10)
-//        }
-        
-        
+        // 쿠폰 ID 일치 여부 확인 (상대 쿠폰 ID는 info에서 받아야 함)
+        if let peerCouponId = info?["couponId"], peerCouponId == myCoupon.couponId {
+            let context = ["couponId": myCoupon.couponId].jsonData
+            browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 100)
+        } else {
+            // 쿠폰 ID 불일치 시 초대 보내지 않음
+            self.mpcSessionState = .notConnected
+            print("쿠폰 ID 불일치로 초대 미전송: \(info?["couponId"] ?? "nil")")
+        }
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -193,16 +218,15 @@ extension MultipeerManager: MCNearbyServiceAdvertiserDelegate {
         
         print("초대 받음: \(peerID.displayName), with context: \(String(describing: context?.string))")
         
-        // TODO: - 내 쿠폰이랑 상대 쿠폰 비교
-
         guard let couponId = context?.asStringDictionary?["couponId"] else { return }
         print("상대 쿠폰: \(couponId) || 내 쿠폰: \(myCoupon.couponId)")
             
-           if couponId == myCoupon.couponId/* && mcSession.connectedPeers.count < maxNumPeers*/ {
+           if couponId == myCoupon.couponId && mcSession.connectedPeers.count < maxNumPeers {
                 // ✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음
             print("✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음")
             
                 invitationHandler(true, mcSession)
+               
             } else {
                 // ❌ 쿠폰 ID 불일치
                 print("❌ 쿠폰 ID 불일치")
@@ -221,6 +245,7 @@ extension MultipeerManager: MCSessionDelegate {
         case .connected:
             self.mpcSessionState = .connected
             self.peerConnected(peerID: peerID)
+
         case .notConnected:
             self.mpcSessionState = .notConnected
             self.peerDisconnected(peerID: peerID)

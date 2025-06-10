@@ -12,6 +12,8 @@ struct CouponDetailView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     var viewModel: CouponDetailViewModel
     
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some View {
         ZStack {
             ScrollView(.vertical) {
@@ -28,6 +30,24 @@ struct CouponDetailView: View {
             print("viewModel.startupMPC()")
             viewModel.startupMPC()
         }
+        .navigationBarBackButtonHidden()
+        .bdNavigationBar(title: "쿠폰 상세보기") {
+            viewModel.stopMPC()
+            navPathManager.popPath()
+        }
+        .onDisappear {
+            print("ondisappear called")
+        }
+        .onChange(of: scenePhase) { oldValue, newValue in
+            switch scenePhase {
+            case .active:
+                viewModel.startupMPC()
+            case .background, .inactive:
+                viewModel.stopMPC()
+            @unknown default:
+                break
+            }
+        }
     }
     
     func buttonsView()-> some View {
@@ -42,12 +62,18 @@ struct CouponDetailView: View {
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
                 
                 Button {
-                    navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel ))
+                    
+                    if viewModel.isConnectWithPeer {
+                        navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel))
+                    } else {
+                        
+                    }
+                    
+                    
                 } label: {
                     Text("사용하기")
                 }
                 .buttonStyle(BDButtonStyle(buttonType: viewModel.isConnectWithPeer ? .activate : .deactivate))
-                .disabled(!viewModel.isConnectWithPeer)
     
             }
             .padding(.top, 37)
