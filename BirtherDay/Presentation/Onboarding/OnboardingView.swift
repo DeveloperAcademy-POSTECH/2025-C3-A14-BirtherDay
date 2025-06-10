@@ -96,7 +96,7 @@ struct OnboardingView: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(maxWidth: 280, maxHeight: 280)
-            .padding(.horizontal, 40)
+            .padding(.horizontal, 60)
     }
     
     func pageIndicator() -> some View {
