@@ -14,6 +14,8 @@ struct HomeView: View {
     @State private var couponType: CouponType = .received
     @StateObject private var homeViewModel = HomeViewModel()
     @StateObject private var myCouponViewModel = MyCouponViewModel()
+    @State private var animation = DotLottieAnimation(fileName: "giftbox", config: AnimationConfig(autoplay: true, loop: true, useFrameInterpolation: false)
+    )
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
@@ -58,12 +60,10 @@ struct HomeView: View {
                     .font(.b2)
                     .multilineTextAlignment(.center)
                 
-                // TODO: - Image 연결
-                DotLottieAnimation(fileName: "giftbox", config: AnimationConfig(autoplay: true, loop: true)
-                )
-                .view()
-                .frame(minWidth: 150, minHeight: 150)
-                .padding(-16)
+                animation
+                    .view()
+                    .frame(minWidth: 150, minHeight: 150)
+                    .padding(-16)
                 
                 Button {
                     navPathManager.pushCreatePath(.selectTemplate)
