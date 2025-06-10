@@ -10,11 +10,12 @@ import SwiftUI
 struct BDNavigationBar: ViewModifier {
     let title: String
     let onBackButtonTapped: () -> Void
+    let backgroundColor: UIColor
     
     func body(content: Content) -> some View {
         content
             .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.automatic)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -26,12 +27,14 @@ struct BDNavigationBar: ViewModifier {
                     }
                 }
             }
-            .onAppear { setupNavigationBarAppearance() }
+            .onAppear { setNavigationBarAppearance(color: backgroundColor) }
     }
     
-    private func setupNavigationBarAppearance() {
+    private func setNavigationBarAppearance(color: UIColor) {
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = color
+        appearance.shadowColor = .clear
 
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance

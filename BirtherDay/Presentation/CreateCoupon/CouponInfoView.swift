@@ -58,7 +58,13 @@ struct CouponInfoView: View {
         }
         .background(Color.mainViolet50)
         .keyboardAware()
-        .bdNavigationBar(title: "쿠폰 멘트 작성하기", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "쿠폰 멘트 작성하기",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .onAppear {
             loadExistingData()
         }
@@ -109,15 +115,11 @@ struct CouponInfoView: View {
     
     func loadExistingData() {
         let couponData = viewModel.couponData
-        if let existingTitle = couponData.couponTitle {
-            couponTitle = existingTitle
-        }
-        if let existingSender = couponData.senderName {
-            senderName = existingSender
-        }
-        if let existingDate = couponData.expireDate {
-            selectedDate = existingDate
-        }
+        
+        couponTitle = couponData.couponTitle
+        senderName = couponData.senderName
+        selectedDate = couponData.expireDate
+        
     }
     
     func saveDataAndNavigate() {

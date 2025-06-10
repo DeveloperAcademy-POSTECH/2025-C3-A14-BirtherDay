@@ -35,7 +35,13 @@ struct CouponLetterView: View {
             nextButton()
         }
         .keyboardAware()
-        .bdNavigationBar(title: "편지 작성하기", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "편지 작성하기",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .background(Color.mainViolet50)
         .onAppear {
             loadExistingLetter()
@@ -73,12 +79,12 @@ struct CouponLetterView: View {
     }
     
     func loadExistingLetter() {
-        if let existingLetterContent = viewModel.couponData.letterContent {
-            letterContent = existingLetterContent
-        }
+        let existingLetterContent = viewModel.couponData.letterContent
+        letterContent = existingLetterContent
     }
     
     func saveLetterAndNavigate() {
+//        viewModel.update(.letter(letterContent))
         viewModel.update(.letter(letterContent))
         navPathManager.pushCreatePath(.couponPicture)
     }
