@@ -15,27 +15,29 @@ struct CouponLetterView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                Spacer()
-                    .frame(height: 40)
-                
-                cardPreviewSection() // 쿠폰 실시간 보기 뷰
-                
-                Spacer()
-                    .frame(height: 40)
-                
-                letterInputSection() // 편지 작성 뷰
-                
-                Spacer()
-                    .frame(height: 80)
-            }
+            Spacer().frame(height: 40)
+            
+            cardPreviewSection() // 쿠폰 실시간 보기 뷰
+            
+            Spacer().frame(height: 40)
+            
+            letterInputSection() // 편지 작성 뷰
             
             Spacer()
             
             nextButton()
+                .padding(.top, 50)
+                .padding(.bottom, 20)
+                .padding(.horizontal, 16)
         }
         .keyboardAware()
-        .bdNavigationBar(title: "편지 작성하기", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "편지 작성하기",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
         .background(Color.mainViolet50)
         .onAppear {
             loadExistingLetter()
@@ -44,10 +46,10 @@ struct CouponLetterView: View {
     
     func cardPreviewSection() -> some View {
         BDMiniTemplate(
-            template: viewModel.couponData.template ?? .blue,
-            senderName: viewModel.couponData.senderName ?? "보내는 사람",
-            expireDate: viewModel.couponData.expireDate ?? Date(),
-            couponTitle: viewModel.couponData.couponTitle ?? "쿠폰명을 입력해주세요"
+            template: viewModel.couponData.template,
+            senderName: viewModel.couponData.senderName,
+            expireDate: viewModel.couponData.expireDate,
+            couponTitle: viewModel.couponData.couponTitle
         )
         .frame(width: 140, height: 183)
     }
@@ -66,8 +68,6 @@ struct CouponLetterView: View {
         }
         .buttonStyle(BDButtonStyle(buttonType: isFormValid() ? .activate : .deactivate))
         .disabled(!isFormValid())
-        .padding(.horizontal, 16)
-        .padding(.bottom, 20)
     }
     
     func isFormValid() -> Bool {
@@ -75,12 +75,12 @@ struct CouponLetterView: View {
     }
     
     func loadExistingLetter() {
-        if let existingLetterContent = viewModel.couponData.letterContent {
-            letterContent = existingLetterContent
-        }
+        let existingLetterContent = viewModel.couponData.letterContent
+        letterContent = existingLetterContent
     }
     
     func saveLetterAndNavigate() {
+//        viewModel.update(.letter(letterContent))
         viewModel.update(.letter(letterContent))
         navPathManager.pushCreatePath(.couponPicture)
     }

@@ -48,7 +48,13 @@ struct CouponPhotoView: View {
         }
         .background(Color.mainViolet50)
         .keyboardAware()
-        .bdNavigationBar(title: "사진 첨부", backButtonAction: navPathManager.popPath)
+        .bdNavigationBar(
+            title: "사진 첨부하기",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                viewModel.couponData.template.backgroundColor
+            )
+        )
     }
     
     func photoTitleView() -> some View {

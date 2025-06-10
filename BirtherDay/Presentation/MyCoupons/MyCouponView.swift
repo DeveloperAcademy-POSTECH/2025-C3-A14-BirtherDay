@@ -28,13 +28,21 @@ struct MyCouponView: View {
         .padding(.horizontal, 16)
         .padding(.top, 16)
         
-        .navigationTitle(couponType.couponNavigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            leadingBackButton
-        }
+//        .navigationTitle(couponType.couponNavigationTitle)
+//        .navigationBarTitleDisplayMode(.inline)
+//        .navigationBarBackButtonHidden(true)
         
+//        .toolbar {
+//            leadingBackButton
+//        }
+        
+        .bdNavigationBar(
+            title: "\(couponType.couponNavigationTitle)",
+            backButtonAction: navPathManager.popPath,
+            color: UIColor(
+                Color.bgLight
+            )
+        )
         /// 최초 fetch.
         .onAppear {
             if myCouponViewModel.coupons.isEmpty {
