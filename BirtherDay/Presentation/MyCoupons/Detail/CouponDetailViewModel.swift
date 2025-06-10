@@ -122,8 +122,6 @@ class CouponDetailViewModel: NSObject {
             fatalError("Unexpectedly failed to decode discovery token.")
         }
         peerDidShareDiscoveryToken(peer: peer, token: discoveryToken)
-        // 2. runConfiguration 실행
-        
     }
     
     // NI
@@ -188,23 +186,18 @@ extension CouponDetailViewModel: NISessionDelegate {
         }
 
         currentDistanceDirectionState = .unknown
-
         
         // 피어 연결해제 원인
         switch reason {
         case .peerEnded:
             // The peer token is no longer valid.
             peerDiscoveryToken = nil
-            
-            // The peer stopped communicating, so invalidate the session because
-            // it's finished.
+ 
             session.invalidate()
             
             // Restart the sequence to see if the peer comes back.
             startNI()
-            
-            // Update the app's display.
-//            updateInformationLabel(description: "Peer Ended")
+
         case .timeout:
             
             // The peer timed out, but the session is valid.
@@ -212,13 +205,10 @@ extension CouponDetailViewModel: NISessionDelegate {
             if let config = session.configuration {
                 session.run(config)
             }
-//            updateInformationLabel(description: "Peer Timeout")
         default:
             fatalError("Unknown and unhandled NINearbyObject.RemovalReason")
         }
     }
-//
-    
     
     func session(_ session: NISession, didInvalidateWith error: Error) {
         currentDistanceDirectionState = .unknown
@@ -227,9 +217,7 @@ extension CouponDetailViewModel: NISessionDelegate {
         // an option to go to Settings where the user can update the access.
         if case NIError.userDidNotAllow = error {
             if #available(iOS 15.0, *) {
-                // In iOS 15.0, Settings persists Nearby Interaction access.
-                //                updateInformationLabel(description: "Nearby Interactions access required. You can change access for NIPeekaboo in Settings.")
-                // Create an alert that directs the user to Settings.
+
                 let accessAlert = UIAlertController(title: "Access Required",
                                                     message: """
                                                     NIPeekaboo requires access to Nearby Interactions for this sample app.
@@ -245,12 +233,8 @@ extension CouponDetailViewModel: NISessionDelegate {
                     }
                 }))
                 
-                // Display the alert.
-                //                present(accessAlert, animated: true, completion: nil)
             } else {
-                // Before iOS 15.0, ask the user to restart the app so the
-                // framework can ask for Nearby Interaction access again.
-                //                updateInformationLabel(description: "Nearby Interactions access required. Restart NIPeekaboo to allow access.")
+
             }
             
             return
