@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("isOnboarded") private var isOnboarded: Bool = true
+    @AppStorage("isOnboarded") private var isOnboarded: Bool = false
     @StateObject private var bdNavigationManager = BDNavigationPathManager()
     
     private var authService: AuthService = AuthService()
