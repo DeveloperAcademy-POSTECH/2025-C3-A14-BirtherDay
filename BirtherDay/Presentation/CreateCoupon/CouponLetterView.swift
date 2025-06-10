@@ -15,24 +15,20 @@ struct CouponLetterView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                Spacer()
-                    .frame(height: 40)
-                
-                cardPreviewSection() // 쿠폰 실시간 보기 뷰
-                
-                Spacer()
-                    .frame(height: 40)
-                
-                letterInputSection() // 편지 작성 뷰
-                
-                Spacer()
-                    .frame(height: 80)
-            }
+            Spacer().frame(height: 40)
+            
+            cardPreviewSection() // 쿠폰 실시간 보기 뷰
+            
+            Spacer().frame(height: 40)
+            
+            letterInputSection() // 편지 작성 뷰
             
             Spacer()
             
             nextButton()
+                .padding(.top, 50)
+                .padding(.bottom, 20)
+                .padding(.horizontal, 16)
         }
         .keyboardAware()
         .bdNavigationBar(title: "편지 작성하기", backButtonAction: navPathManager.popPath)
@@ -66,8 +62,6 @@ struct CouponLetterView: View {
         }
         .buttonStyle(BDButtonStyle(buttonType: isFormValid() ? .activate : .deactivate))
         .disabled(!isFormValid())
-        .padding(.horizontal, 16)
-        .padding(.bottom, 20)
     }
     
     func isFormValid() -> Bool {
