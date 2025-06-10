@@ -7,15 +7,20 @@
 
 import SwiftUI
 import DotLottie
+import KakaoSDKShare
+import KakaoSDKCommon
 
 struct HomeView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
+    
     @StateObject private var couponViewModel = CreateCouponViewModel()
-    @State private var couponType: CouponType = .received
     @StateObject private var homeViewModel = HomeViewModel()
     @StateObject private var myCouponViewModel = MyCouponViewModel()
     @State private var animation = DotLottieAnimation(fileName: "giftbox", config: AnimationConfig(autoplay: true, loop: true, useFrameInterpolation: false)
     )
+    
+    @State private var couponType: CouponType = .received
+    @State private var showSharedCouponModal: Bool = false
     
     var body: some View {
         NavigationStack(path: $navPathManager.appPaths) {
@@ -42,7 +47,44 @@ struct HomeView: View {
         }
         .onAppear {
             Task {
+                if SupabaseManager.shared.client.auth.currentSession == nil {
+                    await homeViewModel.signUp()
+                }
+
                 await homeViewModel.fetchCoupons()
+            }
+        }
+        .overlay {
+            if showSharedCouponModal {
+                CouponSharedModal(
+                    homeViewModel: homeViewModel
+                    , showSharedCouponModal: $showSharedCouponModal
+                )
+            }
+        }
+        .onOpenURL { url in
+            if ShareApi.isKakaoTalkSharingUrl(url) {
+                Task {
+                    guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
+                        fatalError("userId를 찾을 수 없습니다.")
+                    }
+                    
+                    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+                          let queryItems = components.queryItems else {
+                        fatalError("쿼리 파라미터를 파싱할 수 없습니다.")
+                    }
+                    
+                    guard let couponId = queryItems.first(where: { $0.name == "couponId" })?.value else {
+                        fatalError("couponId를 찾을 수 없습니다.")
+                    }
+                    
+                    withAnimation {
+                        showSharedCouponModal = true;
+                    }
+                    
+                    await homeViewModel.fetchCouponBy(couponId: couponId)
+                    await homeViewModel.registerReceiverToCoupon(couponId: couponId, userId: userId)
+                }
             }
         }
     }

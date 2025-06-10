@@ -13,12 +13,24 @@ class HomeViewModel: ObservableObject {
     
     /// fetch쿠폰 캐시용 변수
     @Published private var allCoupons: [RetrieveCouponResponse] = []
+
+    @Published var coupon: RetrieveCouponResponse?
     @Published var coupons: [RetrieveCouponResponse] = []
     @Published var isLoading: Bool = false
     @Published var userError: UserError?
     @Published var couponError: CouponError?
     
     private let couponService = CouponService()
+    private let authService = AuthService()
+    
+    func signUp() async {
+        do {
+            _ = try await authService.signUp()
+        } catch {
+            dump(error)
+            fatalError("fail to signUp")
+        }
+    }
     
     /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
     func fetchCoupons() async {
@@ -26,6 +38,44 @@ class HomeViewModel: ObservableObject {
         self.allCoupons = fetched
         self.coupons = fetched
         self.coupons = fetched.filter { $0.isUsed == false }
+    }
+    
+    func fetchCouponBy(couponId: String) async {
+        self.coupon = await fetchCouponBy(couponId: couponId)
+    }
+    
+    func registerReceiverToCoupon(couponId: String, userId: String) async {
+        await updateReceiver(couponId: couponId, userId: userId)
+    }
+
+    private func updateReceiver(couponId: String, userId: String) async -> Void {
+        do {
+            _ = try await couponService.registerReceiver(couponId: couponId, receiverId: userId)
+        } catch {
+            if let couponError = error as? CouponError {
+                ErrorHandler.handle(couponError)
+                self.couponError = couponError
+            } else {
+                print("🙈 이건 예외처리 안된곤댕~!: \(error)")
+            }
+        }
+    }
+    
+    private func fetchCouponBy(couponId: String) async -> RetrieveCouponResponse? {
+        do {
+            let response = try await couponService.retrieveCouponBy(couponId: couponId).value
+            
+            return response.count > 0 ? response[0] : nil
+        } catch {
+            if let couponError = error as? CouponError {
+                ErrorHandler.handle(couponError)
+                self.couponError = couponError
+            } else {
+                print("🙈 이건 예외처리 안된곤댕~!: \(error)")
+            }
+            
+            return nil
+        }
     }
 
     /// 쿠폰 Fetching
