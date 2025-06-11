@@ -57,6 +57,7 @@ extension Coupon {
 }
 
 struct InsertCouponRequest: Codable {
+    var id: String = UUID().uuidString
     var senderId: String
     var senderName: String
     var template: CouponTemplate
@@ -72,7 +73,7 @@ struct InsertCouponRequest: Codable {
         case senderName = "sender_name"
         case imageList = "image_list"
         case isUsed = "is_used"
-        case thumbnail, deadline, letter, title, template
+        case thumbnail, deadline, letter, title, template, id
     }
 }
 
@@ -83,8 +84,9 @@ extension InsertCouponRequest {
         }
         
         return .init(
+            id: UUID().uuidString,
             senderId: userId.uuidString,
-            senderName: "프레이가",
+            senderName: "음...",
             template: .heart,
             title: "프레잉",
             letter: "사랑하는 프레이에게",

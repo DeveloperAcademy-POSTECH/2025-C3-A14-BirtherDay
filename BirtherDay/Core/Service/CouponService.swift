@@ -23,10 +23,11 @@ final class CouponService {
     /// ```
     /// - Throws: 삽입 실패 또는 네트워크 오류 발생 시 예외를 던집니다.
     func insertCoupon(_ insertCouponRequest: InsertCouponRequest) async throws -> PostgrestResponse<Void> {
+        
         let res = try await client
             .from("coupon")
             .insert(insertCouponRequest)
-            .execute();
+            .execute()
         
         if res.status == 201 {
             print("✅ 쿠폰 생성 성공: \(insertCouponRequest)")
