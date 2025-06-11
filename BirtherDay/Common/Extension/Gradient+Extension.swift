@@ -45,7 +45,7 @@ extension LinearGradient {
     static let heartButtonBackground = LinearGradient(
         gradient: Gradient(stops: [
             .init(color: Color.clear, location: 0.0),
-            .init(color: Color(hex: "FFF4F4"), location: 0.2)
+            .init(color: Color(hex: "FFF4F4"), location: 0.2) // 적용
         ]),
         startPoint: .top,
         endPoint: .bottom
@@ -54,7 +54,7 @@ extension LinearGradient {
     static let moneyButtonBackground = LinearGradient(
         gradient: Gradient(stops: [
             .init(color: Color.clear, location: 0.0),
-            .init(color: Color(hex: "F6F2FF"), location: 0.2)
+            .init(color: Color(hex: "ECF6E2"), location: 0.2) // 적용
         ]),
         startPoint: .top,
         endPoint: .bottom
@@ -63,7 +63,7 @@ extension LinearGradient {
     static let cakeButtonBackground = LinearGradient(
         gradient: Gradient(stops: [
             .init(color: Color.clear, location: 0.0),
-            .init(color: Color(hex: "F6F2FF"), location: 0.2)
+            .init(color: Color(hex: "FFF6EB"), location: 0.2) // 적용
         ]),
         startPoint: .top,
         endPoint: .bottom
