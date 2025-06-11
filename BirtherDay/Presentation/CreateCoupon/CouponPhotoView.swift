@@ -148,14 +148,13 @@ struct CouponPhotoView: View {
                     isLoading = true
                     let uploadedPaths = await viewModel.uploadImages(selectedImages)
                     uploadedImagePaths = uploadedPaths
-                    
                     viewModel.update(
                         .photos(
                             images: selectedImages,
                             paths: uploadedImagePaths
                         )
                     )
-                    
+                    await viewModel.uploadCoupon()
                     isLoading = false
                     navPathManager.pushCreatePath(.couponComplete)
                 }

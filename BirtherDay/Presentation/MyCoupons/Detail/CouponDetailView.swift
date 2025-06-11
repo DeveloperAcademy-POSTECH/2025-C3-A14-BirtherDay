@@ -169,8 +169,11 @@ struct CouponDetailView: View {
                 .font(.b2)
                 .padding(.top, 16)
             
-            ShareButtons()
-                .padding(.top, 24)
+            ShareButtons(
+                couponId: viewModel.selectedCoupon.couponId,
+                senderName: viewModel.selectedCoupon.senderName
+            )
+            .padding(.top, 24)
         }
     }
     

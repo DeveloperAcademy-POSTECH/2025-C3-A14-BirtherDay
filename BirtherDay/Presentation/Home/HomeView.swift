@@ -69,6 +69,8 @@ struct HomeView: View {
                           let queryItems = components.queryItems else {
                         fatalError("쿼리 파라미터를 파싱할 수 없습니다.")
                     }
+                    print("💕")
+                    print(components)
                     
                     guard let couponId = queryItems.first(where: { $0.name == "couponId" })?.value else {
                         fatalError("couponId를 찾을 수 없습니다.")

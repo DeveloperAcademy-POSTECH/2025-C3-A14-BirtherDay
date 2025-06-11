@@ -112,7 +112,10 @@ struct CouponCompleteView: View {
                 .font(.b2)
                 .padding(.top, 16)
             
-            ShareButtons()
+            ShareButtons(
+                couponId: viewModel.couponId,
+                senderName: viewModel.couponData.senderName
+            )
                 .padding(.top, 24)
         }
     }
@@ -120,9 +123,6 @@ struct CouponCompleteView: View {
     func navigateHomeButtonView() -> some View {
         Button {
             Task {
-                isLoading = true
-                await viewModel.uploadCoupon()
-                isLoading = false
                 viewModel.resetCouponData()
                 navPathManager.goToRoot()
             }

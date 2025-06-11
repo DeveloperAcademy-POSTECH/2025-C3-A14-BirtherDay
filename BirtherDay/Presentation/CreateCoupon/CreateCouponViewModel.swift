@@ -31,6 +31,7 @@ struct CouponData {
 
 class CreateCouponViewModel: ObservableObject {
     @Published var couponData = CouponData()
+    var couponId: String = ""
     
     var couponForRequest: InsertCouponRequest? {
         buildCouponForRequest()
@@ -96,6 +97,7 @@ class CreateCouponViewModel: ObservableObject {
         if let couponForRequest = couponForRequest {
             do {
                 _ = try await couponService.insertCoupon(couponForRequest)
+                couponId = couponForRequest.id
             } catch {
                 print("쿠폰 등록 실패: \(error.localizedDescription)")
             }
