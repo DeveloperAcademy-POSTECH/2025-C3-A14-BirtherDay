@@ -82,15 +82,15 @@ class HomeViewModel: ObservableObject {
     private func homeFetchCouponsFromService() async -> [RetrieveCouponResponse] {
         
         // TODO: 실제 사용할 코드
-        // guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
-        //     self.userError = .userNotFound
-        //     ErrorHandler.handle(userError!)
-        //     return []
-        // }
+         guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
+             self.userError = .userNotFound
+             ErrorHandler.handle(userError!)
+             return []
+         }
         
         do {
-            // TODO: 임시 방편 - 테스트 유저아이디
-            let userId = "154dea32-8607-4418-a619-d80692456678"
+//             TODO: 임시 방편 - 테스트 유저아이디
+//            let userId = "154dea32-8607-4418-a619-d80692456678"
             let response: [RetrieveCouponResponse]
             response = try await couponService.retrieveTopFiveReceivedCoupons(userId).value
             return response
