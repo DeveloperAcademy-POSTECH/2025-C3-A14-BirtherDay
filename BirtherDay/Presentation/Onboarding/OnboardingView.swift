@@ -63,9 +63,6 @@ struct OnboardingView: View {
             
             descriptionText(page.description)
             
-            Spacer()
-                .frame(height: 70)
-            
             centerImage(page.imageName)
             
             Spacer()
@@ -92,11 +89,14 @@ struct OnboardingView: View {
     }
     
     func centerImage(_ imageName: String) -> some View {
-        Image(imageName)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxWidth: 280, maxHeight: 280)
-            .padding(.horizontal, 60)
+        VStack(spacing: 0) {
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.horizontal, 15)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     func pageIndicator() -> some View {
