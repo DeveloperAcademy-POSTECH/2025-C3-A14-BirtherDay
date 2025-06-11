@@ -42,7 +42,7 @@ struct CouponTemplateView: View {
         .bdNavigationBar(
             title: "쿠폰 디자인 선택",
             color: UIColor(
-                viewModel.couponData.template.backgroundColor
+                Color.mainViolet50
             ),
             backButtonAction: navPathManager.popPath
         )
