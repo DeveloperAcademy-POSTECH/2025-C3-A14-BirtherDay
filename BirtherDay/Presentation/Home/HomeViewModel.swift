@@ -23,20 +23,19 @@ class HomeViewModel: ObservableObject {
     private let couponService = CouponService()
     private let authService = AuthService()
     
-    func signUp() async {
-        do {
-            _ = try await authService.signUp()
-        } catch {
-            dump(error)
-            fatalError("fail to signUp")
-        }
-    }
+//    func signUp() async {
+//        do {
+//            _ = try await authService.signUp()
+//        } catch {
+//            dump(error)
+//            fatalError("fail to signUp")
+//        }
+//    }
     
     /// 쿠폰 데이터 Fetching, 캐싱, 필터링, 최초 present
     func fetchCoupons() async {
         let fetched = await homeFetchCouponsFromService()
         self.allCoupons = fetched
-        self.coupons = fetched
         self.coupons = fetched.filter { $0.isUsed == false }
     }
     

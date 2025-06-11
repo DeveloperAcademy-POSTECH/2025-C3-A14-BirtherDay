@@ -47,10 +47,6 @@ struct HomeView: View {
         }
         .onAppear {
             Task {
-                if SupabaseManager.shared.client.auth.currentSession == nil {
-                    await homeViewModel.signUp()
-                }
-                
                 await homeViewModel.fetchCoupons()
             }
         }
@@ -206,7 +202,7 @@ struct HomeView: View {
                     HStack(alignment: .center, spacing: 8) {
                         ForEach(homeViewModel.coupons) { coupon in
                             Button {
-                                navPathManager.pushMyCouponPath(.couponDetail(coupon))
+                                navPathManager.pushMyCouponPath(.couponDetail(coupon, CouponType.received))
                             } label: {
                                 BDMiniCoupon(coupon: coupon)
                             }

@@ -126,7 +126,7 @@ struct BDTemplate: View {
     }
     
     func titleView()-> some View {
-        Text("\(data.letter)")
+        Text("\(data.title)")
             .font(.sb4)
              .foregroundStyle(Color.textTitle)
              .multilineTextAlignment(.center)

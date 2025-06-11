@@ -39,9 +39,6 @@ struct CouponLetterView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "편지 작성하기",
-            color: UIColor(
-                viewModel.couponData.template.backgroundColor
-            ),
             backButtonAction: navPathManager.popPath
         )
         .background(Color.mainViolet50)

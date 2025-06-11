@@ -40,9 +40,6 @@ struct CouponCompleteView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "쿠폰 생성 완료",
-            color: UIColor(
-                viewModel.couponData.template.backgroundColor
-            ),
             isBackButtonHidden: true,
             backButtonAction: navPathManager.popPath
         )
