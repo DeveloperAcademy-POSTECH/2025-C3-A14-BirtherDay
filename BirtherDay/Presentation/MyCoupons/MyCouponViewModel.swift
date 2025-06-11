@@ -23,7 +23,6 @@ class MyCouponViewModel: ObservableObject {
     func fetchCoupons(for type: CouponType, isUsed: Bool) async {
         let fetched = await fetchCouponsFromService(ofType: type)
         self.allCoupons = fetched
-        self.coupons = fetched
         self.coupons = fetched.filter { $0.isUsed == isUsed }
     }
     

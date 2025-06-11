@@ -32,9 +32,6 @@ struct DetailedCoupon: View {
         }
         .padding(.horizontal, 27)
         .padding(.bottom, 133)
-        //            .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
-        //        }
-        //        .scrollIndicators(.hidden)
     }
     
     // 메인 쿠폰 뷰
@@ -94,12 +91,12 @@ struct DetailedCoupon: View {
         ZStack {
             Color.white
             
-
             ScrollView {
                 Text(couponData.letter)
                     .font(.sb2)
                     .foregroundStyle(Color.textTitle)
                     .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 26)
                     .padding(.vertical, 25)

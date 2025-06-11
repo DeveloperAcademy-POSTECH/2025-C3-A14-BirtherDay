@@ -86,6 +86,3 @@ struct CouponInteractionView: View {
         .font(.sb5)
     }
 }
-#Preview {
-    CouponInteractionView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
-}

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct BDNavigationBar: ViewModifier {
     let title: String
-    let backgroundColor: UIColor
     let isCustomBackButtonHidden: Bool
     let onBackButtonTapped: () -> Void
     
@@ -30,13 +29,14 @@ struct BDNavigationBar: ViewModifier {
                     }
                 }
             }
-            .onAppear { setNavigationBarAppearance(color: backgroundColor) }
+            .onAppear { setNavigationBarAppearance(/*color: backgroundColor*/) }
     }
     
-    private func setNavigationBarAppearance(color: UIColor) {
+    private func setNavigationBarAppearance(/*color: UIColor*/) {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = color
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
         appearance.shadowColor = .clear
 
         UINavigationBar.appearance().standardAppearance = appearance
