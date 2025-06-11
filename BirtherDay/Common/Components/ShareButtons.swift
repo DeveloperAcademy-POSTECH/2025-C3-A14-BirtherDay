@@ -48,8 +48,12 @@ struct ShareButtons: View {
     func moreShareButtonView() -> some View {
         VStack {
             ShareLink(
-                item: URL(string: shareManager.webUrl)!,  // birtherday://coupon/12345
-                message: Text(shareManager.getWebShareLinkData().message)
+                item: shareManager.getWebShareLinkData().photo!,
+                message: Text(shareManager.getWebShareLinkData().message),
+                preview: SharePreview(
+                    "나만의 생일 쿠폰을 보내세요!"
+                    , image: shareManager.getWebShareLinkData().photo!.image
+                )
             ) {
                 Image(.moreIcon)
                     .resizable()
