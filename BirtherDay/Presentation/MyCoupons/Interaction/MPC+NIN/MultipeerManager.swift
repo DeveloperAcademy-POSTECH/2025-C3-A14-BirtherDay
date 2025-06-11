@@ -153,12 +153,20 @@ class MultipeerManager: NSObject {
 
     /// MPC adverting & browsing 중단 MCSession 해제
     func invalidate() {
-        print("MP Manager - invalidate() browsing & advertising 중단 & MCSession 해제")
-        suspend()
+        print("MultipeerManager - invalidate()")
+        // 1. 먼저 안전하게 중지
+        advertiser?.stopAdvertisingPeer()
+        browser?.stopBrowsingForPeers()
+
+        // 2. mcSession 연결 해제
         mcSession.disconnect()
         mcSession.delegate = nil
+
+        // 3. delegate 해제
         advertiser?.delegate = nil
         browser?.delegate = nil
+
+        // 4. 객체 제거
         advertiser = nil
         browser = nil
     }

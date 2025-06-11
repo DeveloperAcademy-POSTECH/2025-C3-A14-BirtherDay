@@ -14,20 +14,14 @@ enum DistanceDirectionState {
     case closeUpInFOV, notCloseUpInFOV, outOfFOV, unknown
 }
 
+@MainActor
 @Observable
 class CouponDetailViewModel: NSObject {
-    
-    // Service properties
-    
-    var couponService: CouponService = CouponService()
-    
-    // MPC + NIN properties
 
-    var selectedCoupon: RetrieveCouponResponse                 // 사용자가 고른 coupon
+    var selectedCoupon: RetrieveCouponResponse = .stub01                 // 사용자가 고른 coupon
     var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
     var connectedPeer: MCPeerID?                // 연결된 Peer
-    var isCompleted: Bool = false               // 쿠폰 사용 완료 여부
-    
+    var isCompleted: Bool = false               // 쿠폰
     var mpc: MultipeerManager?                  // MPC Manager
     
     var niSession: NISession?                   // NI 통신시 사용되는 Session
@@ -156,6 +150,12 @@ class CouponDetailViewModel: NSObject {
 //            return
 //        }
         
+        
+        if connectedPeer != nil {
+            return
+        }
+        
+        mpc?.mpcSessionState = .connected
         connectedPeer = peer
         isConnectWithPeer = true
     }
@@ -168,6 +168,9 @@ class CouponDetailViewModel: NSObject {
             connectedPeer = nil         // 연결된 Peer id 제거
             isConnectWithPeer = false   // TODO: - 상태 변경 -> enum으로 관리하기
         }
+        
+        mpc?.mpcSessionState = .notConnected
+        print("💋 isConnectWithPeer: \(isConnectWithPeer)")
     }
 
     /// 상대방이 보내온 NIDiscoveryToken을 수신했을 때 실행
