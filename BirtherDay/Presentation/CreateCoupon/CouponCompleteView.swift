@@ -112,7 +112,7 @@ struct CouponCompleteView: View {
                 .font(.b2)
                 .padding(.top, 16)
             
-            ShareButtons()
+            ShareButtons(couponId: "rundo_test")  // couponId 전달
                 .padding(.top, 24)
         }
     }

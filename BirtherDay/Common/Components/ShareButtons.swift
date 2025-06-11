@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct ShareButtons: View {
-    private let shareManager: ShareManager = ShareManager(
-        message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.",
-        params: ["test1": "value"],
-        template: .cake,
-        shareType: .coupon
-    )
+    let couponId: String  // 추가
+    
+    private var shareManager: ShareManager {  // computed property로 변경
+        ShareManager(
+            message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.",
+            params: ["couponId": couponId],  // 실제 couponId 사용
+            template: .cake,
+            shareType: .coupon
+        )
+    }
     
     var body: some View {
         HStack(spacing: 25) {
@@ -63,7 +67,7 @@ struct ShareButtons: View {
         }
     }
 }
-
-#Preview {
-    ShareButtons()
-}
+//
+//#Preview {
+//    ShareButtons()
+//}

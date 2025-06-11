@@ -140,7 +140,7 @@ struct CouponDetailView: View {
                 .font(.b2)
                 .padding(.top, 16)
             
-            ShareButtons()
+            ShareButtons(couponId: viewModel.selectedCoupon.couponId)  // couponId 전달
                 .padding(.top, 24)
         }
     }
