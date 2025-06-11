@@ -101,7 +101,7 @@ struct DetailedCoupon: View {
                     .foregroundStyle(Color.textTitle)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 18)
+                    .padding(.horizontal, 24)
                     .padding(.vertical, 25)
             }
         }
