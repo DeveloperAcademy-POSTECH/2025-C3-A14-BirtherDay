@@ -32,9 +32,6 @@ struct DetailedCoupon: View {
         }
         .padding(.horizontal, 27)
         .padding(.bottom, 133)
-        //            .background(couponData.template.backgroundColor.ignoresSafeArea(.all))
-        //        }
-        //        .scrollIndicators(.hidden)
     }
     
     // 메인 쿠폰 뷰

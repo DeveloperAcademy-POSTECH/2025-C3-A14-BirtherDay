@@ -94,17 +94,6 @@ enum CouponTemplate: String, Codable, Equatable {
         }
     }
     
-    var backgroundUIColor: UIColor {
-        switch self {
-        case .heart:
-            return UIColor(hex: "FFF4F4")
-        case .money:
-            return UIColor(hex: "ECF6E2")
-        case .cake:
-            return UIColor(hex: "FFF6EB")
-        }
-    }
-    
     /// 하단 버튼 배경에 적용되는 그라디언트
     var buttonBackgroundColor: LinearGradient {
         switch self {

@@ -25,7 +25,9 @@ struct CouponDetailView: View {
             .background(viewModel.selectedCoupon.template.backgroundColor)
             .scrollIndicators(.hidden)
             
-            buttonsView()
+            if !viewModel.selectedCoupon.isUsed {
+                buttonsView()
+            }
             
             if isShowPopup {
                 popupView()
