@@ -39,7 +39,7 @@ class CouponDetailViewModel: NSObject {
     let nearbyDistanceThreshold: Float = 0.5
     
     init(selectedCoupon: RetrieveCouponResponse) {
-        print("사용자가 선태한 쿠폰: \(selectedCoupon.couponId)")
+        print("사용자가 선택한 쿠폰: \(selectedCoupon.couponId)")
         self.selectedCoupon = selectedCoupon
         self.couponType = couponType
     }
@@ -88,7 +88,7 @@ class CouponDetailViewModel: NSObject {
         }
         
         let newMPC = MultipeerManager(myCoupon: selectedCoupon)
-        print("새로 생성된 MPC의 쿠폰 id : \(selectedCoupon.couponId)")
+        print("새로 선택된 MPC의 쿠폰 id : \(selectedCoupon.couponId)")
         newMPC.peerConnectedHandler = connectedToPeer
         newMPC.peerDataHandler = dataReceivedHandler
         newMPC.peerDisconnectedHandler = disconnectedFromPeer
@@ -97,6 +97,7 @@ class CouponDetailViewModel: NSObject {
     }
     
     func stopMPC() {
+        print("stopMPC()")
         mpc?.invalidate()
         mpc = nil  // 반드시 nil 할당으로 인스턴스 제거
         isConnectWithPeer = false
@@ -119,6 +120,7 @@ class CouponDetailViewModel: NSObject {
                 print("myToken: \(myToken)")
                 // 화면 업데이트 (찾는 중)
                 if !hasSharedTokenWithPeer {
+                    print("나의 discoveryToken 공유\(myToken)")
                     shareMyDiscoveryToken(token: myToken)
                 }
                 guard let peerToken = peerDiscoveryToken else {
@@ -133,7 +135,8 @@ class CouponDetailViewModel: NSObject {
                 print("")
             }
         } else {
-            print("Discovering Peer ...")
+            print("startNI() - MPC 재연결을 시작합니다")
+            print("connectedPeer: \(String(describing: connectedPeer?.displayName)) | mpc: \(String(describing: mpc?.description))")
             startupMPC()
         }
     }
@@ -147,11 +150,11 @@ class CouponDetailViewModel: NSObject {
     /// MPC 연결이 완료되었을 때 호출
     func connectedToPeer(peer: MCPeerID) {
         print("MPC Connected")
-        
-        
-        if connectedPeer != nil {
-            return
-        }
+//        
+//        
+//        if connectedPeer == nil {
+//            return
+//        }
         
         connectedPeer = peer
         isConnectWithPeer = true

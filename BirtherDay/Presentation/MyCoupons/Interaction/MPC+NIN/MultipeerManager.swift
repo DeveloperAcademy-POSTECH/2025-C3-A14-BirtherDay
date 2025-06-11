@@ -122,6 +122,7 @@ class MultipeerManager: NSObject {
     func start() {
         print("MPC 실행")
         print("start() - 쿠폰 : \(myCoupon.title)")
+//        self.mcSession = makeNewSession()
         
         if advertiser == nil {
             print("start() - advertiser 재초기화 | 쿠폰 : \(myCoupon.title)")
@@ -142,7 +143,7 @@ class MultipeerManager: NSObject {
     
     /// MPC adverting & browsing 중단
     func suspend() {
-        print("MultiPeerManager - suspend()")
+        print("MP Manager - suspend() browsing & advertising 중단")
         
         advertiser?.stopAdvertisingPeer()
         browser?.stopBrowsingForPeers()
@@ -152,7 +153,7 @@ class MultipeerManager: NSObject {
 
     /// MPC adverting & browsing 중단 MCSession 해제
     func invalidate() {
-        print("MultipeerManager - invalidate()")
+        print("MP Manager - invalidate() browsing & advertising 중단 & MCSession 해제")
         suspend()
         mcSession.disconnect()
         mcSession.delegate = nil
@@ -186,6 +187,7 @@ class MultipeerManager: NSObject {
         if let handler = peerDisconnectedHandler {
             DispatchQueue.main.async {
                 handler(peerID)
+                self.connectedPeer = nil
                 print("MPC: \(peerID) 연결 해제")
             }
         }
@@ -229,6 +231,7 @@ extension MultipeerManager: MCNearbyServiceBrowserDelegate {
             print("초대 전송\n상대 쿠폰 ID: \(info?["couponId"] ?? "nil")")
             print("내 쿠폰 ID : \(self.myCoupon.couponId)")
             let context = ["couponId": myCoupon.couponId].jsonData
+            print("\(String(describing: context))")
             browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 1000)
         } else {
             // 쿠폰 ID 불일치 시 초대 보내지 않음
@@ -263,7 +266,7 @@ extension MultipeerManager: MCNearbyServiceAdvertiserDelegate {
                 // ✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음
             print("✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음")
             
-                invitationHandler(true, mcSession)
+            invitationHandler(true, mcSession)
                
             } else {
                 // ❌ 쿠폰 ID 불일치
@@ -289,7 +292,7 @@ extension MultipeerManager: MCSessionDelegate {
             self.peerDisconnected(peerID: peerID)
         case .connecting:
             self.mpcSessionState = .connecting
-            break
+
         @unknown default:   // 미래 확장성을 고려하여 추가
             fatalError("Unhandled MCSessionState")
         }

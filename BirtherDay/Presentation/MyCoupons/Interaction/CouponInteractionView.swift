@@ -46,6 +46,7 @@ struct CouponInteractionView: View {
             }
         }
         .onAppear {
+            print("viewModel.startNI()")
             viewModel.startNI()
             print("screenHeight: \(screenHeight)")
         }
@@ -84,10 +85,6 @@ struct CouponInteractionView: View {
             }
         }
         .navigationBarBackButtonHidden()
-//        .bdNavigationBar(title: "") {
-//            viewModel.stopNI()
-//            self.navPathManager.popPath()
-//        }
     }
 
     func distanceView() -> some View {

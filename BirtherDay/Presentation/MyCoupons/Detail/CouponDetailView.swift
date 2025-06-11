@@ -41,32 +41,24 @@ struct CouponDetailView: View {
             }
         }
         .onAppear {
-            print(viewModel.couponType)
-            print("viewModel.startupMPC()")
+            print("viewModel.startupMPC() 실행")
             viewModel.startupMPC()
         }
         
         .onDisappear {
             print("ondisappear called")
         }
-        .onChange(of: scenePhase) { oldValue, newValue in
-            switch scenePhase {
-            case .active:
-                viewModel.startupMPC()
-            case .background, .inactive:
-                viewModel.stopMPC()
-                print("background, inactive")
-            @unknown default:
-                break
-            }
-        }
-        .onDisappear {
-            print("ondisappear called")
-        }
-        .sheet(isPresented: $showShareModal) {
-            shareModalView()
-                .presentationDetents([.height(shareModalHeight)])
-        }
+//        .onChange(of: scenePhase) { oldValue, newValue in
+//            switch scenePhase {
+//            case .active:
+//                viewModel.startupMPC()
+//            case .background, .inactive:
+////                viewModel.stopMPC()
+//                print("background, inactive")
+//            @unknown default:
+//                break
+//            }
+//        }
         .bdNavigationBar(
             title: "쿠폰 상세보기",
             backButtonAction: {
