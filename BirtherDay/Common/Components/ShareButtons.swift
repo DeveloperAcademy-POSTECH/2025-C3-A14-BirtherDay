@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ShareButtons: View {
-    let couponId: String  // 추가
+    let couponId: String
+    let senderName: String
     
-    private var shareManager: ShareManager {  // computed property로 변경
+    private var shareManager: ShareManager {
         ShareManager(
-            message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.",
-            params: ["couponId": couponId],  // 실제 couponId 사용
+            message: "\(senderName)님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.",
+            params: ["couponId": couponId],
             template: .cake,
             shareType: .coupon
         )
