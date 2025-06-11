@@ -95,7 +95,7 @@ struct BDTemplate: View {
     func bluredCircleView()-> some View {
         VStack(spacing: 0) {
             HStack {
-                Circle().foregroundStyle(data.template.backgroundPointColor[0].opacity(0.8))
+                Circle().foregroundStyle(data.template.backgroundPointColor[0])
                     .blur(radius: 75)
                     .frame(width: 123, height: 123)
                 Spacer()
@@ -104,7 +104,7 @@ struct BDTemplate: View {
             Spacer()
                 .frame(height: 37)
             HStack {
-                Circle().foregroundStyle(data.template.backgroundPointColor[1].opacity(0.5))
+                Circle().foregroundStyle(data.template.backgroundPointColor[1])
                     .blur(radius: 75)
                     .frame(width: 204, height: 204)
                     .padding(.leading, -18)
@@ -112,7 +112,7 @@ struct BDTemplate: View {
             }
             HStack {
                 Spacer()
-                Circle().foregroundStyle(data.template.backgroundPointColor[2].opacity(0.5))
+                Circle().foregroundStyle(data.template.backgroundPointColor[2])
                     .blur(radius: 75)
                     .frame(width: 204, height: 204)
                     .padding(.trailing, -40)

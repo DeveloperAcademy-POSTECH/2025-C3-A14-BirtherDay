@@ -77,7 +77,7 @@ struct CouponTemplateView: View {
             navPathManager.pushCreatePath(.couponInfo)
         }) {
             Text("다음")
-                .font(.system(size: 18, weight: .semibold))
+                .font(.sb1)
         }
         .buttonStyle(BDButtonStyle(buttonType: .activate))
     }
