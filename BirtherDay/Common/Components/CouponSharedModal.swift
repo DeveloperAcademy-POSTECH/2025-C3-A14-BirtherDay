@@ -50,7 +50,7 @@ struct CouponSharedModal: View {
                     }
                     
                     showSharedCouponModal = false
-                    navPathManager.pushMyCouponPath(.couponDetail(coupon))
+                    navPathManager.pushMyCouponPath(.couponDetail(coupon, CouponType.received))
                 } label: {
                     Text("확인하러 가기 >")
                         .font(.sb1)

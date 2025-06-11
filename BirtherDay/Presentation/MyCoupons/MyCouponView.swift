@@ -28,14 +28,6 @@ struct MyCouponView: View {
         .padding(.horizontal, 16)
         .padding(.top, 16)
         
-//        .navigationTitle(couponType.couponNavigationTitle)
-//        .navigationBarTitleDisplayMode(.inline)
-//        .navigationBarBackButtonHidden(true)
-        
-//        .toolbar {
-//            leadingBackButton
-//        }
-        
         .bdNavigationBar(
             title: "\(couponType.couponNavigationTitle)",
             backButtonAction: navPathManager.popPath
@@ -122,7 +114,7 @@ struct MyCouponView: View {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                         ForEach(myCouponViewModel.coupons) { coupon in
                             Button {
-                                navPathManager.pushMyCouponPath(.couponDetail(coupon))
+                                navPathManager.pushMyCouponPath(.couponDetail(coupon, couponType))
                             } label: {
                                 BDMiniCoupon(coupon: coupon)
                             }

@@ -42,17 +42,14 @@ struct ShareButtons: View {
     
     func moreShareButtonView() -> some View {
         VStack {
-            Button {
-                let shareLinkData = shareManager.getShareLinkData()
-                ShareLink(
-                    item: shareLinkData.photo!
-                    , message: Text(shareLinkData.message)
-                    , preview: SharePreview(
-                        "",
-                        image: shareLinkData.photo!.image
-                    )
+            ShareLink(
+                item: shareManager.getShareLinkData().photo!,
+                message: Text(shareManager.getShareLinkData().message),
+                preview: SharePreview(
+                    "",
+                    image: shareManager.getShareLinkData().photo!.image
                 )
-            } label: {
+            ) {
                 Image(.moreIcon)
                     .resizable()
                     .frame(

@@ -15,6 +15,9 @@ struct CouponDetailView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var buttonTitle: String = "사용하기"
     @State var isShowPopup: Bool = false
+    @State private var showShareModal = false
+    
+    private let shareModalHeight: CGFloat = 195
     
     var body: some View {
         ZStack {
@@ -25,8 +28,12 @@ struct CouponDetailView: View {
             .background(viewModel.selectedCoupon.template.backgroundColor)
             .scrollIndicators(.hidden)
             
-            if !viewModel.selectedCoupon.isUsed {
-                buttonsView()
+            if !viewModel.selectedCoupon.isUsed { // 미사용일 때
+                if viewModel.couponType == CouponType.received { // 내가 받은 쿠폰에서 미사용일 때 공유 버튼 제거
+                    noShareButtonView()
+                } else {
+                    buttonsView() // 내가 보낸 쿠폰에서 미사용 일 때 공유 버튼 활성화
+                }
             }
             
             if isShowPopup {
@@ -34,6 +41,7 @@ struct CouponDetailView: View {
             }
         }
         .onAppear {
+            print(viewModel.couponType)
             print("viewModel.startupMPC()")
             //            viewModel.startupMPC()
         }
@@ -51,6 +59,10 @@ struct CouponDetailView: View {
         .onDisappear {
             print("ondisappear called")
         }
+        .sheet(isPresented: $showShareModal) {
+            shareModalView()
+                .presentationDetents([.height(shareModalHeight)])
+        }
         .bdNavigationBar(
             title: "쿠폰 상세보기",
             backButtonAction: {
@@ -63,36 +75,73 @@ struct CouponDetailView: View {
         VStack {
             Spacer()
             HStack {
-                Button {
-                    
-                } label: {
-                    Text("공유")
-                }
-                .buttonStyle(BDButtonStyle(buttonType: .activate))
-                
-                Button {
-                    if let mpc = viewModel.mpc {
-                        switch mpc.mpcSessionState {
-                        case .notConnected:
-                            isShowPopup.toggle()
-                        case .connecting:
-                            buttonTitle = mpc.mpcSessionState.displayString
-                        case .connected:
-                            buttonTitle = "사용하기"
-                            navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel))
-                        @unknown default:
-                            break
-                        }
-                    }
-                    
-                } label: {
-                    Text(buttonTitle)
-                }
-                .buttonStyle(BDButtonStyle(buttonType: viewModel.isConnectWithPeer ? .activate : .deactivate))
+                shareButtonView()
+                useButtonView()
             }
             .padding(.top, 37)
             .padding(.horizontal, 16)
             .background(viewModel.selectedCoupon.template.buttonBackgroundColor.ignoresSafeArea())
+        }
+    }
+    
+    func noShareButtonView()-> some View {
+        VStack {
+            Spacer()
+            
+            useButtonView()
+                .padding(.top, 37)
+                .padding(.horizontal, 16)
+                .background(viewModel.selectedCoupon.template.buttonBackgroundColor.ignoresSafeArea())
+        }
+    }
+
+    func useButtonView() -> some View {
+        Button {
+            if let mpc = viewModel.mpc {
+                switch mpc.mpcSessionState {
+                case .notConnected:
+                    isShowPopup.toggle()
+                case .connecting:
+                    buttonTitle = mpc.mpcSessionState.displayString
+                case .connected:
+                    buttonTitle = "사용하기"
+                    navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel))
+                @unknown default:
+                    break
+                }
+            }
+            
+        } label: {
+            Text(buttonTitle)
+        }
+        .buttonStyle(BDButtonStyle(buttonType: viewModel.isConnectWithPeer ? .activate : .deactivate))
+    }
+    
+    func shareButtonView() -> some View {
+        Button {
+            showShareModal.toggle()
+        } label: {
+            Label("공유", systemImage: "square.and.arrow.up")
+        }
+        .buttonStyle(BDButtonStyle(buttonType: .share))
+    }
+    
+    func shareModalView() -> some View {
+        VStack {
+            Capsule()
+                .fill(Color.gray)
+                .frame(
+                    width: 40,
+                    height: 5
+                )
+                .padding(.top, 2)
+            
+            Text("공유하기")
+                .font(.b2)
+                .padding(.top, 16)
+            
+            ShareButtons()
+                .padding(.top, 24)
         }
     }
     
@@ -126,7 +175,7 @@ struct CouponDetailView: View {
     }
 }
 
-#Preview {
-    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
-        .environmentObject(BDNavigationPathManager())
-}
+//#Preview {
+//    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
+//        .environmentObject(BDNavigationPathManager())
+//}
