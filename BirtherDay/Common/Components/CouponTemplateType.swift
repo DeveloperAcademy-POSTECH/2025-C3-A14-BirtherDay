@@ -72,13 +72,13 @@ enum CouponTemplate: String, Codable, Equatable {
     var dashLineColor: Color {
         switch self {
         case .heart:
-            return Color(hex: "B6D6FF")
+            return Color(hex: "FFC8C8")
             
         case .money:
-            return Color(hex: "FFC68F")
+            return Color(hex: "C5EFD3")
             
         case .cake:
-            return Color(hex: "FFC68F")
+            return Color(hex: "FFCC9F")
         }
     }
     
