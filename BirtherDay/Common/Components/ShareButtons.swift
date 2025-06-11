@@ -11,6 +11,7 @@ struct ShareButtons: View {
     private let shareManager: ShareManager = ShareManager(
         message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.",
         params: ["test1": "value"],
+        template: .cake,
         shareType: .coupon
     )
     
