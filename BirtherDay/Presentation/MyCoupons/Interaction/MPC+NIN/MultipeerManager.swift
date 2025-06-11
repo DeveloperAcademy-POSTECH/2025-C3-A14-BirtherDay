@@ -214,17 +214,28 @@ class MultipeerManager: NSObject {
 extension MultipeerManager: MCNearbyServiceBrowserDelegate {
     /// 연결할 수 있는 MPSession 찾고, Invitation 보내기
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        print("=====browsing=====")
+        
         print("상대 peerID: \(peerID) || 내 peerID: \(self.myPeerID)")
         guard peerID != myPeerID else { return }  // 자기 자신에 대한 초대 방지
         
+        print("상대 쿠폰 ID: \(info?["couponId"] ?? "nil")")
+        print("내 쿠폰 ID : \(self.myCoupon.couponId)")
+        
         // 쿠폰 ID 일치 여부 확인 (상대 쿠폰 ID는 info에서 받아야 함)
         if let peerCouponId = info?["couponId"], peerCouponId == myCoupon.couponId {
+            print("=====browsing 성공=====")
+            print("쿠폰 일치")
+            print("초대 전송\n상대 쿠폰 ID: \(info?["couponId"] ?? "nil")")
+            print("내 쿠폰 ID : \(self.myCoupon.couponId)")
             let context = ["couponId": myCoupon.couponId].jsonData
             browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 1000)
         } else {
             // 쿠폰 ID 불일치 시 초대 보내지 않음
             self.mpcSessionState = .notConnected
-            print("쿠폰 ID 불일치로 초대 미전송\n상대 쿠폰 ID: \(info?["couponId"] ?? "nil")")
+            print("=====browsing 실패=====")
+            print("쿠폰 불일치")
+            print("초대 미전송\n상대 쿠폰 ID: \(info?["couponId"] ?? "nil")")
             print("내 쿠폰 ID : \(self.myCoupon.couponId)")
         }
     }
