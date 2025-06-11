@@ -12,9 +12,9 @@ extension LinearGradient {
     // template stroke
     static let heartTemplateStroke = LinearGradient(
         gradient: Gradient(stops: [
-            .init(color: Color(hex: "FFE0AE"), location: 0.0),
-            .init(color: Color(hex: "FFB896"), location: 0.53),
-            .init(color: Color(hex: "FFE87E"), location: 1.0)
+            .init(color: Color(hex: "FFA3A"), location: 0.0),
+            .init(color: Color(hex: "FFA266"), location: 0.53),
+            .init(color: Color(hex: "FFB5D3"), location: 1.0) // 적용
         ]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing
@@ -22,10 +22,10 @@ extension LinearGradient {
     
     static let moneyTemplateStroke = LinearGradient(
         gradient: Gradient(stops: [
-            .init(color: Color(hex: "FF7BF0"), location: 0.0),
-            .init(color: Color(hex: "D0B7FF"), location: 0.34),
-            .init(color: .mainViolet100, location: 0.67),
-            .init(color: Color(hex: "70D9FF"), location: 1.0)
+            .init(color: Color(hex: "A5FF60"), location: 0.0),
+            .init(color: Color(hex: "83FF8F"), location: 0.34),
+            .init(color: Color(hex: "A8FF71"), location: 0.67),
+            .init(color: Color(hex: "70D9FF"), location: 0.98) // 적용
         ]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing
@@ -33,10 +33,10 @@ extension LinearGradient {
     
     static let cakeTemplateStroke = LinearGradient(
         gradient: Gradient(stops: [
-            .init(color: Color(hex: "FF7BF0"), location: 0.0),
-            .init(color: Color(hex: "D0B7FF"), location: 0.34),
+            .init(color: Color(hex: "FFE0AE"), location: 0.0),
+            .init(color: Color(hex: "FFB896"), location: 0.34),
             .init(color: .mainViolet100, location: 0.67),
-            .init(color: Color(hex: "70D9FF"), location: 1.0)
+            .init(color: Color(hex: "FFE87E"), location: 1.0) // 적용
         ]),
         startPoint: .topLeading,
         endPoint: .bottomTrailing

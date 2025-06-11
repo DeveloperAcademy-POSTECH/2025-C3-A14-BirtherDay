@@ -18,13 +18,13 @@ enum CouponTemplate: String, Codable, Equatable {
     var basicColor: Color {
         switch self {
         case .heart:
-            return Color(hex: "F8F5FF")
+            return Color(hex: "FFF4E6") // 적용
             
         case .money:
-            return Color(hex: "FFF7FF")
+            return Color(hex: "FEFFED") // 적용
             
         case .cake:
-            return Color(hex: "FFF7FF")
+            return Color(hex: "FFF2EC") // 적용
         }
     }
     
@@ -33,23 +33,23 @@ enum CouponTemplate: String, Codable, Equatable {
         switch self {
         case .heart:
             return [
-                Color(hex: "F786FF").opacity(0.8),
-                Color(hex: "86BEFF").opacity(0.5),
-                Color(hex: "AA86FF").opacity(0.5)
+                Color(hex: "FF86A8").opacity(0.8), // 적용
+                Color(hex: "FFAE86").opacity(0.5), // 적용
+                Color(hex: "FF86B6").opacity(0.5) // 적용
             ]
             
         case .money:
             return [
-                Color(hex: "FFD586").opacity(0.8),
-                Color(hex: "FFD586").opacity(0.8),
-                Color(hex: "FFD586").opacity(0.8)
+                Color(hex: "A4FF86").opacity(0.8), // 적용
+                Color(hex: "86FFDD").opacity(0.5), // 적용
+                Color(hex: "D1FF86").opacity(0.5) // 적용
             ]
             
         case .cake:
             return [
-                Color(hex: "FFD586").opacity(0.8),
-                Color(hex: "FFD586").opacity(0.8),
-                Color(hex: "FFD586").opacity(0.8)
+                Color(hex: "FFAE5D").opacity(0.8), // 적용
+                Color(hex: "FFED86").opacity(0.5), // 적용
+                Color(hex: "FFAE5D").opacity(0.5) // 적용
             ]
         }
     }
