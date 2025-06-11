@@ -8,20 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("isOnboarded") private var isOnboarded: Bool = true
+    @AppStorage("isOnboarded") private var isOnboarded: Bool = false
     @StateObject private var bdNavigationManager = BDNavigationPathManager()
     
     private var authService: AuthService = AuthService()
 
     var body: some View {
-        Group {
+        ZStack {
             if !isOnboarded {
                 OnboardingView()
+                    .transition(.asymmetric(
+                        insertion: .opacity,
+                        removal: .move(edge: .leading).combined(with: .opacity)
+                    ))
             } else {
                 HomeView()
                     .environmentObject(bdNavigationManager)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing).combined(with: .opacity),
+                        removal: .opacity
+                    ))
             }
         }
+        .animation(.easeInOut(duration: 0.5), value: isOnboarded)
         .onAppear { checkSignIn() }
     }
 }
