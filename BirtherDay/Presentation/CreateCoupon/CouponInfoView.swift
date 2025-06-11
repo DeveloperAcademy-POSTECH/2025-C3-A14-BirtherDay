@@ -60,10 +60,10 @@ struct CouponInfoView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "쿠폰 멘트 작성하기",
-            backButtonAction: navPathManager.popPath,
             color: UIColor(
                 viewModel.couponData.template.backgroundColor
-            )
+            ),
+            backButtonAction: navPathManager.popPath
         )
         .onAppear {
             loadExistingData()

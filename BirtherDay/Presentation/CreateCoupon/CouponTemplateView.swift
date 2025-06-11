@@ -41,10 +41,10 @@ struct CouponTemplateView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "쿠폰 디자인 선택",
-            backButtonAction: navPathManager.popPath,
             color: UIColor(
                 viewModel.couponData.template.backgroundColor
-            )
+            ),
+            backButtonAction: navPathManager.popPath
         )
         .onAppear {
             loadExistingTemplate()

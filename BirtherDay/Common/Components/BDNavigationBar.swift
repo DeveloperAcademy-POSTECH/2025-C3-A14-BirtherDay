@@ -9,8 +9,9 @@ import SwiftUI
 
 struct BDNavigationBar: ViewModifier {
     let title: String
-    let onBackButtonTapped: () -> Void
     let backgroundColor: UIColor
+    let isCustomBackButtonHidden: Bool
+    let onBackButtonTapped: () -> Void
     
     func body(content: Content) -> some View {
         content
@@ -18,12 +19,14 @@ struct BDNavigationBar: ViewModifier {
             .navigationBarTitleDisplayMode(.automatic)
             .navigationBarBackButtonHidden(true)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button{
-                        onBackButtonTapped()
-                    } label:{
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.black)
+                if !isCustomBackButtonHidden {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button {
+                            onBackButtonTapped()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.black)
+                        }
                     }
                 }
             }
