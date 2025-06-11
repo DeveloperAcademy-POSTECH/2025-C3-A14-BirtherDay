@@ -10,7 +10,7 @@ struct CouponInteractionView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     var viewModel: CouponDetailViewModel
     
-    var minimuDetectedDistance: Float = 2.0
+    var minimuDetectedDistance: Float = 2.0     // 2m부터 배경 애니메이션
     var screenHeight: CGFloat = UIScreen.main.bounds.height
     
     @State private var animatedHeight: CGFloat = 0.0
@@ -57,7 +57,10 @@ struct CouponInteractionView: View {
             withAnimation(.easeInOut(duration: 1.0)) {
                 let clampedValue = max(newValue, 0)
                 animatedDistance = clampedValue
-                let height = screenHeight - CGFloat(clampedValue / (minimuDetectedDistance)) * screenHeight
+                ///
+                /// 2m : 0
+                /// 0.2m : height
+                let height = screenHeight - CGFloat((clampedValue - 0.2) / (minimuDetectedDistance)) * screenHeight
                 animatedHeight = max(0, height)
             }
         }
