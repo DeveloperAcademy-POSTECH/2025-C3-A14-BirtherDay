@@ -17,8 +17,13 @@ enum DistanceDirectionState {
 @MainActor
 @Observable
 class CouponDetailViewModel: NSObject {
+    
+    // service
+    var couponType: CouponType
+    var couponService = CouponService()
 
-    var selectedCoupon: RetrieveCouponResponse = .stub01                 // 사용자가 고른 coupon
+    // mpc + nin
+    var selectedCoupon: RetrieveCouponResponse                 // 사용자가 고른 coupon
     var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
     var connectedPeer: MCPeerID?                // 연결된 Peer
     var isCompleted: Bool = false               // 쿠폰
@@ -30,10 +35,11 @@ class CouponDetailViewModel: NSObject {
     var currentDistanceDirectionState: DistanceDirectionState = .unknown
     
     var distance: Float?                        // peer간의 거리 (0.00m)
-    let nearbyDistanceThreshold: Float = 0.5
+    let nearbyDistanceThreshold: Float = 0.2    // (m)
     
-    init(selectedCoupon: RetrieveCouponResponse) {
-        print("사용자가 선택한 쿠폰: \(selectedCoupon.couponId)")
+    init(selectedCoupon: RetrieveCouponResponse,
+         couponType: CouponType
+    ) {
         self.selectedCoupon = selectedCoupon
         self.couponType = couponType
     }
