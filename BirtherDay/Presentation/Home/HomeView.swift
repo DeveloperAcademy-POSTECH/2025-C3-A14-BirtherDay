@@ -26,12 +26,12 @@ struct HomeView: View {
         NavigationStack(path: $navPathManager.appPaths) {
             ScrollView {
                 VStack(spacing: 16) {
-                    homeHeaderView(text: "자~ 로고들어갑니다 ^^")
+                    homeLogoView()
                     createCouponCTACardView()
                     homeHeaderView(text: "주고 받은 쿠폰을 확인해보세요!")
                     couponBoxSelectorView()
                     homeDivider()
-                    homeHeaderView(text: "아직 미사용 된 쿠폰이 남아있어요")
+                    homeHeaderView(text: "선물 받은 생일 쿠폰을 빠르게 사용해보아요!")
                     unusedCouponListView()
                 }
                 .navigationDestination(for: BDAppPath.self) { path in
@@ -50,7 +50,7 @@ struct HomeView: View {
                 if SupabaseManager.shared.client.auth.currentSession == nil {
                     await homeViewModel.signUp()
                 }
-
+                
                 await homeViewModel.fetchCoupons()
             }
         }
@@ -110,12 +110,15 @@ struct HomeView: View {
                 Button {
                     navPathManager.pushCreatePath(.selectTemplate)
                 } label: {
-                    HStack(spacing: 0) {
-                        Text("쿠폰 만들러 가기 ")
-                        Image(systemName: "chevron.right")
-                            .imageScale(.small)
+                    ZStack {
+                        LinearGradient.createCouponBackground
+                        HStack(spacing: 0) {
+                            Text("쿠폰 만들러 가기 ")
+                            Image(systemName: "chevron.right")
+                                .imageScale(.small)
+                        }
+                        .font(.sb1)
                     }
-                    .font(.sb1)
                 }
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
             }
@@ -136,15 +139,13 @@ struct HomeView: View {
     
     /// 개별 보관함 가기
     func couponBoxCardView(_ type: CouponType) -> some View {
-        
         Button {
             couponType = type
             navPathManager.pushMyCouponPath(.couponInventory(couponType))
         } label: {
             HStack(alignment: .center, spacing: 8) {
-                
-                Rectangle()
-                    .frame(width: 38, height: 38)
+                let imageType: CouponType = type
+                Image(imageType.homeCouponTypeImage)
                 
                 Text(type.couponBoxTitle)
                     .font(.sb1)
@@ -185,31 +186,21 @@ struct HomeView: View {
         }
     }
     
-    // TODO: - 미사용 쿠폰 리스트
-    /// 1. fetching
-    ///     1.1. 에러핸들링
-    /// 2. isEmpty 여부 검사
-    ///     2.1. 텅!
-    ///     2.2.  HStack으로 카드리스트뷰
-    /// 3. 5개 카드 이후, 더보기 카드
+    /// 홈 로고
+    func homeLogoView() -> some View {
+        HStack(spacing: 0) {
+            Image("HomeLogo")
+                .padding(.leading, 16)
+                .padding(.top, 19)
+            
+            Spacer()
+        }
+    }
+
     func unusedCouponListView() -> some View {
         VStack {
-            // TODO: - 빈 경우, 어떻게 넣을 지 추가
             if homeViewModel.coupons.isEmpty {
-                
-                VStack {
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Text(couponType.emptyUsedText)
-                }
-                .multilineTextAlignment(.center)
-                .lineSpacing(8)
-                .frame(maxWidth: .infinity)
-                .font(.sb3)
-                .foregroundStyle(Color.textCaption1)
-                
-                Spacer()
+                homeEmptyView()
             } else {
                 ScrollView(.horizontal) {
                     HStack(alignment: .center, spacing: 8) {
@@ -223,11 +214,28 @@ struct HomeView: View {
                         Button {
                             navPathManager.pushMyCouponPath(.couponInventory(.received))
                         } label: {
-                            BDAllMiniCoupon()
+                            BDSeeMoreCoupon()
                         }
                     }
                     .padding(.horizontal, 16)
                 }.scrollIndicators(.hidden)
+            }
+        }
+    }
+    
+    func homeEmptyView() -> some View { 
+        Button {
+            navPathManager.pushCreatePath(.selectTemplate)
+        } label: {
+            ZStack {
+                Image("homeEmptyCoupon")
+                    .resizable()
+                    .padding(.horizontal, 16)
+                Text("미사용된 쿠폰이 없어요!\n쿠폰을 더 생성하러 가볼까요?")
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(8)
+                    .font(.sb1)
+                    .foregroundStyle(Color.textCaption1)
             }
         }
     }

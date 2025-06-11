@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
     
     /// fetch쿠폰 캐시용 변수
     @Published private var allCoupons: [RetrieveCouponResponse] = []
-
+    
     @Published var coupon: RetrieveCouponResponse?
     @Published var coupons: [RetrieveCouponResponse] = []
     @Published var isLoading: Bool = false
@@ -47,7 +47,7 @@ class HomeViewModel: ObservableObject {
     func registerReceiverToCoupon(couponId: String, userId: String) async {
         await updateReceiver(couponId: couponId, userId: userId)
     }
-
+    
     private func updateReceiver(couponId: String, userId: String) async -> Void {
         do {
             _ = try await couponService.registerReceiver(couponId: couponId, receiverId: userId)
@@ -77,7 +77,7 @@ class HomeViewModel: ObservableObject {
             return nil
         }
     }
-
+    
     /// 쿠폰 Fetching
     private func homeFetchCouponsFromService() async -> [RetrieveCouponResponse] {
         

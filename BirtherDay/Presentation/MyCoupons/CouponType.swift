@@ -34,14 +34,25 @@ enum CouponType: String, Equatable {
         }
     }
     
-    /// 배너 우측 아이콘
-    var bannerImage: String {
+    /// home 송, 수신별 이미지
+    var homeCouponTypeImage: String {
         switch self {
         case .sent:
-            return "sentImage"
+            return "homeSentCoupon"
             
         case .received:
-            return "receivedImage"
+            return "homeReceivedCoupon"
+        }
+    }
+    
+    /// MyCoupon 송, 수신별 이미지
+    var myCouponTypeImage: String {
+        switch self {
+        case .sent:
+            return "myCouponSentCoupon"
+            
+        case .received:
+            return "myCouponReceivedCoupon"
         }
     }
     

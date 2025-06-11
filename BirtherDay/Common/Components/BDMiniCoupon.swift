@@ -11,6 +11,19 @@ struct BDMiniCoupon: View {
     let coupon: RetrieveCouponResponse
     
     var body: some View {
+        let couponUsage = coupon.isUsed
+        
+        if couponUsage == false {
+            unusedCouponView()
+        } else {
+            usedCouponView()
+        }
+    }
+    
+    // MARK: - Views
+    
+    /// 미사용 쿠폰
+    func unusedCouponView() -> some View {
         VStack(spacing: 0) {
             couponMainView()
             couponInfoView()
@@ -18,9 +31,20 @@ struct BDMiniCoupon: View {
         .foregroundStyle(coupon.template.miniCouponBackgroundColor)
     }
     
-    // MARK: - Views
+    /// 사용완료 쿠폰
+    func usedCouponView() -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            VStack(spacing: 0) {
+                couponInfoView()
+            }
+            Image("usedStamp")
+        }
+        .frame(width: 165)
+        .foregroundStyle(coupon.template.miniCouponBackgroundColor)
+    }
+    
     /// 메인 쿠폰
-    func couponMainView()-> some View {
+    func couponMainView() -> some View {
         return ZStack {
             RoundedRectangle(cornerRadius: 15)
             
@@ -48,7 +72,7 @@ struct BDMiniCoupon: View {
                 }
                 Spacer()
                 
-                dashedLineView(color: Color.mainViolet300)
+                //                dashedLineView(color: coupon.template.dashLineColor)
             }
             coupon.template.miniCouponImage
                 .resizable()
@@ -67,7 +91,7 @@ struct BDMiniCoupon: View {
                 path.addLine(to: CGPoint(x: 150, y: 0))
             }
             .stroke(
-                Color.mainViolet100
+                coupon.template.miniCouponBackgroundColor
             )
             .frame(height: 1)
             
@@ -84,21 +108,33 @@ struct BDMiniCoupon: View {
         }
     }
     
-    /// 쿠폰 정보
+    /// 쿠 폰 정보
     func couponInfoView()-> some View {
-        
-        return ZStack(alignment: .leading) {
+        return ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 15)
-            VStack(alignment: .leading, spacing: 4) {
-                Text("\(coupon.title)")
-                    .font(.sb1)
-                    .foregroundStyle(Color.textTitle)
+            
+            VStack(alignment: .leading, spacing: 0) {
+                dashedLineView(color: coupon.template.miniDashLineColor)
+                    .padding(.top, 1)
                 
-                Text("From. \(coupon.senderName)")
-                    .font(.r1)
-                    .foregroundStyle(Color.mainPrimary)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("\(coupon.title)")
+                        .font(.sb1)
+                        .foregroundStyle(Color.textTitle)
+                        .lineSpacing(6)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    Spacer()
+                    
+                    Text("From. \(coupon.senderName)")
+                        .font(.r1)
+                        .foregroundStyle(Color.mainPrimary)
+                        //.padding(.bottom, 20)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 20)
             }
-            .padding(.horizontal, 16)
         }
         .frame(width: 164, height: 113)
     }

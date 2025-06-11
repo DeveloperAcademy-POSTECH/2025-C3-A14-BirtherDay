@@ -68,4 +68,14 @@ extension LinearGradient {
         startPoint: .top,
         endPoint: .bottom
     )
+    
+    static let createCouponBackground = LinearGradient(
+        gradient: Gradient(stops: [
+            Gradient.Stop(color: Color(red: 1, green: 0.59, blue: 0.9), location: 0.00),
+            Gradient.Stop(color: Color.mainViolet500, location: 1.00),
+        ]),
+        startPoint: UnitPoint(x: -0.94, y: -3.67),
+        endPoint: UnitPoint(x: 0.97, y: 0.91)
+    )
 }
+
