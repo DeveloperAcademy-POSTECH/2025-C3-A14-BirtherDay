@@ -106,19 +106,6 @@ enum CouponTemplate: String, Codable, Equatable {
         }
     }
     
-    // BDMiniCoupon
-    var miniCouponBackgroundColor: Color {
-        switch self {
-        
-        case .heart:
-            return Color(hex: "E5ECFF")
-        case .money:
-            return Color.mainViolet100
-        case .cake:
-            return Color.mainViolet100
-        }
-    }
-    
     var miniCouponImage: SwiftUI.Image {
         switch self {
         case .heart:
@@ -130,17 +117,28 @@ enum CouponTemplate: String, Codable, Equatable {
         }
     }
     
-    // TODO: - 대응 가능성 있음.
+    /// mini 백그라운드 색상
+    var miniCouponBackgroundColor: Color {
+        switch self {
+        
+        case .heart:
+            return Color(hex: "FFEBEA")
+        case .money:
+            return Color(hex: "F3FFE6")
+        case .cake:
+            return Color(hex: "FFEDD7")
+        }
+    }
+    
     /// mini 점선 색상
     var miniDashLineColor: Color {
         switch self {
         case .heart:
-            return Color(hex: "B6D6FF")
-            
+            return Color(hex: "FFC8C8")
         case .money:
-            return Color(hex: "FFC68F")
+            return Color(hex: "C5EFD3")
         case .cake:
-            return Color(hex: "FFC68F")
+            return Color(hex: "FFCC9F")
         }
     }
     
