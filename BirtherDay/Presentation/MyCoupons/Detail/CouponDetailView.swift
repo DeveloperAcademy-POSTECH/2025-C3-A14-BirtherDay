@@ -27,10 +27,10 @@ struct CouponDetailView: View {
             .scrollIndicators(.hidden)
             .bdNavigationBar(
                 title: "쿠폰 상세보기",
-                backButtonAction: navPathManager.popPath,
                 color: UIColor(
                     viewModel.selectedCoupon.template.backgroundColor
-                )
+                ),
+                backButtonAction: navPathManager.popPath
             )
             
             buttonsView()

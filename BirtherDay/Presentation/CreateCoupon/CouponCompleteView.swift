@@ -40,10 +40,11 @@ struct CouponCompleteView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "쿠폰 생성 완료",
-            backButtonAction: navPathManager.popPath,
             color: UIColor(
                 viewModel.couponData.template.backgroundColor
-            )
+            ),
+            isBackButtonHidden: true,
+            backButtonAction: navPathManager.popPath
         )
         .sheet(isPresented: $showShareModal) {
             shareModalView()
@@ -73,7 +74,7 @@ struct CouponCompleteView: View {
     }
     
     func bottomGradientView() -> some View {
-        VStack {
+        VStack(spacing: 0) {
             Spacer()
             Group {
                 switch viewModel.couponData.template {
