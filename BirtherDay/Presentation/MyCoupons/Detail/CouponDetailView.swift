@@ -22,16 +22,8 @@ struct CouponDetailView: View {
                 DetailedCoupon(couponData: viewModel.selectedCoupon)
                     .padding(.top, 11)
             }
-            
             .background(viewModel.selectedCoupon.template.backgroundColor)
             .scrollIndicators(.hidden)
-            .bdNavigationBar(
-                title: "쿠폰 상세보기",
-                color: UIColor(
-                    viewModel.selectedCoupon.template.backgroundColor
-                ),
-                backButtonAction: navPathManager.popPath
-            )
             
             buttonsView()
             
@@ -41,27 +33,31 @@ struct CouponDetailView: View {
         }
         .onAppear {
             print("viewModel.startupMPC()")
-//            viewModel.startupMPC()
-        }
-        .navigationBarBackButtonHidden()
-//        .bdNavigationBar(title: "쿠폰 상세보기") {
-//            viewModel.stopMPC()
-//            navPathManager.popPath()
-//        }
-        .onDisappear {
-            print("ondisappear called")
+            //            viewModel.startupMPC()
         }
         .onChange(of: scenePhase) { oldValue, newValue in
             switch scenePhase {
             case .active:
                 viewModel.startupMPC()
             case .background, .inactive:
-//                viewModel.stopMPC()
+                viewModel.stopMPC()
                 print("background, inactive")
             @unknown default:
                 break
             }
         }
+        .onDisappear {
+            print("ondisappear called")
+        }
+        .bdNavigationBar(
+            title: "쿠폰 상세보기",
+            color: UIColor(
+                viewModel.selectedCoupon.template.backgroundColor
+            ),
+            backButtonAction: {
+                viewModel.stopMPC()
+                navPathManager.popPath()
+            })
     }
     
     func buttonsView()-> some View {
