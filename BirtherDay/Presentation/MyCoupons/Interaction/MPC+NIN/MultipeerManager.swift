@@ -141,6 +141,10 @@ class MultipeerManager: NSObject {
         
         advertiser?.stopAdvertisingPeer()
         browser?.stopBrowsingForPeers()
+        
+        advertiser?.delegate = nil
+        browser?.delegate = nil
+        
         advertiser = nil
         browser = nil
     }
@@ -148,13 +152,19 @@ class MultipeerManager: NSObject {
     /// MPC adverting & browsing 중단 MCSession 해제
     func invalidate() {
         print("MultipeerManager - invalidate()")
-        suspend()
-        mcSession.disconnect()
-        mcSession.delegate = nil
+        // 1. 먼저 안전하게 중지
+        advertiser?.stopAdvertisingPeer()
+        browser?.stopBrowsingForPeers()
+
+        // 2. delegate 해제
         advertiser?.delegate = nil
         browser?.delegate = nil
+        mcSession.delegate = nil
+
+        // 3. 객체 제거
         advertiser = nil
         browser = nil
+        mcSession.disconnect()
     }
 
     
@@ -209,11 +219,13 @@ class MultipeerManager: NSObject {
 extension MultipeerManager: MCNearbyServiceBrowserDelegate {
     /// 연결할 수 있는 MPSession 찾고, Invitation 보내기
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        print("상대 peerID: \(peerID) || 내 peerID: \(self.myPeerID)")
+        print("😀 Browser found peer")
+
         guard peerID != myPeerID else { return }  // 자기 자신에 대한 초대 방지
         
         // 쿠폰 ID 일치 여부 확인 (상대 쿠폰 ID는 info에서 받아야 함)
         if let peerCouponId = info?["couponId"], peerCouponId == myCoupon.couponId {
+            print("Browser: 쿠폰 일치 여부로 인한 invite 초대권 발송")
             let context = ["couponId": myCoupon.couponId].jsonData
             browser.invitePeer(peerID, to: mcSession, withContext: context, timeout: 1000)
         } else {
@@ -236,20 +248,16 @@ extension MultipeerManager: MCNearbyServiceAdvertiserDelegate {
     // invitationHandler: 초대 수락/거절을 결정하는 콜백. true: 수락, false: 거절. 세션도 같이 넘겨야 함
     /// MCSession 열고, 들어온 invitations 수락 or 거절
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        
+        print("🤬 Advertiser 시작")
         print("초대 받음: \(peerID.displayName), with context: \(String(describing: context?.string))")
         
         guard let couponId = context?.asStringDictionary?["couponId"] else { return }
         print("상대 쿠폰: \(couponId) || 내 쿠폰: \(myCoupon.couponId)")
             
            if couponId == myCoupon.couponId && mcSession.connectedPeers.count < maxNumPeers {
-                // ✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음
             print("✅ 상대방이 나와 같은 쿠폰 ID를 가지고 있음")
-            
                 invitationHandler(true, mcSession)
-               
             } else {
-                // ❌ 쿠폰 ID 불일치
                 print("❌ 쿠폰 ID 불일치")
                 invitationHandler(false, nil)
             }

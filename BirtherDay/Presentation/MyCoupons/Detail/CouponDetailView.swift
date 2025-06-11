@@ -10,7 +10,7 @@ import SwiftUI
 struct CouponDetailView: View {
     
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-    var viewModel: CouponDetailViewModel
+    @ObservedObject var viewModel: CouponDetailViewModel
     
     @Environment(\.scenePhase) private var scenePhase
     @State private var buttonTitle: String = "사용하기"
@@ -33,7 +33,7 @@ struct CouponDetailView: View {
         }
         .onAppear {
             print("viewModel.startupMPC()")
-            //            viewModel.startupMPC()
+            viewModel.startupMPC()
         }
         .onChange(of: scenePhase) { oldValue, newValue in
             switch scenePhase {
