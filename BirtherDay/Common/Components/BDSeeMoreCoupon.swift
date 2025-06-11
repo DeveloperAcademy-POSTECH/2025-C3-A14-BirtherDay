@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BDAllMiniCoupon: View {
+struct BDSeeMoreCoupon: View {
     var body: some View {
         VStack(spacing: 0) {
             couponMainView()
@@ -25,12 +25,7 @@ struct BDAllMiniCoupon: View {
             VStack(alignment: .center, spacing: 0) {
                 Spacer()
                 
-                Text("?")
-                  .font(
-                    Font.custom("Pretendard", size: 64)
-                      .weight(.semibold)
-                  )
-                  .foregroundStyle(Color.gray300)
+                Image("seeMoreCoupon")
                   .frame(maxWidth: .infinity, alignment: .center)
                 
                 Spacer()
@@ -76,7 +71,7 @@ struct BDAllMiniCoupon: View {
                     Image(systemName: "chevron.right")
                         .imageScale(.small)
                 }
-                .foregroundStyle(Color.textCaption1)
+                .foregroundStyle(Color.textTitle)
                 .font(.sb1)
             }
         }
@@ -85,5 +80,5 @@ struct BDAllMiniCoupon: View {
 }
 
 #Preview {
-    BDAllMiniCoupon()
+    BDSeeMoreCoupon()
 }
