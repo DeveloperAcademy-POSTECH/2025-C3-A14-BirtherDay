@@ -10,7 +10,7 @@ import SwiftUI
 struct CouponDetailView: View {
     
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-    @ObservedObject var viewModel: CouponDetailViewModel
+    var viewModel: CouponDetailViewModel
     
     @Environment(\.scenePhase) private var scenePhase
     @State private var buttonTitle: String = "사용하기"
@@ -35,19 +35,11 @@ struct CouponDetailView: View {
             print("viewModel.startupMPC()")
             viewModel.startupMPC()
         }
-        .onChange(of: scenePhase) { oldValue, newValue in
-            switch scenePhase {
-            case .active:
-                viewModel.startupMPC()
-            case .background, .inactive:
-                viewModel.stopMPC()
-                print("background, inactive")
-            @unknown default:
-                break
-            }
-        }
         .onDisappear {
             print("ondisappear called")
+        }
+        .onChange(of: viewModel.isConnectWithPeer) {
+            print("😜😜😜😜😜😜😜")
         }
         .bdNavigationBar(
             title: "쿠폰 상세보기",
@@ -125,9 +117,4 @@ struct CouponDetailView: View {
             .padding(.horizontal, 44)
         }
     }
-}
-
-#Preview {
-    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
-        .environmentObject(BDNavigationPathManager())
 }

@@ -12,7 +12,7 @@ struct BDNavigationRoutingView: View {
     
     // 뷰모델 주입
     @ObservedObject var createCouponViewModel: CreateCouponViewModel
-//    var couponDetailViewModel: CouponDetailViewModel
+    //  var couponDetailViewModel: CouponDetailViewModel
     var myCouponViewModel: MyCouponViewModel
     
     var body: some View {

@@ -8,7 +8,7 @@
 import SwiftUI
 struct CouponInteractionView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-    @ObservedObject var viewModel: CouponDetailViewModel
+    var viewModel: CouponDetailViewModel
     
     var minimuDetectedDistance: Float = 2.0
     var screenHeight: CGFloat = UIScreen.main.bounds.height
@@ -85,7 +85,4 @@ struct CouponInteractionView: View {
         }
         .font(.sb5)
     }
-}
-#Preview {
-    CouponInteractionView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
 }

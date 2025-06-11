@@ -14,23 +14,22 @@ enum DistanceDirectionState {
     case closeUpInFOV, notCloseUpInFOV, outOfFOV, unknown
 }
 
-//@Observable
-@MainActor
-class CouponDetailViewModel: NSObject, ObservableObject {
+@Observable
+class CouponDetailViewModel: NSObject {
 
     var selectedCoupon: RetrieveCouponResponse = .stub01                 // 사용자가 고른 coupon
-    @Published var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
-    @Published var connectedPeer: MCPeerID?                // 연결된 Peer
-    @Published var isCompleted: Bool = false               // 쿠폰 사용 완료 여부
+    var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
+    var connectedPeer: MCPeerID?                // 연결된 Peer
+    var isCompleted: Bool = false               // 쿠폰 사용 완료 여부
     
-    @Published var mpc: MultipeerManager?                  // MPC Manager
+    var mpc: MultipeerManager?                  // MPC Manager
     
     var niSession: NISession?                   // NI 통신시 사용되는 Session
     var peerDiscoveryToken: NIDiscoveryToken?   // peer의 discoveryToken
     var sharedTokenWithPeer = false             // peer와 discoveryToken을 교환했는지 여부
     var currentDistanceDirectionState: DistanceDirectionState = .unknown
     
-    @Published var distance: Float?                        // peer간의 거리 (0.00m)
+    var distance: Float?                        // peer간의 거리 (0.00m)
     let nearbyDistanceThreshold: Float = 0.5
     
     init(selectedCoupon: RetrieveCouponResponse) {
@@ -114,9 +113,13 @@ class CouponDetailViewModel: NSObject, ObservableObject {
         }
         
         connectedPeer = peer
+        
+        // TODO: - View에 값 변경이 감지가 되지 않는 버그 수정
         isConnectWithPeer = true
         
         print("💋 isConnectWithPeer: \(isConnectWithPeer)")
+        
+        stopMPC();
     }
 
     /// MPC 연결이 끊겼을 때 실행
