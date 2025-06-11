@@ -18,7 +18,7 @@ struct TestView: View {
     private let couponService: CouponService = CouponService()
     private let fileService: FileService = FileService()
     private let shareManager: ShareManager = ShareManager(
-        message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.", params: ["couponId": "572f9482-f941-4473-98bc-8506c9f418a1"], shareType: .coupon
+        message: "사랑하는 길님의 생일쿠폰이 도착했어요.\n쿠폰함을 확인해보세요.", params: ["couponId": "572f9482-f941-4473-98bc-8506c9f418a1"], template: .heart, shareType: .coupon
     )
     
     var body: some View {

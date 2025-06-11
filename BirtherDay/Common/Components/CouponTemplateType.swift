@@ -143,4 +143,27 @@ enum CouponTemplate: String, Codable, Equatable {
             return Color(hex: "FFC68F")
         }
     }
+    
+    var sharePreviewImage: String {
+        switch self {
+        case .heart:
+            return "HeartSharePreview"
+        case .money:
+            return "MoneySharePreview"
+        case .cake:
+            return "CakeSharePreview"
+        }
+    }
+    
+    var sharePreviewUrl: String {
+        let domain = "\(SupabaseConfig.url)\(SupabaseConfig.storagePath)coupon/common/"
+        switch self {
+        case .heart:
+            return domain + "HeartSharePreview.png"
+        case .money:
+            return domain + "MoneySharePreview.png"
+        case .cake:
+            return domain + "CakeSharePreview.png"
+        }
+    }
 }

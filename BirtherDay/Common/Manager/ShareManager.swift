@@ -38,6 +38,7 @@ enum ShareType: String {
 }
 
 final class ShareManager {
+    var template: CouponTemplate
     var message: String
     var params: [String: String]
     var shareType: ShareType
@@ -47,10 +48,11 @@ final class ShareManager {
     var buttonTitle: String
     var iosExecutionParams: [String: String]
     
-    init(message: String, params: [String: String], shareType: ShareType) {
+    init(message: String, params: [String: String], template: CouponTemplate, shareType: ShareType) {
         self.message = message
         self.params = params
         self.shareType = shareType
+        self.template = template
         self.iosExecutionParams = [:]
         
         for (key, value) in params {
@@ -61,7 +63,7 @@ final class ShareManager {
         case .coupon:
             self.buttonTitle = "생일 쿠폰 확인하기"
             self.urlScheme = "kakao\(KakaoConfig.NATIVE_APP_KEY)://kakaolink"
-            self.imageUrl = "\(SupabaseConfig.url)\(SupabaseConfig.storagePath)coupon/common/SharePreview.jpg"
+            self.imageUrl = self.template.sharePreviewUrl
         }
     }
     
@@ -128,7 +130,7 @@ final class ShareManager {
         
         switch self.shareType {
         case .coupon:
-            shareData.setPhoto(Photo(image: Image("SharePreview"), caption: ""))
+            shareData.setPhoto(Photo(image: Image(self.template.sharePreviewImage), caption: ""))
         }
         
         return shareData
