@@ -12,9 +12,9 @@ struct CouponDetailView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
     var viewModel: CouponDetailViewModel
     
-    @Environment(\.scenePhase) private var scenePhase
     @State private var buttonTitle: String = "사용하기"
-    @State var isShowPopup: Bool = false
+    @State var isShownPopup: Bool = false
+    @State private var showShareModal = false           // 공유하기 뷰
     @State var buttonType: BDButtonType = .deactivate
     
     private let shareModalHeight: CGFloat = 195
@@ -36,7 +36,7 @@ struct CouponDetailView: View {
                 }
             }
             
-            if isShowPopup {
+            if isShownPopup {
                 popupView()
             }
         }
@@ -44,31 +44,9 @@ struct CouponDetailView: View {
             print("viewModel.startupMPC() 실행")
             viewModel.startupMPC()
         }
-//        .onChange(of: scenePhase) { oldValue, newValue in
-//            switch scenePhase {
-//            case .active:
-//                viewModel.startupMPC()
-//            case .background, .inactive:
-//                viewModel.stopMPC()
-//                print("background, inactive")
-//            @unknown default:
-//                break
-//            }
-//        }
         .onDisappear {
             print("ondisappear called")
         }
-//        .onChange(of: scenePhase) { oldValue, newValue in
-//            switch scenePhase {
-//            case .active:
-//                viewModel.startupMPC()
-//            case .background, .inactive:
-////                viewModel.stopMPC()
-//                print("background, inactive")
-//            @unknown default:
-//                break
-//            }
-//        }
         .bdNavigationBar(
             title: "쿠폰 상세보기",
             backButtonAction: {
@@ -87,6 +65,10 @@ struct CouponDetailView: View {
             case .some(_):
                 buttonType = .deactivate
             }
+        }
+        .sheet(isPresented: $showShareModal) {
+            shareModalView()
+                .presentationDetents([.height(shareModalHeight)])
         }
     }
     
@@ -109,7 +91,7 @@ struct CouponDetailView: View {
                         print("Button pressed")
                         switch mpc.mpcSessionState {
                         case .notConnected:
-                            isShowPopup.toggle()
+                            isShownPopup.toggle()
                         case .connecting:
                             buttonTitle = mpc.mpcSessionState.displayString
                         case .connected:
@@ -147,7 +129,7 @@ struct CouponDetailView: View {
             if let mpc = viewModel.mpc {
                 switch mpc.mpcSessionState {
                 case .notConnected:
-                    isShowPopup.toggle()
+                    isShownPopup.toggle()
                 case .connecting:
                     buttonTitle = mpc.mpcSessionState.displayString
                 case .connected:
@@ -205,7 +187,7 @@ struct CouponDetailView: View {
                 
                 // TODO: - 터치 영역 늘리기
                 Button {
-                    self.isShowPopup = false
+                    self.isShownPopup = false
                 } label: {
                     Text("확인")
                         .frame(maxWidth: .infinity)
