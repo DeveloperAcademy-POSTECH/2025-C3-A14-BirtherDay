@@ -82,15 +82,15 @@ enum CouponTemplate: String, Codable, Equatable {
         }
     }
     
-    /// 쿠폰 겉배경 색상
+    /// 생성완료시 쿠폰 겉에 아예 배경 색상
     var backgroundColor: Color {
-        switch self {
+        switch self { 
         case .heart:
-            return Color(hex: "F6F2FF")
+            return Color(hex: "FFF4F4") // 적용
         case .money:
-            return Color(hex: "FFF4F4")
+            return Color(hex: "ECF6E2") // 적용
         case .cake:
-            return Color(hex: "FFF4F4")
+            return Color(hex: "FFF6EB") // 적용
         }
     }
     

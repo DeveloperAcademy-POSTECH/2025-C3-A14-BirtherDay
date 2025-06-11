@@ -12,7 +12,7 @@ extension LinearGradient {
     // template stroke
     static let heartTemplateStroke = LinearGradient(
         gradient: Gradient(stops: [
-            .init(color: Color(hex: "FFA3A"), location: 0.0),
+            .init(color: Color(hex: "FFA3A6"), location: 0.0),
             .init(color: Color(hex: "FFA266"), location: 0.53),
             .init(color: Color(hex: "FFB5D3"), location: 1.0) // 적용
         ]),
@@ -35,7 +35,6 @@ extension LinearGradient {
         gradient: Gradient(stops: [
             .init(color: Color(hex: "FFE0AE"), location: 0.0),
             .init(color: Color(hex: "FFB896"), location: 0.34),
-            .init(color: .mainViolet100, location: 0.67),
             .init(color: Color(hex: "FFE87E"), location: 1.0) // 적용
         ]),
         startPoint: .topLeading,
