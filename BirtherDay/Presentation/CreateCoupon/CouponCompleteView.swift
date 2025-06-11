@@ -17,8 +17,6 @@ struct CouponCompleteView: View {
     @State private var showShareModal = false
     @State private var isLoading: Bool = false
     
-    //TODO: 삭제
-    
     private let shareModalHeight: CGFloat = 195
     
     var body: some View {
@@ -74,22 +72,22 @@ struct CouponCompleteView: View {
         }
     }
     
-    @ViewBuilder
     func bottomGradientView() -> some View {
         VStack {
             Spacer()
-            
-            switch viewModel.couponData.template {
-            case .heart:
-                LinearGradient.heartButtonBackground
-            case .money:
-                LinearGradient.moneyButtonBackground
-            case .cake:
-                LinearGradient.cakeButtonBackground
+            Group {
+                switch viewModel.couponData.template {
+                case .heart:
+                    LinearGradient.heartButtonBackground
+                case .money:
+                    LinearGradient.moneyButtonBackground
+                case .cake:
+                    LinearGradient.cakeButtonBackground
+                }
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 143)
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 143)
         .ignoresSafeArea(.all)
     }
     
