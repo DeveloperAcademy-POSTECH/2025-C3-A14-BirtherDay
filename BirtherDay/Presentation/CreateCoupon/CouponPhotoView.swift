@@ -50,9 +50,6 @@ struct CouponPhotoView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "사진 첨부하기",
-            color: UIColor(
-                viewModel.couponData.template.backgroundColor
-            ),
             backButtonAction: navPathManager.popPath
         )
     }

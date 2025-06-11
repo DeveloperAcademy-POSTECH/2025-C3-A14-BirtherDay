@@ -38,9 +38,6 @@ struct MyCouponView: View {
         
         .bdNavigationBar(
             title: "\(couponType.couponNavigationTitle)",
-            color: UIColor(
-                Color.bgLight
-            ),
             backButtonAction: navPathManager.popPath
         )
         /// 최초 fetch.

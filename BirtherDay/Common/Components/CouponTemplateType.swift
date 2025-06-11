@@ -5,8 +5,8 @@
 //  Created by Soop on 6/1/25.
 //
 
-import Foundation
 import SwiftUI
+import UIKit
 
 enum CouponTemplate: String, Codable, Equatable {
     case heart
@@ -18,13 +18,13 @@ enum CouponTemplate: String, Codable, Equatable {
     var basicColor: Color {
         switch self {
         case .heart:
-            return Color(hex: "FFF4E6") // 적용
+            return Color(hex: "FFF4E6")
             
         case .money:
-            return Color(hex: "FEFFED") // 적용
+            return Color(hex: "FEFFED")
             
         case .cake:
-            return Color(hex: "FFF2EC") // 적용
+            return Color(hex: "FFF2EC")
         }
     }
     
@@ -33,9 +33,9 @@ enum CouponTemplate: String, Codable, Equatable {
         switch self {
         case .heart:
             return [
-                Color(hex: "FF86A8").opacity(0.8), // 적용
-                Color(hex: "FFAE86").opacity(0.5), // 적용
-                Color(hex: "FF86B6").opacity(0.5) // 적용
+                Color(hex: "FF86A8").opacity(0.8),
+                Color(hex: "FFAE86").opacity(0.5),
+                Color(hex: "FF86B6").opacity(0.5)
             ]
             
         case .money:
@@ -86,11 +86,22 @@ enum CouponTemplate: String, Codable, Equatable {
     var backgroundColor: Color {
         switch self { 
         case .heart:
-            return Color(hex: "FFF4F4") // 적용
+            return Color(hex: "FFF4F4")
         case .money:
-            return Color(hex: "ECF6E2") // 적용
+            return Color(hex: "ECF6E2")
         case .cake:
-            return Color(hex: "FFF6EB") // 적용
+            return Color(hex: "FFF6EB")
+        }
+    }
+    
+    var backgroundUIColor: UIColor {
+        switch self {
+        case .heart:
+            return UIColor(hex: "FFF4F4")
+        case .money:
+            return UIColor(hex: "ECF6E2")
+        case .cake:
+            return UIColor(hex: "FFF6EB")
         }
     }
     

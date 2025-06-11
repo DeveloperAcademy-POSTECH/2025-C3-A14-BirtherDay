@@ -51,9 +51,6 @@ struct CouponDetailView: View {
         }
         .bdNavigationBar(
             title: "쿠폰 상세보기",
-            color: UIColor(
-                viewModel.selectedCoupon.template.backgroundColor
-            ),
             backButtonAction: {
                 viewModel.stopMPC()
                 navPathManager.popPath()

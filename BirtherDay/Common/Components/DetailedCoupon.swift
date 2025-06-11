@@ -94,12 +94,12 @@ struct DetailedCoupon: View {
         ZStack {
             Color.white
             
-
             ScrollView {
                 Text(couponData.letter)
                     .font(.sb2)
                     .foregroundStyle(Color.textTitle)
                     .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 26)
                     .padding(.vertical, 25)
