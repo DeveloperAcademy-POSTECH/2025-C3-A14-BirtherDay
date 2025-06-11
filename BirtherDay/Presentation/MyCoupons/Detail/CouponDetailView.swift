@@ -15,7 +15,7 @@ struct CouponDetailView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var buttonTitle: String = "사용하기"
     @State var isShowPopup: Bool = false
-    @State private var showShareModal = false
+    @State var buttonType: BDButtonType = .deactivate
     
     private let shareModalHeight: CGFloat = 195
     
@@ -41,42 +41,89 @@ struct CouponDetailView: View {
             }
         }
         .onAppear {
-            print(viewModel.couponType)
-            print("viewModel.startupMPC()")
-            //            viewModel.startupMPC()
+            print("viewModel.startupMPC() 실행")
+            viewModel.startupMPC()
         }
-        .onChange(of: scenePhase) { oldValue, newValue in
-            switch scenePhase {
-            case .active:
-                viewModel.startupMPC()
-            case .background, .inactive:
-                viewModel.stopMPC()
-                print("background, inactive")
-            @unknown default:
-                break
-            }
-        }
+//        .onChange(of: scenePhase) { oldValue, newValue in
+//            switch scenePhase {
+//            case .active:
+//                viewModel.startupMPC()
+//            case .background, .inactive:
+//                viewModel.stopMPC()
+//                print("background, inactive")
+//            @unknown default:
+//                break
+//            }
+//        }
         .onDisappear {
             print("ondisappear called")
         }
-        .sheet(isPresented: $showShareModal) {
-            shareModalView()
-                .presentationDetents([.height(shareModalHeight)])
-        }
+//        .onChange(of: scenePhase) { oldValue, newValue in
+//            switch scenePhase {
+//            case .active:
+//                viewModel.startupMPC()
+//            case .background, .inactive:
+////                viewModel.stopMPC()
+//                print("background, inactive")
+//            @unknown default:
+//                break
+//            }
+//        }
         .bdNavigationBar(
             title: "쿠폰 상세보기",
             backButtonAction: {
                 viewModel.stopMPC()
                 navPathManager.popPath()
             })
+        .onChange(of: viewModel.mpc?.mpcSessionState) { oldValue, newValue in
+            // mpc seesion state에 따른 버튼 타입 설정
+            switch newValue {
+            case .connected:
+                buttonType = .activate
+            case .notConnected, .connecting:
+                buttonType = .deactivate
+            case .none:
+                buttonType = .deactivate
+            case .some(_):
+                buttonType = .deactivate
+            }
+        }
     }
     
     func buttonsView()-> some View {
         VStack {
             Spacer()
             HStack {
-                shareButtonView()
-                useButtonView()
+                Button {
+                    
+                } label: {
+                    Text("공유")
+                }
+                .buttonStyle(BDButtonStyle(buttonType: .activate))
+                
+                Button {
+                    print("coupondetailview : \(viewModel.isConnectWithPeer)")
+                    
+                    // mpc seesion state에 따른 사용하기 버튼 액션 관리
+                    if let mpc = viewModel.mpc {
+                        print("Button pressed")
+                        switch mpc.mpcSessionState {
+                        case .notConnected:
+                            isShowPopup.toggle()
+                        case .connecting:
+                            buttonTitle = mpc.mpcSessionState.displayString
+                        case .connected:
+                            buttonTitle = "사용하기"
+                            navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel))
+                        @unknown default:
+                            print("")
+                        }
+                    }
+                    
+                } label: {
+                    Text(buttonTitle)
+                }
+                .buttonStyle(BDButtonStyle(buttonType: buttonType))
             }
             .padding(.top, 37)
             .padding(.horizontal, 16)

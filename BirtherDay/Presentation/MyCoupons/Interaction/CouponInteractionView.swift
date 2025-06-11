@@ -8,7 +8,7 @@
 import SwiftUI
 struct CouponInteractionView: View {
     @EnvironmentObject var navPathManager: BDNavigationPathManager
-    @Bindable var viewModel: CouponDetailViewModel
+    var viewModel: CouponDetailViewModel
     
     var minimuDetectedDistance: Float = 2.0
     var screenHeight: CGFloat = UIScreen.main.bounds.height
@@ -46,15 +46,18 @@ struct CouponInteractionView: View {
             }
         }
         .onAppear {
+            print("viewModel.startNI()")
             viewModel.startNI()
+            print("screenHeight: \(screenHeight)")
         }
         .onChange(of: viewModel.distance) { oldValue, newValue in
             guard let newValue else { return }
             
+            // TODO: - 로직 함수 수정하기
             withAnimation(.easeInOut(duration: 1.0)) {
                 let clampedValue = max(newValue, 0)
                 animatedDistance = clampedValue
-                let height = screenHeight - CGFloat(clampedValue / (minimuDetectedDistance + 0.5)) * screenHeight
+                let height = screenHeight - CGFloat(clampedValue / (minimuDetectedDistance)) * screenHeight
                 animatedHeight = max(0, height)
             }
         }
@@ -62,17 +65,20 @@ struct CouponInteractionView: View {
             if let newValue = newValue {
                 if viewModel.isNearby(newValue) {
                     navPathManager.pushMyCouponPath(.interactionComplete)
+                    
                     viewModel.stopNI()
                     viewModel.stopMPC()
+                    
+                    Task {
+                        print("await viewModel.useCoupon()")
+                        let result = await viewModel.useCoupon()
+                        print("result: \(result)")
+                    }
                     
                 }
             }
         }
         .navigationBarBackButtonHidden()
-//        .bdNavigationBar(title: "") {
-//            viewModel.stopNI()
-//            self.navPathManager.popPath()
-//        }
     }
 
     func distanceView() -> some View {
