@@ -44,6 +44,7 @@ class MultipeerManager: NSObject {
     init(myCoupon: RetrieveCouponResponse) {
         // 1. myCoupon 초기화
         self.myCoupon = myCoupon
+        print("MPC에서 초기화된 쿠폰 ID: \(myCoupon.title)")
         
         // 2. myPeerID (이미 선언 시 초기화됨)
         
@@ -53,6 +54,8 @@ class MultipeerManager: NSObject {
             discoveryInfo: ["couponId": myCoupon.couponId],
             serviceType: serviceType
         )
+        
+//        print(\(advertiser?.discoveryInfo?.first.value))
         
         // 4. browser 초기화
         self.browser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: serviceType)
@@ -118,9 +121,11 @@ class MultipeerManager: NSObject {
     /// MPC 실행
     func start() {
         print("MPC 실행")
+        print("start() - 쿠폰 : \(myCoupon.title)")
         
         if advertiser == nil {
-            print("start() - advertiser 재초기화")
+            print("start() - advertiser 재초기화 | 쿠폰 : \(myCoupon.title)")
+            
             advertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: ["couponId": myCoupon.couponId], serviceType: serviceType)
             advertiser?.delegate = self
         }
@@ -219,7 +224,8 @@ extension MultipeerManager: MCNearbyServiceBrowserDelegate {
         } else {
             // 쿠폰 ID 불일치 시 초대 보내지 않음
             self.mpcSessionState = .notConnected
-            print("쿠폰 ID 불일치로 초대 미전송: \(info?["couponId"] ?? "nil")")
+            print("쿠폰 ID 불일치로 초대 미전송\n상대 쿠폰 ID: \(info?["couponId"] ?? "nil")")
+            print("내 쿠폰 ID : \(self.myCoupon.couponId)")
         }
     }
     

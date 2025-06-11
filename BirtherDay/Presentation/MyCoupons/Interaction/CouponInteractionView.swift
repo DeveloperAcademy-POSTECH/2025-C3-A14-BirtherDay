@@ -47,14 +47,22 @@ struct CouponInteractionView: View {
         }
         .onAppear {
             viewModel.startNI()
+            print("screenHeight: \(screenHeight)")
         }
         .onChange(of: viewModel.distance) { oldValue, newValue in
             guard let newValue else { return }
             
+            // TODO: - 로직 함수 수정하기
             withAnimation(.easeInOut(duration: 1.0)) {
                 let clampedValue = max(newValue, 0)
-                animatedDistance = clampedValue
+//                animatedDistance = clampedValue
+                
                 let height = screenHeight - CGFloat(clampedValue / (minimuDetectedDistance + 0.5)) * screenHeight
+                
+                print("clampedValue: \(clampedValue)")
+                print("height: \(height)")
+                print("================")
+                
                 animatedHeight = max(0, height)
             }
         }
@@ -62,8 +70,15 @@ struct CouponInteractionView: View {
             if let newValue = newValue {
                 if viewModel.isNearby(newValue) {
                     navPathManager.pushMyCouponPath(.interactionComplete)
+                    
                     viewModel.stopNI()
                     viewModel.stopMPC()
+                    
+                    Task {
+                        print("await viewModel.useCoupon()")
+                        let result = await viewModel.useCoupon()
+                        print("result: \(result)")
+                    }
                     
                 }
             }

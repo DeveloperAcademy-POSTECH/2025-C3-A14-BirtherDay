@@ -43,7 +43,11 @@ struct CouponDetailView: View {
         .onAppear {
             print(viewModel.couponType)
             print("viewModel.startupMPC()")
-            //            viewModel.startupMPC()
+            viewModel.startupMPC()
+        }
+        
+        .onDisappear {
+            print("ondisappear called")
         }
         .onChange(of: scenePhase) { oldValue, newValue in
             switch scenePhase {

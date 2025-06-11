@@ -16,9 +16,14 @@ enum DistanceDirectionState {
 
 @Observable
 class CouponDetailViewModel: NSObject {
+    
+    // Service properties
+    
+    var couponService: CouponService = CouponService()
+    
+    // MPC + NIN properties
 
-    var selectedCoupon: RetrieveCouponResponse
-    var couponType: CouponType
+    var selectedCoupon: RetrieveCouponResponse                 // 사용자가 고른 coupon
     var isConnectWithPeer: Bool = false         // peer와 연결되어있는지 여부
     var connectedPeer: MCPeerID?                // 연결된 Peer
     var isCompleted: Bool = false               // 쿠폰 사용 완료 여부
@@ -27,16 +32,14 @@ class CouponDetailViewModel: NSObject {
     
     var niSession: NISession?                   // NI 통신시 사용되는 Session
     var peerDiscoveryToken: NIDiscoveryToken?   // peer의 discoveryToken
-    var sharedTokenWithPeer = false             // peer와 discoveryToken을 교환했는지 여부
+    var hasSharedTokenWithPeer = false             // peer와 discoveryToken을 교환했는지 여부
     var currentDistanceDirectionState: DistanceDirectionState = .unknown
     
     var distance: Float?                        // peer간의 거리 (0.00m)
     let nearbyDistanceThreshold: Float = 0.5
     
-    init(
-        selectedCoupon: RetrieveCouponResponse,
-        couponType: CouponType
-    ) {
+    init(selectedCoupon: RetrieveCouponResponse) {
+        print("사용자가 선태한 쿠폰: \(selectedCoupon.couponId)")
         self.selectedCoupon = selectedCoupon
         self.couponType = couponType
     }
@@ -44,6 +47,38 @@ class CouponDetailViewModel: NSObject {
     deinit {
         print("deinit called")
     }
+    
+    // Service
+    func useCoupon() async -> Bool {
+        var result: Bool = false
+        do {
+            let status = try await couponService.useCoupon(couponId: self.selectedCoupon.couponId).status
+            
+            switch status {
+            case 200:
+                print("useCoupon 200")
+                result = true
+                
+            case 403:
+                print("auth failed")
+            
+            case 422, 429, 500, 501:
+                print("useCoupon failed")
+                break
+        
+            default:
+                print("useCoupon failed")
+                break
+            }
+
+        } catch {
+            
+        }
+        
+        return result
+    }
+    
+    // MPC + NIN
     
     func startupMPC() {
         print("CouponViewModel - startupMPC()")
@@ -53,6 +88,7 @@ class CouponDetailViewModel: NSObject {
         }
         
         let newMPC = MultipeerManager(myCoupon: selectedCoupon)
+        print("새로 생성된 MPC의 쿠폰 id : \(selectedCoupon.couponId)")
         newMPC.peerConnectedHandler = connectedToPeer
         newMPC.peerDataHandler = dataReceivedHandler
         newMPC.peerDisconnectedHandler = disconnectedFromPeer
@@ -76,13 +112,13 @@ class CouponDetailViewModel: NSObject {
         // delegate 설정
         niSession?.delegate = self
         
-        sharedTokenWithPeer = false
+        hasSharedTokenWithPeer = false
         
         if connectedPeer != nil && mpc != nil {
             if let myToken = niSession?.discoveryToken {
                 print("myToken: \(myToken)")
                 // 화면 업데이트 (찾는 중)
-                if !sharedTokenWithPeer {
+                if !hasSharedTokenWithPeer {
                     shareMyDiscoveryToken(token: myToken)
                 }
                 guard let peerToken = peerDiscoveryToken else {
@@ -149,7 +185,7 @@ class CouponDetailViewModel: NSObject {
             fatalError("Unexpectedly failed to encode discovery token.")
         }
         mpc?.sendDataToAllPeers(data: encodedData)
-        sharedTokenWithPeer = true
+        hasSharedTokenWithPeer = true
     }
     
     /// discoveryToken 공유, config 파일 제작, NIN 통신 시작
