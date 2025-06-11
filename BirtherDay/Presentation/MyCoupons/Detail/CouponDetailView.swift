@@ -72,19 +72,19 @@ struct CouponDetailView: View {
                 .buttonStyle(BDButtonStyle(buttonType: .activate))
                 
                 Button {
-                    if let mpc = viewModel.mpc {
-                        switch mpc.mpcSessionState {
-                        case .notConnected:
-                            isShowPopup.toggle()
-                        case .connecting:
-                            buttonTitle = mpc.mpcSessionState.displayString
-                        case .connected:
-                            buttonTitle = "사용하기"
-                            navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel))
-                        @unknown default:
-                            break
-                        }
-                    }
+//                    if let mpc = viewModel.mpc {
+//                        switch mpc.mpcSessionState {
+//                        case .notConnected:
+//                            isShowPopup.toggle()
+//                        case .connecting:
+//                            buttonTitle = mpc.mpcSessionState.displayString
+//                        case .connected:
+//                            buttonTitle = "사용하기"
+//                            navPathManager.pushMyCouponPath(.interaction(viewModel: viewModel))
+//                        @unknown default:
+//                            break
+//                        }
+//                    }
                     
                 } label: {
                     Text(buttonTitle)
