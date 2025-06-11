@@ -22,12 +22,13 @@ struct ContentView: View {
                         removal: .move(edge: .leading).combined(with: .opacity)
                     ))
             } else {
-                HomeView()
-                    .environmentObject(bdNavigationManager)
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .opacity
-                    ))
+                TestView()
+//                HomeView()
+//                    .environmentObject(bdNavigationManager)
+//                    .transition(.asymmetric(
+//                        insertion: .move(edge: .trailing).combined(with: .opacity),
+//                        removal: .opacity
+//                    ))
             }
         }
         .animation(.easeInOut(duration: 0.5), value: isOnboarded)
