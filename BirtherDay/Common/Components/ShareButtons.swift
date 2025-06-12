@@ -51,7 +51,7 @@ struct ShareButtons: View {
                 item: shareManager.getWebShareLinkData().photo!,
                 message: Text(shareManager.getWebShareLinkData().message),
                 preview: SharePreview(
-                    "나만의 생일 쿠폰을 보내세요!"
+                    ""
                     , image: shareManager.getWebShareLinkData().photo!.image
                 )
             ) {
