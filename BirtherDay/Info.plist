@@ -16,7 +16,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.rundo.birtherday</string>
+			<string>com.BirtherDay</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>birtherday</string>
