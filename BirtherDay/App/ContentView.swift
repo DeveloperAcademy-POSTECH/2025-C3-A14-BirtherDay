@@ -10,12 +10,16 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("isOnboarded") private var isOnboarded: Bool = false
     @StateObject private var bdNavigationManager = BDNavigationPathManager()
+    @State private var showSplash: Bool = true  // 앱 시작 시 true로 초기화
     
     private var authService: AuthService = AuthService()
 
     var body: some View {
         ZStack {
-            if !isOnboarded {
+            if showSplash {
+                SplashView()
+                    .transition(.opacity)
+            } else if !isOnboarded {
                 OnboardingView()
                     .transition(.asymmetric(
                         insertion: .opacity,
@@ -31,7 +35,26 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut(duration: 0.5), value: isOnboarded)
-        .onAppear { checkSignIn() }
+        .animation(.easeInOut(duration: 0.3), value: showSplash)
+        .onAppear {
+            checkSignIn()
+            showSplashScreen()  // 앱 시작 시 항상 스플래시 표시
+        }
+        .onChange(of: isOnboarded) { oldValue, newValue in
+            if newValue == true && oldValue == false {
+                // 온보딩 완료 시에는 바로 홈으로 (스플래시 없이)
+                // 이미 스플래시는 앱 시작 시 보여줬으므로
+            }
+        }
+    }
+    
+    private func showSplashScreen() {
+        // 1.5초 후 스플래시 화면 숨김
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                showSplash = false
+            }
+        }
     }
 }
 
