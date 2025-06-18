@@ -59,25 +59,55 @@ struct HomeView: View {
             }
         }
         .onOpenURL { url in
+            print("📱 앱에서 URL 받음: \(url)")
+            
+            // 카카오톡 공유 URL 처리 (기존 로직)
             if ShareApi.isKakaoTalkSharingUrl(url) {
                 Task {
                     guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
-                        fatalError("userId를 찾을 수 없습니다.")
+                        print("❌ userId를 찾을 수 없습니다.")
+                        return
                     }
                     
                     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
                           let queryItems = components.queryItems else {
-                        fatalError("쿼리 파라미터를 파싱할 수 없습니다.")
+                        print("❌ 쿼리 파라미터를 파싱할 수 없습니다.")
+                        return
                     }
-                    print("💕")
-                    print(components)
                     
                     guard let couponId = queryItems.first(where: { $0.name == "couponId" })?.value else {
-                        fatalError("couponId를 찾을 수 없습니다.")
+                        print("❌ couponId를 찾을 수 없습니다.")
+                        return
                     }
                     
                     withAnimation {
-                        showSharedCouponModal = true;
+                        showSharedCouponModal = true
+                    }
+                    
+                    await homeViewModel.fetchCouponBy(couponId: couponId)
+                    await homeViewModel.registerReceiverToCoupon(couponId: couponId, userId: userId)
+                }
+            }
+            // 커스텀 URL 스키마 처리 (birtherday://coupon/12345)
+            else if url.scheme == "birtherday" && url.host == "coupon" {
+                Task {
+                    guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
+                        print("❌ userId를 찾을 수 없습니다.")
+                        return
+                    }
+                    
+                    // URL에서 쿠폰 ID 추출: birtherday://coupon/12345
+                    let pathComponents = url.pathComponents
+                    guard pathComponents.count >= 2 else {
+                        print("❌ URL에서 쿠폰 ID를 찾을 수 없습니다.")
+                        return
+                    }
+                    
+                    let couponId = pathComponents[1]  // /12345에서 12345 추출
+                    print("✅ 커스텀 스키마로 받은 쿠폰 ID: \(couponId)")
+                    
+                    withAnimation {
+                        showSharedCouponModal = true
                     }
                     
                     await homeViewModel.fetchCouponBy(couponId: couponId)
