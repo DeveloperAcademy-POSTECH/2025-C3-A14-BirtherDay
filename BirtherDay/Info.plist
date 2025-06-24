@@ -12,6 +12,16 @@
 				<string>kakao7b5a33c93fdbddae39f5d7a4f98bb0d7</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.BirtherDay</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>birtherday</string>
+			</array>
+		</dict>
 	</array>
 	<key>KAKAO_NATIVE_APP_KEY</key>
 	<string>$(KAKAO_NATIVE_APP_KEY)</string>

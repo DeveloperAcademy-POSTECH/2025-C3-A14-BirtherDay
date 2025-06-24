@@ -35,7 +35,7 @@ class CouponDetailViewModel: NSObject {
     var currentDistanceDirectionState: DistanceDirectionState = .unknown
     
     var distance: Float?                        // peer간의 거리 (0.00m)
-    let nearbyDistanceThreshold: Float = 0.2    // (m)
+    let nearbyDistanceThreshold: Float = 0.05    // (m)
     
     init(selectedCoupon: RetrieveCouponResponse,
          couponType: CouponType

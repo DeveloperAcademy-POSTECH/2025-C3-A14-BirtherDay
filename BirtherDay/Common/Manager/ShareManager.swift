@@ -45,6 +45,7 @@ final class ShareManager {
     
     var imageUrl: String
     var urlScheme: String
+    var webUrl: String         // 일반 공유용 추가
     var buttonTitle: String
     var iosExecutionParams: [String: String]
     
@@ -63,6 +64,7 @@ final class ShareManager {
         case .coupon:
             self.buttonTitle = "생일 쿠폰 확인하기"
             self.urlScheme = "kakao\(KakaoConfig.NATIVE_APP_KEY)://kakaolink"
+            self.webUrl = "birtherday://coupon/\(params["couponId"] ?? "")"  // 커스텀 스키마
             self.imageUrl = self.template.sharePreviewUrl
         }
     }
@@ -126,6 +128,19 @@ final class ShareManager {
     // ShareLink에 필요한 데이터를 반환하는 메소드
     func getShareLinkData() -> ShareData {
         let newMessage = "\(self.message)\n\(self.urlScheme)"
+        var shareData = ShareData(photo: nil, message: newMessage)
+        
+        switch self.shareType {
+        case .coupon:
+            shareData.setPhoto(Photo(image: Image(self.template.sharePreviewImage), caption: ""))
+        }
+        
+        return shareData
+    }
+    
+    // 웹 공유용 데이터 반환 메서드 추가
+    func getWebShareLinkData() -> ShareData {
+        let newMessage = "\(self.message)\n\(self.webUrl)"  // 커스텀 URL 사용
         var shareData = ShareData(photo: nil, message: newMessage)
         
         switch self.shareType {

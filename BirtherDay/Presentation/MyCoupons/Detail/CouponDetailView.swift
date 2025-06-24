@@ -76,12 +76,8 @@ struct CouponDetailView: View {
         VStack {
             Spacer()
             HStack {
-                Button {
-                    
-                } label: {
-                    Text("공유")
-                }
-                .buttonStyle(BDButtonStyle(buttonType: .activate))
+                
+                shareButtonView()
                 
                 Button {
                     print("coupondetailview : \(viewModel.isConnectWithPeer)")
