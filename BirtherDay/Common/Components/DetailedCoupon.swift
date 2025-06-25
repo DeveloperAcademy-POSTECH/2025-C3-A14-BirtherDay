@@ -26,8 +26,9 @@ struct DetailedCoupon: View {
                 subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
                 dashedLineView(color: Color.gray200, color2: Color.white)
                 imageListView()
+                dashedLineView(color: Color.gray200, color2: Color.white)
             }
-
+            
             subtitleView(subtitle: "💌 함께 도착한 편지를 읽어보세요!")
             dashedLineView(color: Color.gray200, color2: Color.white)
             letterView()
@@ -126,11 +127,11 @@ struct DetailedCoupon: View {
     func imageItemView(url: URL) -> some View {
         KFImage(url)
             .resizable()
+            .scaledToFill()
             .frame(
                 width: 215,
                 height: 306
             )
-            .aspectRatio(contentMode: .fit)
             .clipped()
             .cornerRadius(10)
     }
