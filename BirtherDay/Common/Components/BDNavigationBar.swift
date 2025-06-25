@@ -9,36 +9,28 @@ import SwiftUI
 
 struct BDNavigationBar: ViewModifier {
     let title: String
-    let isCustomBackButtonHidden: Bool
-    let onBackButtonTapped: () -> Void
     
     func body(content: Content) -> some View {
         content
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.automatic)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                if !isCustomBackButtonHidden {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            onBackButtonTapped()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.black)
-                        }
-                    }
-                }
-            }
-            .onAppear { setNavigationBarAppearance(/*color: backgroundColor*/) }
+            .onAppear { setNavigationBarAppearance() }
     }
     
-    private func setNavigationBarAppearance(/*color: UIColor*/) {
+    private func setNavigationBarAppearance() {
         let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
         appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = .clear
-        appearance.shadowColor = .clear
-
+        
+        // Back 버튼의 title 색을 .clear로 설정함으로써 숨김
+        let backButtonAppearance = UIBarButtonItemAppearance()
+        backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
+        appearance.backButtonAppearance = backButtonAppearance
+        
+        let backIcon = UIImage(systemName: "chevron.left")?
+            .withTintColor(.black, renderingMode: .alwaysOriginal)
+        
+        appearance.setBackIndicatorImage(backIcon, transitionMaskImage: backIcon)
+        
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().compactAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
