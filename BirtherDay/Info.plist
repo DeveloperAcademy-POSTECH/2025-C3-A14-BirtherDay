@@ -16,7 +16,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.BirtherDay</string>
+			<string>co.birtherday.coupoff</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>birtherday</string>
