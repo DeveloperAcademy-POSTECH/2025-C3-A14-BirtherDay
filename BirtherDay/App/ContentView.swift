@@ -16,24 +16,23 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            SplashView()
-//            if showSplash {
-//                SplashView()
-//                    .transition(.opacity)
-//            } else if !isOnboarded {
-//                OnboardingView()
-//                    .transition(.asymmetric(
-//                        insertion: .opacity,
-//                        removal: .move(edge: .leading).combined(with: .opacity)
-//                    ))
-//            } else {
-//                HomeView()
-//                    .environmentObject(bdNavigationManager)
-//                    .transition(.asymmetric(
-//                        insertion: .move(edge: .trailing).combined(with: .opacity),
-//                        removal: .opacity
-//                    ))
-//            }
+            if showSplash {
+                SplashView()
+                    .transition(.opacity)
+            } else if !isOnboarded {
+                OnboardingView()
+                    .transition(.asymmetric(
+                        insertion: .opacity,
+                        removal: .move(edge: .leading).combined(with: .opacity)
+                    ))
+            } else {
+                HomeView()
+                    .environmentObject(bdNavigationManager)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing).combined(with: .opacity),
+                        removal: .opacity
+                    ))
+            }
         }
         .animation(.easeInOut(duration: 0.5), value: isOnboarded)
         .animation(.easeInOut(duration: 0.3), value: showSplash)
