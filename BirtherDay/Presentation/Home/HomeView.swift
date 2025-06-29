@@ -125,9 +125,10 @@ struct HomeView: View {
                 .fill(Color.mainViolet100)
             
             VStack(alignment: .center, spacing: 20) {
-                Text("나만의 특별한 쿠폰으로\n생일을 축하해볼까요?")
+                Text("나만의 쿠폰으로\n특별한 생일선물을 해보아요!")
                     .lineSpacing(8)
                     .font(.b2)
+                    .foregroundStyle(Color.textTitle)
                     .multilineTextAlignment(.center)
                 
                 animation
