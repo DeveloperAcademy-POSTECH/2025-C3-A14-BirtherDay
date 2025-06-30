@@ -40,7 +40,6 @@ struct CouponCompleteView: View {
         .keyboardAware()
         .bdNavigationBar(
             title: "쿠폰 생성 완료",
-            isBackButtonHidden: true,
             backButtonAction: navPathManager.popPath
         )
         .sheet(isPresented: $showShareModal) {

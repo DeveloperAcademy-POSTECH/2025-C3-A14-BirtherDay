@@ -122,7 +122,7 @@ struct BDMiniCoupon: View {
                         .font(.sb1)
                         .foregroundStyle(Color.textTitle)
                         .lineSpacing(6)
-                        .lineLimit(nil)
+                        .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                     
                     Spacer()

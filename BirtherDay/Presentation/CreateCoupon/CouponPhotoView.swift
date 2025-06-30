@@ -17,6 +17,8 @@ struct CouponPhotoView: View {
     @State private var selectedImages: [UIImage] = []
     @State private var uploadedImagePaths: [String] = []
     @State private var isLoading: Bool = false
+    @State private var showPhotoZoomView: Bool = false
+    @State private var selectedImageIndex: Int = 0
     
     var body: some View {
         VStack(spacing: 0) {
@@ -46,12 +48,21 @@ struct CouponPhotoView: View {
         .onAppear {
             loadExistingPhotos()
         }
+        .fullScreenCover(isPresented: $showPhotoZoomView) {
+                PhotoZoomView(
+                    image: selectedImages[selectedImageIndex],
+                    images: selectedImages,
+                    initialIndex: selectedImageIndex,
+                    isPresented: $showPhotoZoomView
+                )
+        }
         .background(Color.mainViolet50)
         .keyboardAware()
         .bdNavigationBar(
             title: "사진 첨부하기",
             backButtonAction: navPathManager.popPath
         )
+
     }
     
     func photoTitleView() -> some View {
@@ -126,6 +137,10 @@ struct CouponPhotoView: View {
                 .frame(width: 300, height: 300)
                 .clipped()
                 .cornerRadius(10)
+                .onTapGesture {
+                    selectedImageIndex = index
+                    showPhotoZoomView = true
+                }
             
             Button {
                 deletePhoto(at: index)
