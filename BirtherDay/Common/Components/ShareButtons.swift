@@ -65,7 +65,3 @@ struct ShareButtons: View {
         }
     }
 }
-//
-//#Preview {
-//    ShareButtons()
-//}

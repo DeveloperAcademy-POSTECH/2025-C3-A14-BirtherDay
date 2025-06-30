@@ -12,7 +12,6 @@
 import SwiftUI
 
 extension Color {
-    // Main
     static let mainViolet50 = Color(hex: "F6F2FF")
     static let mainViolet100 = Color(hex: "f2edfb")
     static let mainViolet200 = Color(hex: "ece4f9")
@@ -25,34 +24,28 @@ extension Color {
     static let mainViolet900 = Color(hex: "392362")
     static let mainViolet1000 = Color(hex: "2c1b4c")
     
-    // Text
     static let textTitle = Color(hex: "333333")
     static let textCaption1 = Color(hex: "868a92")
     static let textCaption2 = Color(hex: "b1b5bd")
     static let textBody = Color(hex: "353c49")
     
-    // GrayScale
     static let gray100 = Color(hex: "f2f3f5")
     static let gray200 = Color(hex: "e5e5e5")
     static let gray300 = Color(hex: "999999")
     static let gray400 = Color(hex: "434343")
     static let gray600 = Color(hex: "262626")
     
-    // Background
     static let bgLight = Color(hex: "ffffff")
     static let bgDark = Color(hex: "292929")
     static let bgDimmed = Color(hex: "000000").opacity(0.3)
     
-    // Warning
     static let warning = Color(hex: "ff4848")
     
-    // Card
     static let cardHeart = Color(hex: "FFC8C8")
     static let cardMoney = Color(hex: "C5EFD3")
     static let cardCake = Color(hex: "FFCC9F")
 }
 
-// hex code to Color
 public extension Color {
 
     init(hex: String) {

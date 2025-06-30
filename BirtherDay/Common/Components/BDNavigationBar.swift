@@ -21,7 +21,7 @@ struct BDNavigationBar: ViewModifier {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         
-        // Back 버튼의 title 색을 .clear로 설정함으로써 숨김
+        /// Back 버튼의 title 색을 .clear로 설정함으로써 숨김
         let backButtonAppearance = UIBarButtonItemAppearance()
         backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear]
         appearance.backButtonAppearance = backButtonAppearance

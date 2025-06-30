@@ -40,16 +40,16 @@ enum CouponTemplate: String, Codable, Equatable {
             
         case .money:
             return [
-                Color(hex: "A4FF86").opacity(0.8), // 적용
-                Color(hex: "86FFDD").opacity(0.5), // 적용
-                Color(hex: "D1FF86").opacity(0.5) // 적용
+                Color(hex: "A4FF86").opacity(0.8),
+                Color(hex: "86FFDD").opacity(0.5),
+                Color(hex: "D1FF86").opacity(0.5)
             ]
             
         case .cake:
             return [
-                Color(hex: "FFAE5D").opacity(0.8), // 적용
-                Color(hex: "FFED86").opacity(0.5), // 적용
-                Color(hex: "FFAE5D").opacity(0.5) // 적용
+                Color(hex: "FFAE5D").opacity(0.8),
+                Color(hex: "FFED86").opacity(0.5),
+                Color(hex: "FFAE5D").opacity(0.5)
             ]
         }
     }

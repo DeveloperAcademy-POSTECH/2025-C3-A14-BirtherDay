@@ -36,7 +36,6 @@ struct CouponShareCompleteView: View {
                 Spacer()
                 
                 Button {
-                    // TODO: - 쿠폰 상세 페이지로 이동하는 코드로 수정 예정
                     navPathManager.goToRoot()
                 } label: {
                     Text("완료")

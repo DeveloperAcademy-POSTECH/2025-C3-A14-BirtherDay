@@ -42,12 +42,12 @@ struct CouponInfoView: View {
                 Spacer()
                     .frame(height: 32)
                 
-                cardPreviewSection() // 쿠폰 실시간보기 뷰
+                cardPreviewSection()
                 
                 Spacer()
                     .frame(height: 26)
                 
-                inputFormSection() // 쿠폰 정보 입력(쿠폰명, 보내는 이, 마감기한) 뷰
+                inputFormSection()
                 
                 Spacer()
             }
@@ -128,7 +128,6 @@ struct CouponInfoView: View {
         navPathManager.pushCreatePath(.couponLetter)
     }
     
-    // MARK: - Input Component Functions
     func couponTitleInput() -> some View {
         VStack(alignment: .leading) {
             HStack {
@@ -169,14 +168,12 @@ struct CouponInfoView: View {
                         .background(Color.bgLight)
                         .cornerRadius(8)
                         .onChange(of: couponTitle) {
-                            // 25자 초과시 입력 차단
                             if couponTitle.count > maxCouponTitleLength {
                                 couponTitle = String(couponTitle.prefix(maxCouponTitleLength))
                             }
                             showTitleLengthWarning = couponTitle.count == maxCouponTitleLength
                         }
                     
-                    // 글자수 표시
                     HStack {
                         Spacer()
                         Text("\(couponTitle.count)/\(maxCouponTitleLength)")
@@ -187,7 +184,6 @@ struct CouponInfoView: View {
                     }
                 }
 
-                // 경고 문구
                 if showTitleLengthWarning {
                     Text("25자 이내로 입력해주세요")
                         .font(.custom("Pretendard", size: 10).weight(.medium))
@@ -214,14 +210,12 @@ struct CouponInfoView: View {
                         .background(Color.bgLight)
                         .cornerRadius(8)
                         .onChange(of: senderName) {
-                            // 10자 초과시 입력 차단
                             if senderName.count > maxSenderNameLength {
                                 senderName = String(senderName.prefix(maxSenderNameLength))
                             }
                             showSenderLengthWarning = senderName.count == maxSenderNameLength
                         }
                     
-                    // 글자수 표시
                     HStack {
                         Spacer()
                         Text("\(senderName.count)/\(maxSenderNameLength)")
@@ -232,7 +226,6 @@ struct CouponInfoView: View {
                     }
                 }
                 
-                // 경고 문구
                 if showSenderLengthWarning {
                     Text("10자 이내로 입력해주세요")
                         .font(.custom("Pretendard", size: 10).weight(.medium))
@@ -264,19 +257,17 @@ struct CouponInfoView: View {
         }
     }
     
-    // MARK: - Date Picker Sheet Function
     func datePickerSheet() -> some View {
         NavigationView {
             DatePicker("마감 날짜 선택", selection: $selectedDate, displayedComponents: .date)
                 .datePickerStyle(GraphicalDatePickerStyle())
-                .accentColor(Color.mainPrimary) // 선택된 날짜의 색상
+                .accentColor(Color.mainPrimary)
                 .padding()
                 .navigationBarTitleDisplayMode(.inline)
         }
         .presentationDetents([.height(400)])
     }
     
-    // MARK: - Card Preview Functions
     func couponCardPreview(
         template: CouponTemplate,
         senderName: String,

@@ -19,12 +19,12 @@ struct CouponLetterView: View {
                 Spacer()
                     .frame(height: 32)
                 
-                cardPreviewSection() // 쿠폰 실시간 보기 뷰
+                cardPreviewSection()
                 
                 Spacer()
                     .frame(height: 35)
                 
-                letterInputSection() // 편지 작성 뷰
+                letterInputSection()
                 
                 Spacer()
                     .frame(height: 40)
@@ -83,12 +83,10 @@ struct CouponLetterView: View {
     }
     
     func saveLetterAndNavigate() {
-//        viewModel.update(.letter(letterContent))
         viewModel.update(.letter(letterContent))
         navPathManager.pushCreatePath(.couponPicture)
     }
     
-    // MARK: - Letter Input Component Function
     func letterInputField() -> some View {
         VStack(alignment: .leading, spacing: 12) {
             inputTitle()

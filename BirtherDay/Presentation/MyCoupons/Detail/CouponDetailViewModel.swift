@@ -150,11 +150,6 @@ class CouponDetailViewModel: NSObject {
     /// MPC 연결이 완료되었을 때 호출
     func connectedToPeer(peer: MCPeerID) {
         print("MPC Connected")
-//        
-//        
-//        if connectedPeer == nil {
-//            return
-//        }
         
         
         if connectedPeer != nil {
@@ -283,8 +278,6 @@ extension CouponDetailViewModel: NISessionDelegate {
     func session(_ session: NISession, didInvalidateWith error: Error) {
         currentDistanceDirectionState = .unknown
         
-        // If the app lacks user approval for Nearby Interaction, present
-        // an option to go to Settings where the user can update the access.
         if case NIError.userDidNotAllow = error {
             if #available(iOS 15.0, *) {
 
@@ -297,7 +290,6 @@ extension CouponDetailViewModel: NISessionDelegate {
                                                     preferredStyle: .alert)
                 accessAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                 accessAlert.addAction(UIAlertAction(title: "Go to Settings", style: .default, handler: {_ in
-                    // Send the user to the app's Settings to update Nearby Interactions access.
                     if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                         UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
                     }
