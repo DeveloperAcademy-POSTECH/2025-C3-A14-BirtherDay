@@ -37,8 +37,8 @@ struct ContentView: View {
         .animation(.easeInOut(duration: 0.5), value: isOnboarded)
         .animation(.easeInOut(duration: 0.3), value: showSplash)
         .onAppear {
-            checkSignIn()
             showSplashScreen()  // 앱 시작 시 항상 스플래시 표시
+            checkSignIn()
         }
         .onChange(of: isOnboarded) { oldValue, newValue in
             if newValue == true && oldValue == false {

@@ -260,7 +260,7 @@ extension MultipeerManager: MCNearbyServiceAdvertiserDelegate {
     // 내 기기가 서비스 중일 때, 근처 기기(MCPeer)로부터 세션에 연결하겠다는 요청이 들어왔을 때 호출
     // -> 내가 advertiser를 실행할 때, 다른 기기가 invitePeer()를 호출하면 이 메서드가 자동 실행
     // peerID: 연결을 요청한 상대방의 peer ID
-    // context: 상대방이 초대에 포함시킨 부가 정보. ex. 사용자의 ID등 (신뢰할 수 없으므로 주의)
+    // context:w 상대방이 초대에 포함시킨 부가 정보. ex. 사용자의 ID등 (신뢰할 수 없으므로 주의)
     // invitationHandler: 초대 수락/거절을 결정하는 콜백. true: 수락, false: 거절. 세션도 같이 넘겨야 함
     /// MCSession 열고, 들어온 invitations 수락 or 거절
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
