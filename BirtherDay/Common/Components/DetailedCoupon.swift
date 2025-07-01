@@ -9,18 +9,28 @@ import SwiftUI
 import Kingfisher
 
 struct DetailedCoupon: View {
-    var couponData: RetrieveCouponResponse
+    @State private var showPhotoZoomView: Bool = false
+    @State private var selectedImageIndex: Int = 0
     
-    init(couponData: RetrieveCouponResponse) {
+    var couponData: RetrieveCouponResponse
+    var couponImages: [KFImage]
+    
+    init(
+        couponData: RetrieveCouponResponse,
+        images: [KFImage]
+    ) {
         self.couponData = couponData
+        self.couponImages = images
     }
     
     var body: some View {
-        //        ScrollView {
         VStack(spacing: 0) {
             mainCouponView()
             
-            dashedLineView(color: couponData.template.dashLineColor, color2: couponData.template.basicColor)
+            dashedLineView(
+                color: couponData.template.dashLineColor,
+                color2: couponData.template.basicColor
+            )
             
             if !couponData.imageList.isEmpty {
                 subtitleView(subtitle: "📷 함께 첨부된 사진을 확인하세요!")
@@ -35,6 +45,13 @@ struct DetailedCoupon: View {
         }
         .padding(.horizontal, 27)
         .padding(.bottom, 133)
+        .fullScreenCover(isPresented: $showPhotoZoomView) {
+            PhotoZoomView(
+                images: couponImages,
+                initialIndex: selectedImageIndex,
+                isPresented: $showPhotoZoomView
+            )
+        }
     }
     
     // 메인 쿠폰 뷰
@@ -113,26 +130,25 @@ struct DetailedCoupon: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 15) {
                 let urls = couponData.imageList.compactMap { URL(string: $0 ?? "")}
-                ForEach(Array(urls.enumerated()), id: \.element) { index, url in
-                    imageItemView(url: url)
+                ForEach(Array(couponImages.enumerated()), id: \.offset) { index, kfImage in
+                    kfImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(
+                            width: 215,
+                            height: 306
+                        )
+                        .clipped()
+                        .cornerRadius(10)
+                        .onTapGesture {
+                            selectedImageIndex = index
+                            showPhotoZoomView = true
+                        }
                 }
             }
             .padding(.horizontal, 50)
             .scrollTargetLayout()
         }
         .scrollTargetBehavior(.viewAligned)
-    }
-    
-    // CarouselView의 내부 이미지 뷰
-    func imageItemView(url: URL) -> some View {
-        KFImage(url)
-            .resizable()
-            .scaledToFill()
-            .frame(
-                width: 215,
-                height: 306
-            )
-            .clipped()
-            .cornerRadius(10)
     }
 }

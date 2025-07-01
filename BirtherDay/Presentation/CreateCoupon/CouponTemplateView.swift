@@ -18,17 +18,17 @@ struct CouponTemplateView: View {
             Spacer()
                 .frame(height: 28)
             
-            titleSection() // 원하는 쿠폰 디자인을 선택해 주세요 뷰
+            titleSection()
             
             Spacer()
                 .frame(height: 32)
             
-            templateImageSection() // 템플릿 이미지 뷰
+            templateImageSection()
             
             Spacer()
                 .frame(height: 34)
             
-            templateSelectionButtons() // 템플릿 선택 버튼: 노랑 or 파랑 뷰
+            templateSelectionButtons()
             
             Spacer()
             

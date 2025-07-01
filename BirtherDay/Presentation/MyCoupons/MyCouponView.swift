@@ -87,7 +87,6 @@ struct MyCouponView: View {
                         .frame(width: 44, height: 2)
                 }
             }
-            //.padding(.bottom, -8)
         }
         .buttonStyle(.plain)
     }

@@ -23,17 +23,17 @@ struct CouponInfoView: View {
     
     // 랜덤 예시 목록
     private let randomExamples = [
-        "애슐리 디너 1회 이용권",
-        "성수동 오마카세내가 쏜다 가자~",
-        "🍷와인바 1병 함께 하기청담 와인루프탑",
-        "🛍 코엑스 쇼핑 데이 10만원 한도!",
-        "🎬 용산 아이맥스 팝콘 세트 포함",
-        "🎮 PC방 5시간 이용권치킨도 내가 쏨",
-        "🍽 삼청동 브런치 투어카페 2곳 포함",
-        "🏞 남산 야경 드라이브 야식은 내가 책임질게",
-        "🧖‍♀️ 찜질방 데이찜질+계란+식혜 세트",
-        "🎡 롯데월드 자유이용권 1일 데이트권",
-        "🌊 속초 당일치기 여행 기름값 내가 낼게!",
+        "🤤 먹고 싶은 저녁 산다",
+        "🍴 오마카세 내가 쏜다 가자~",
+        "🍷 와인바 함께 하기",
+        "🛍 쇼핑 데이 10만원 한도!",
+        "🎬 같이 영화보자 팝콘 세트 포함",
+        "🎮 PC방 5시간 이용권 짜계치도 시켜줄게",
+        "🍽 브런치 투어 카페 2곳 포함",
+        "🏞 밤 드라이브, 기사는 나야",
+        "🧖‍♀️ 찜질방 데이 계란은 내 머리로 깨",
+        "🎡 놀이공원 1일 데이트권",
+        "🌊 당일치기 여행 바람과 흰 천만 가져와",
     ]
     
     var body: some View {
@@ -42,12 +42,12 @@ struct CouponInfoView: View {
                 Spacer()
                     .frame(height: 32)
                 
-                cardPreviewSection() // 쿠폰 실시간보기 뷰
+                cardPreviewSection()
                 
                 Spacer()
                     .frame(height: 26)
                 
-                inputFormSection() // 쿠폰 정보 입력(쿠폰명, 보내는 이, 마감기한) 뷰
+                inputFormSection()
                 
                 Spacer()
             }
@@ -128,7 +128,6 @@ struct CouponInfoView: View {
         navPathManager.pushCreatePath(.couponLetter)
     }
     
-    // MARK: - Input Component Functions
     func couponTitleInput() -> some View {
         VStack(alignment: .leading) {
             HStack {
@@ -169,14 +168,12 @@ struct CouponInfoView: View {
                         .background(Color.bgLight)
                         .cornerRadius(8)
                         .onChange(of: couponTitle) {
-                            // 25자 초과시 입력 차단
                             if couponTitle.count > maxCouponTitleLength {
                                 couponTitle = String(couponTitle.prefix(maxCouponTitleLength))
                             }
                             showTitleLengthWarning = couponTitle.count == maxCouponTitleLength
                         }
                     
-                    // 글자수 표시
                     HStack {
                         Spacer()
                         Text("\(couponTitle.count)/\(maxCouponTitleLength)")
@@ -187,7 +184,6 @@ struct CouponInfoView: View {
                     }
                 }
 
-                // 경고 문구
                 if showTitleLengthWarning {
                     Text("25자 이내로 입력해주세요")
                         .font(.custom("Pretendard", size: 10).weight(.medium))
@@ -214,14 +210,12 @@ struct CouponInfoView: View {
                         .background(Color.bgLight)
                         .cornerRadius(8)
                         .onChange(of: senderName) {
-                            // 10자 초과시 입력 차단
                             if senderName.count > maxSenderNameLength {
                                 senderName = String(senderName.prefix(maxSenderNameLength))
                             }
                             showSenderLengthWarning = senderName.count == maxSenderNameLength
                         }
                     
-                    // 글자수 표시
                     HStack {
                         Spacer()
                         Text("\(senderName.count)/\(maxSenderNameLength)")
@@ -232,7 +226,6 @@ struct CouponInfoView: View {
                     }
                 }
                 
-                // 경고 문구
                 if showSenderLengthWarning {
                     Text("10자 이내로 입력해주세요")
                         .font(.custom("Pretendard", size: 10).weight(.medium))
@@ -264,19 +257,17 @@ struct CouponInfoView: View {
         }
     }
     
-    // MARK: - Date Picker Sheet Function
     func datePickerSheet() -> some View {
         NavigationView {
             DatePicker("마감 날짜 선택", selection: $selectedDate, displayedComponents: .date)
                 .datePickerStyle(GraphicalDatePickerStyle())
-                .accentColor(Color.mainPrimary) // 선택된 날짜의 색상
+                .accentColor(Color.mainPrimary)
                 .padding()
                 .navigationBarTitleDisplayMode(.inline)
         }
         .presentationDetents([.height(400)])
     }
     
-    // MARK: - Card Preview Functions
     func couponCardPreview(
         template: CouponTemplate,
         senderName: String,

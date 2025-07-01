@@ -10,6 +10,8 @@ import UIKit
 import SwiftUI
 import PhotosUI
 
+import Kingfisher
+
 struct CouponData {
     var template: CouponTemplate
     var couponTitle: String
@@ -91,6 +93,13 @@ class CreateCouponViewModel: ObservableObject {
             }
         }
         return uploadedPaths
+    }
+    
+    @MainActor
+    func loadImages() -> [KFImage] {
+        return couponData.uploadedImagePaths
+            .compactMap { URL(string: $0) }
+            .map { KFImage($0) }
     }
     
     func uploadCoupon() async {

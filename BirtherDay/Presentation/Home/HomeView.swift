@@ -61,7 +61,6 @@ struct HomeView: View {
         .onOpenURL { url in
             print("📱 앱에서 URL 받음: \(url)")
             
-            // 카카오톡 공유 URL 처리 (기존 로직)
             if ShareApi.isKakaoTalkSharingUrl(url) {
                 Task {
                     guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id.uuidString else {
@@ -117,7 +116,6 @@ struct HomeView: View {
         }
     }
     
-    // MARK: - Views
     ///  쿠폰 만들러 가기
     func createCouponCTACardView() -> some View {
         ZStack {
@@ -196,12 +194,10 @@ struct HomeView: View {
         .padding(.bottom, 6)
     }
     
-    /// 구분선
     func homeDivider() -> some View {
         Divider().frame(height: 8).overlay(Color.gray100)
     }
     
-    /// 헤더
     func homeHeaderView(text: String) -> some View {
         VStack(spacing: 16) {
             HStack {
@@ -215,7 +211,6 @@ struct HomeView: View {
         }
     }
     
-    /// 홈 로고
     func homeLogoView() -> some View {
         HStack(spacing: 0) {
             Image("HomeLogo")
@@ -269,7 +264,6 @@ struct HomeView: View {
         }
     }
 }
-
 
 #Preview {
     HomeView()

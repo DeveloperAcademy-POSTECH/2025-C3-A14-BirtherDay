@@ -32,7 +32,6 @@ struct BDTemplate: View {
                     basicColor: data.template.basicColor,
                     dashLineColor: data.template.dashLineColor
                 )
-//                .padding(.horizontal, 20)
                 subtitleView()
             }
         }
@@ -62,12 +61,10 @@ struct BDTemplate: View {
           
             titleView()
         }
-//        .frame(height: 320)
         .padding(.vertical, 35)
         .padding(.horizontal, 27)
         
         .background {
-            // 배경에 사용되는 circle + blur
             bluredCircleView()
         }
         .background(data.template.backgroundColor)

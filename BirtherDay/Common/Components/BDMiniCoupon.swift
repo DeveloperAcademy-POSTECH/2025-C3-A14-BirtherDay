@@ -20,8 +20,6 @@ struct BDMiniCoupon: View {
         }
     }
     
-    // MARK: - Views
-    
     /// 미사용 쿠폰
     func unusedCouponView() -> some View {
         VStack(spacing: 0) {
@@ -71,8 +69,6 @@ struct BDMiniCoupon: View {
                         .padding(.trailing, 9)
                 }
                 Spacer()
-                
-                //                dashedLineView(color: coupon.template.dashLineColor)
             }
             coupon.template.miniCouponImage
                 .resizable()
@@ -108,7 +104,7 @@ struct BDMiniCoupon: View {
         }
     }
     
-    /// 쿠 폰 정보
+    /// 쿠폰 정보
     func couponInfoView()-> some View {
         return ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 15)
@@ -140,7 +136,6 @@ struct BDMiniCoupon: View {
     }
 }
 
-// (traits: .sizeThatFitsLayout)
 #Preview {
     BDMiniCoupon(coupon: .stub01)
 }

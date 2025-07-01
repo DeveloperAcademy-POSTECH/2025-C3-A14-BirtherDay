@@ -14,7 +14,7 @@ struct CouponDetailView: View {
     
     @State private var buttonTitle: String = "사용하기"
     @State var isShownPopup: Bool = false
-    @State private var showShareModal = false           // 공유하기 뷰
+    @State private var showShareModal = false
     @State var buttonType: BDButtonType = .deactivate
     
     private let shareModalHeight: CGFloat = 195
@@ -22,7 +22,10 @@ struct CouponDetailView: View {
     var body: some View {
         ZStack {
             ScrollView(.vertical) {
-                DetailedCoupon(couponData: viewModel.selectedCoupon)
+                DetailedCoupon(
+                    couponData: viewModel.selectedCoupon,
+                    images: viewModel.loadImages()
+                )
                     .padding(.top, 11)
             }
             .background(viewModel.selectedCoupon.template.backgroundColor)
@@ -184,7 +187,6 @@ struct CouponDetailView: View {
                     .padding(.bottom, 30)
                 Rectangle().frame(height: 1).foregroundStyle(.bar)
                 
-                // TODO: - 터치 영역 늘리기
                 Button {
                     self.isShownPopup = false
                 } label: {
@@ -202,8 +204,3 @@ struct CouponDetailView: View {
         }
     }
 }
-
-//#Preview {
-//    CouponDetailView(viewModel: CouponDetailViewModel(selectedCoupon: .stub01))
-//        .environmentObject(BDNavigationPathManager())
-//}

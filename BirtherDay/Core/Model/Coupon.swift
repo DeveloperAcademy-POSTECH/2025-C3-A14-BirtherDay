@@ -125,10 +125,6 @@ struct RetrieveCouponResponse: Hashable, Codable, Identifiable {
 
 extension RetrieveCouponResponse {
     static var stub01: RetrieveCouponResponse = {
-//        guard let userId = SupabaseManager.shared.client.auth.currentSession?.user.id else {
-//            fatalError("No user ID found")
-//        }
-        
         return .init(couponId: "", senderId: "", senderName: "프레이", template: .heart, title: "프레이가프레이가프레이가프레이가", letter: "프레이프레이프레잉이잉잉이이이이이이이잉", imageList: [], thumbnail: "", deadline: Date(), isUsed: false, createdAt: Date()
         )
     }()

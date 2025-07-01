@@ -50,7 +50,6 @@ struct CouponPhotoView: View {
         }
         .fullScreenCover(isPresented: $showPhotoZoomView) {
                 PhotoZoomView(
-                    image: selectedImages[selectedImageIndex],
                     images: selectedImages,
                     initialIndex: selectedImageIndex,
                     isPresented: $showPhotoZoomView

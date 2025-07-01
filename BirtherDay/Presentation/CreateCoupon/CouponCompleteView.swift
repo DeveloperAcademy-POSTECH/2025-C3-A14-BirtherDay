@@ -51,7 +51,10 @@ struct CouponCompleteView: View {
     func completedCouponView() -> some View {
         Group {
             if let couponForResponse = viewModel.couponForResponse {
-                DetailedCoupon(couponData: couponForResponse)
+                DetailedCoupon(
+                    couponData: couponForResponse,
+                    images: viewModel.loadImages()
+                )
             } else {
                 Text("쿠폰 정보 없음")
             }
