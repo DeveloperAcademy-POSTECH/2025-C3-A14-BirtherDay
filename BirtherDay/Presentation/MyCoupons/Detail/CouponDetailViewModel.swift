@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+
+import Kingfisher
 import MultipeerConnectivity
 import NearbyInteraction
 
@@ -46,6 +48,12 @@ class CouponDetailViewModel: NSObject {
     
     deinit {
         print("deinit called")
+    }
+    
+    func loadImages() -> [KFImage] {
+        return selectedCoupon.imageList
+            .compactMap { URL(string: $0 ?? "")}
+            .map { KFImage($0)}
     }
     
     // Service

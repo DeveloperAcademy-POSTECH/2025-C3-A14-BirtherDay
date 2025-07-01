@@ -8,16 +8,20 @@
 import SwiftUI
 import PhotosUI
 
-struct PhotoZoomView: View {
-    let image: UIImage
-    let images: [UIImage]
+import Kingfisher
+
+struct PhotoZoomView<ImageType>: View {
+    let images: [ImageType]
     let initialIndex: Int
     
     @Binding var isPresented: Bool
     @State private var currentIndex: Int
     
-    init(image: UIImage, images: [UIImage], initialIndex: Int, isPresented: Binding<Bool>) {
-        self.image = image
+    init(
+        images: [ImageType],
+        initialIndex: Int,
+        isPresented: Binding<Bool>
+    ) {
         self.images = images
         self.initialIndex = initialIndex
         self._isPresented = isPresented
@@ -30,8 +34,8 @@ struct PhotoZoomView: View {
                 .ignoresSafeArea()
             
             TabView(selection: $currentIndex) {
-                ForEach(Array(images.enumerated()), id: \.offset) { index, img in
-                    zoomableImageView(img)
+                ForEach(Array(images.enumerated()), id: \.offset) { index, image in
+                    zoomableImageView(image)
                         .tag(index)
                 }
             }
@@ -74,13 +78,34 @@ struct PhotoZoomView: View {
             .padding(.trailing, 16)
         }
     }
+
     
-    private func zoomableImageView(_ image: UIImage) -> some View {
+    @ViewBuilder
+    private func zoomableImageView(_ image: ImageType) -> some View {
         GeometryReader { geometry in
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width, height: geometry.size.height)
+            Group {
+                // 타입에 따라 다른 뷰 렌더링
+                if let uiImage = image as? UIImage {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } else if let kfImage = image as? KFImage {
+                    kfImage
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }else {
+                    Rectangle()
+                        .fill(Color.gray)
+                        .overlay(
+                            Text("이미지를 불러올 수 없습니다")
+                                .foregroundColor(.white)
+                        )
+                }
+            }
+            .frame(
+                width: geometry.size.width,
+                height: geometry.size.height
+            )
         }
         .clipped()
     }

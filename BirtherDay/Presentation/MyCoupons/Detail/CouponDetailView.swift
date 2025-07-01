@@ -22,7 +22,10 @@ struct CouponDetailView: View {
     var body: some View {
         ZStack {
             ScrollView(.vertical) {
-                DetailedCoupon(couponData: viewModel.selectedCoupon)
+                DetailedCoupon(
+                    couponData: viewModel.selectedCoupon,
+                    images: viewModel.loadImages()
+                )
                     .padding(.top, 11)
             }
             .background(viewModel.selectedCoupon.template.backgroundColor)
